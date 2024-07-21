@@ -1,2 +1,0 @@
-C:\Users\Lenovo\Desktop\SharpScan.Core\bin\Release\net6.0\publish\linux-x64\SharpScan.Core.pdb
-C:\Users\Lenovo\Desktop\SharpScan.Core\bin\Release\net6.0\publish\linux-x64\SharpScan.Core
