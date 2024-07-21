@@ -16,12 +16,12 @@
 
 1.信息搜集:
 
-- 存活探测(icmp)
+- 存活探测(ICMP)
 - 端口扫描(TCP)
 
 2.爆破功能:
 
-- 各类服务爆破(ssh、smb、rdp等)
+- 各类服务爆破(ssh、smb、rdp等)弱口令
 - 数据库密码爆破(mysql、mssql、redis、psql、oracle等)
 
 3.系统信息、漏洞扫描:
@@ -29,7 +29,6 @@
 - netbios探测、域控识别
 - 获取目标网卡信息
 - 高危漏洞扫描(ms17010等)
-- ssh命令执行，爆破弱口令
 
 4.Web探测功能:
 
@@ -44,9 +43,9 @@
 
 Windows ：支持win7-win11，windows server2008-2022
 
-Linux：支持 glibc 2.17以上 
+Linux：支持 glibc 2.17以上 的系统
 
-MacOS： arm x64_x86
+MacOS： arm x64_x86	
 
 
 
