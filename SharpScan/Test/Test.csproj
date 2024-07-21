@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{70038429-4547-4F31-980F-ACFB4F7C850C}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Test</RootNamespace>
+    <AssemblyName>Test</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NET_4_5;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Helper\SSH\DHKeyGeneration.cs" />
+    <Compile Include="Helper\SSH\DHParameters.cs" />
+    <Compile Include="Helper\SSH\DiffieHellman.cs" />
+    <Compile Include="Helper\SSH\DiffieHellmanManaged.cs" />
+    <Compile Include="Helper\SSH\ITransferProtocol.cs" />
+    <Compile Include="Helper\SSH\java\Exception.cs" />
+    <Compile Include="Helper\SSH\java\io\File.cs" />
+    <Compile Include="Helper\SSH\java\io\FileInputStream.cs" />
+    <Compile Include="Helper\SSH\java\io\FileOutputStream.cs" />
+    <Compile Include="Helper\SSH\java\io\InputStream.cs" />
+    <Compile Include="Helper\SSH\java\io\InputStreamWrapper.cs" />
+    <Compile Include="Helper\SSH\java\io\JStream.cs" />
+    <Compile Include="Helper\SSH\java\io\OutputStream.cs" />
+    <Compile Include="Helper\SSH\java\lang\Class.cs" />
+    <Compile Include="Helper\SSH\java\lang\Integer.cs" />
+    <Compile Include="Helper\SSH\java\lang\Runnable.cs" />
+    <Compile Include="Helper\SSH\java\lang\StringBuffer.cs" />
+    <Compile Include="Helper\SSH\java\lang\Thread.cs" />
+    <Compile Include="Helper\SSH\java\net\InetAddress.cs" />
+    <Compile Include="Helper\SSH\java\net\ServerSocket.cs" />
+    <Compile Include="Helper\SSH\java\net\Socket.cs" />
+    <Compile Include="Helper\SSH\java\Platform.cs" />
+    <Compile Include="Helper\SSH\java\RuntimeException.cs" />
+    <Compile Include="Helper\SSH\java\String.cs" />
+    <Compile Include="Helper\SSH\java\System.cs" />
+    <Compile Include="Helper\SSH\java\util\Arrays.cs" />
+    <Compile Include="Helper\SSH\java\util\Enumeration.cs" />
+    <Compile Include="Helper\SSH\java\util\Hashtable.cs" />
+    <Compile Include="Helper\SSH\java\util\JavaString.cs" />
+    <Compile Include="Helper\SSH\java\util\Vector.cs" />
+    <Compile Include="Helper\SSH\jsch\Buffer.cs" />
+    <Compile Include="Helper\SSH\jsch\Channel.cs" />
+    <Compile Include="Helper\SSH\jsch\Channel.old.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelDirectTCPIP.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelExec.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelForwardedTCPIP.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelSession.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelSftp.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelSftpStreamGet.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelSftpStreamPut.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelShell.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelSubsystem.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelX11.cs" />
+    <Compile Include="Helper\SSH\jsch\Cipher.cs" />
+    <Compile Include="Helper\SSH\jsch\Compression.cs" />
+    <Compile Include="Helper\SSH\jsch\DH.cs" />
+    <Compile Include="Helper\SSH\jsch\DHG1.cs" />
+    <Compile Include="Helper\SSH\jsch\DHGEX.cs" />
+    <Compile Include="Helper\SSH\jsch\ForwardedTCPIPDaemon.cs" />
+    <Compile Include="Helper\SSH\jsch\HASH.cs" />
+    <Compile Include="Helper\SSH\jsch\HostKey.cs" />
+    <Compile Include="Helper\SSH\jsch\HostKeyRepository.cs" />
+    <Compile Include="Helper\SSH\jsch\Identity.cs" />
+    <Compile Include="Helper\SSH\jsch\IdentityFile.cs" />
+    <Compile Include="Helper\SSH\jsch\IO.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\AES128CBC.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\BlowfishCBC.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\DH.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\HMACMD5.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\HMACMD596.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\HMACSHA1.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\HMACSHA196.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\KeyPairGenDSA.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\KeyPairGenRSA.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\MD5.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\Random.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\SHA1.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\SignatureDSA.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\SignatureRSA.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\TripleDESCBC.cs" />
+    <Compile Include="Helper\SSH\jsch\JSch.cs" />
+    <Compile Include="Helper\SSH\jsch\JSchAuthCancelException.cs" />
+    <Compile Include="Helper\SSH\jsch\JSchException.cs" />
+    <Compile Include="Helper\SSH\jsch\JSchPartialAuthException.cs" />
+    <Compile Include="Helper\SSH\jsch\KeyExchange.cs" />
+    <Compile Include="Helper\SSH\jsch\KeyPair.cs" />
+    <Compile Include="Helper\SSH\jsch\KeyPairDSA.cs" />
+    <Compile Include="Helper\SSH\jsch\KeyPairGenDSA.cs" />
+    <Compile Include="Helper\SSH\jsch\KeyPairGenRSA.cs" />
+    <Compile Include="Helper\SSH\jsch\KeyPairRSA.cs" />
+    <Compile Include="Helper\SSH\jsch\KnownHosts.cs" />
+    <Compile Include="Helper\SSH\jsch\MAC.cs" />
+    <Compile Include="Helper\SSH\jsch\Packet.cs" />
+    <Compile Include="Helper\SSH\jsch\PortWatcher.cs" />
+    <Compile Include="Helper\SSH\jsch\Proxy.cs" />
+    <Compile Include="Helper\SSH\jsch\Random.cs" />
+    <Compile Include="Helper\SSH\jsch\Request.cs" />
+    <Compile Include="Helper\SSH\jsch\RequestExec.cs" />
+    <Compile Include="Helper\SSH\jsch\RequestPtyReq.cs" />
+    <Compile Include="Helper\SSH\jsch\RequestSftp.cs" />
+    <Compile Include="Helper\SSH\jsch\RequestShell.cs" />
+    <Compile Include="Helper\SSH\jsch\RequestSignal.cs" />
+    <Compile Include="Helper\SSH\jsch\RequestSubsystem.cs" />
+    <Compile Include="Helper\SSH\jsch\RequestWindowChange.cs" />
+    <Compile Include="Helper\SSH\jsch\RequestX11.cs" />
+    <Compile Include="Helper\SSH\jsch\ServerSocketFactory.cs" />
+    <Compile Include="Helper\SSH\jsch\Session.cs" />
+    <Compile Include="Helper\SSH\jsch\SftpATTRS.cs" />
+    <Compile Include="Helper\SSH\jsch\SftpException.cs" />
+    <Compile Include="Helper\SSH\jsch\SftpProgressMonitor.cs" />
+    <Compile Include="Helper\SSH\jsch\SignatureDSA.cs" />
+    <Compile Include="Helper\SSH\jsch\SignatureRSA.cs" />
+    <Compile Include="Helper\SSH\jsch\SocketFactory.cs" />
+    <Compile Include="Helper\SSH\jsch\UIKeyboardInteractive.cs" />
+    <Compile Include="Helper\SSH\jsch\UserAuth.cs" />
+    <Compile Include="Helper\SSH\jsch\UserAuthKeyboardInteractive.cs" />
+    <Compile Include="Helper\SSH\jsch\UserAuthNone.cs" />
+    <Compile Include="Helper\SSH\jsch\UserAuthPassword.cs" />
+    <Compile Include="Helper\SSH\jsch\UserAuthPublicKey.cs" />
+    <Compile Include="Helper\SSH\jsch\UserInfo.cs" />
+    <Compile Include="Helper\SSH\jsch\Util.cs" />
+    <Compile Include="Helper\SSH\mono\BigInteger.cs" />
+    <Compile Include="Helper\SSH\mono\ConfidenceFactor.cs" />
+    <Compile Include="Helper\SSH\mono\MiniParser.cs" />
+    <Compile Include="Helper\SSH\mono\NextPrimeFinder.cs" />
+    <Compile Include="Helper\SSH\mono\PrimalityTests.cs" />
+    <Compile Include="Helper\SSH\mono\PrimeGeneratorBase.cs" />
+    <Compile Include="Helper\SSH\mono\SecurityParser.cs" />
+    <Compile Include="Helper\SSH\mono\SequentialSearchPrimeGeneratorBase.cs" />
+    <Compile Include="Helper\SSH\Org.Mentalis.Security.Cryptography\HMAC.cs" />
+    <Compile Include="Helper\SSH\Scp.cs" />
+    <Compile Include="Helper\SSH\Sftp.cs" />
+    <Compile Include="Helper\SSH\SshBase.cs" />
+    <Compile Include="Helper\SSH\SshExe.cs" />
+    <Compile Include="Helper\SSH\SshShell.cs" />
+    <Compile Include="Helper\SSH\SshStream.cs" />
+    <Compile Include="Helper\SSH\SshTransferException.cs" />
+    <Compile Include="Helper\SSH\SshTransferProtocolBase.cs" />
+    <Compile Include="Helper\SSH\Streams\CombinedStream.cs" />
+    <Compile Include="Helper\SSH\Streams\InputStream.cs" />
+    <Compile Include="Helper\SSH\Streams\OutputStream.cs" />
+    <Compile Include="Helper\SSH\Streams\PipedInputStream.cs" />
+    <Compile Include="Helper\SSH\Streams\PipedOutputStream.cs" />
+    <Compile Include="Helper\SSH\Streams\ProtectedConsoleStream.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

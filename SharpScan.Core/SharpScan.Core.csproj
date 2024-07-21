@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PublishTrimmed>true</PublishTrimmed>
+		<SelfContained>true</SelfContained>
+		<PublishSingleFile>true</PublishSingleFile>
+		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+		<SingleFileCompression>true</SingleFileCompression>
+		<EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+		<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+		<HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+		<StackTraceSupport>false</StackTraceSupport>
+		<UseNativeHttpHandler>true</UseNativeHttpHandler>
+		<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+		<ILLinkTreatWarningsAsErrors>false</ILLinkTreatWarningsAsErrors>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <WarningLevel>0</WarningLevel>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <WarningLevel>0</WarningLevel>
+	</PropertyGroup>
+
+
+</Project>

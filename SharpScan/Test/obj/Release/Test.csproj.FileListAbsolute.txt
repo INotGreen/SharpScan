@@ -1,0 +1,7 @@
+C:\Users\Lenovo\Desktop\SharpScan\Test\bin\Release\Test.exe
+C:\Users\Lenovo\Desktop\SharpScan\Test\bin\Release\Test.exe.config
+C:\Users\Lenovo\Desktop\SharpScan\Test\bin\Release\Test.pdb
+C:\Users\Lenovo\Desktop\SharpScan\Test\obj\Release\Test.csproj.AssemblyReference.cache
+C:\Users\Lenovo\Desktop\SharpScan\Test\obj\Release\Test.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\Desktop\SharpScan\Test\obj\Release\Test.exe
+C:\Users\Lenovo\Desktop\SharpScan\Test\obj\Release\Test.pdb

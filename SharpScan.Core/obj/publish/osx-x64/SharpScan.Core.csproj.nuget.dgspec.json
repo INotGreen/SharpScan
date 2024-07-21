@@ -1,0 +1,118 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Lenovo\\Desktop\\SharpScan.Core\\SharpScan.Core.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Lenovo\\Desktop\\SharpScan.Core\\SharpScan.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\SharpScan.Core\\SharpScan.Core.csproj",
+        "projectName": "SharpScan.Core",
+        "projectPath": "C:\\Users\\Lenovo\\Desktop\\SharpScan.Core\\SharpScan.Core.csproj",
+        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Lenovo\\Desktop\\SharpScan.Core\\obj\\publish\\osx-x64\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.NET.ILLink.Analyzers": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.100-1.23211.1, )",
+              "autoReferenced": true
+            },
+            "Microsoft.NET.ILLink.Tasks": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.100-1.23211.1, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.30, 6.0.30]"
+            },
+            {
+              "name": "Microsoft.AspNetCore.App.Runtime.osx-x64",
+              "version": "[6.0.30, 6.0.30]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.osx-x64",
+              "version": "[6.0.30, 6.0.30]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.30, 6.0.30]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.osx-x64",
+              "version": "[6.0.30, 6.0.30]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[6.0.30, 6.0.30]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100-preview.6.24328.19\\RuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "osx-x64": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CA26E548-BED0-4564-99A8-460AAE0C9A90}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>SharpScan</RootNamespace>
+    <AssemblyName>SharpScan</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET_4_5;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NET_4_5;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\Config.cs" />
+    <Compile Include="Helper\HookWriteline.cs" />
+    <Compile Include="Helper\SSH\DHKeyGeneration.cs" />
+    <Compile Include="Helper\SSH\DHParameters.cs" />
+    <Compile Include="Helper\SSH\DiffieHellman.cs" />
+    <Compile Include="Helper\SSH\DiffieHellmanManaged.cs" />
+    <Compile Include="Helper\SSH\ITransferProtocol.cs" />
+    <Compile Include="Helper\SSH\java\Exception.cs" />
+    <Compile Include="Helper\SSH\java\io\File.cs" />
+    <Compile Include="Helper\SSH\java\io\FileInputStream.cs" />
+    <Compile Include="Helper\SSH\java\io\FileOutputStream.cs" />
+    <Compile Include="Helper\SSH\java\io\InputStream.cs" />
+    <Compile Include="Helper\SSH\java\io\InputStreamWrapper.cs" />
+    <Compile Include="Helper\SSH\java\io\JStream.cs" />
+    <Compile Include="Helper\SSH\java\io\OutputStream.cs" />
+    <Compile Include="Helper\SSH\java\lang\Class.cs" />
+    <Compile Include="Helper\SSH\java\lang\Integer.cs" />
+    <Compile Include="Helper\SSH\java\lang\Runnable.cs" />
+    <Compile Include="Helper\SSH\java\lang\StringBuffer.cs" />
+    <Compile Include="Helper\SSH\java\lang\Thread.cs" />
+    <Compile Include="Helper\SSH\java\net\InetAddress.cs" />
+    <Compile Include="Helper\SSH\java\net\ServerSocket.cs" />
+    <Compile Include="Helper\SSH\java\net\Socket.cs" />
+    <Compile Include="Helper\SSH\java\Platform.cs" />
+    <Compile Include="Helper\SSH\java\RuntimeException.cs" />
+    <Compile Include="Helper\SSH\java\String.cs" />
+    <Compile Include="Helper\SSH\java\System.cs" />
+    <Compile Include="Helper\SSH\java\util\Arrays.cs" />
+    <Compile Include="Helper\SSH\java\util\Enumeration.cs" />
+    <Compile Include="Helper\SSH\java\util\Hashtable.cs" />
+    <Compile Include="Helper\SSH\java\util\JavaString.cs" />
+    <Compile Include="Helper\SSH\java\util\Vector.cs" />
+    <Compile Include="Helper\SSH\jsch\Buffer.cs" />
+    <Compile Include="Helper\SSH\jsch\Channel.cs" />
+    <Compile Include="Helper\SSH\jsch\Channel.old.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelDirectTCPIP.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelExec.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelForwardedTCPIP.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelSession.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelSftp.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelSftpStreamGet.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelSftpStreamPut.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelShell.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelSubsystem.cs" />
+    <Compile Include="Helper\SSH\jsch\ChannelX11.cs" />
+    <Compile Include="Helper\SSH\jsch\Cipher.cs" />
+    <Compile Include="Helper\SSH\jsch\Compression.cs" />
+    <Compile Include="Helper\SSH\jsch\DH.cs" />
+    <Compile Include="Helper\SSH\jsch\DHG1.cs" />
+    <Compile Include="Helper\SSH\jsch\DHGEX.cs" />
+    <Compile Include="Helper\SSH\jsch\ForwardedTCPIPDaemon.cs" />
+    <Compile Include="Helper\SSH\jsch\HASH.cs" />
+    <Compile Include="Helper\SSH\jsch\HostKey.cs" />
+    <Compile Include="Helper\SSH\jsch\HostKeyRepository.cs" />
+    <Compile Include="Helper\SSH\jsch\Identity.cs" />
+    <Compile Include="Helper\SSH\jsch\IdentityFile.cs" />
+    <Compile Include="Helper\SSH\jsch\IO.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\AES128CBC.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\BlowfishCBC.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\DH.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\HMACMD5.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\HMACMD596.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\HMACSHA1.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\HMACSHA196.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\KeyPairGenDSA.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\KeyPairGenRSA.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\MD5.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\Random.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\SHA1.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\SignatureDSA.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\SignatureRSA.cs" />
+    <Compile Include="Helper\SSH\jsch\jce\TripleDESCBC.cs" />
+    <Compile Include="Helper\SSH\jsch\JSch.cs" />
+    <Compile Include="Helper\SSH\jsch\JSchAuthCancelException.cs" />
+    <Compile Include="Helper\SSH\jsch\JSchException.cs" />
+    <Compile Include="Helper\SSH\jsch\JSchPartialAuthException.cs" />
+    <Compile Include="Helper\SSH\jsch\KeyExchange.cs" />
+    <Compile Include="Helper\SSH\jsch\KeyPair.cs" />
+    <Compile Include="Helper\SSH\jsch\KeyPairDSA.cs" />
+    <Compile Include="Helper\SSH\jsch\KeyPairGenDSA.cs" />
+    <Compile Include="Helper\SSH\jsch\KeyPairGenRSA.cs" />
+    <Compile Include="Helper\SSH\jsch\KeyPairRSA.cs" />
+    <Compile Include="Helper\SSH\jsch\KnownHosts.cs" />
+    <Compile Include="Helper\SSH\jsch\MAC.cs" />
+    <Compile Include="Helper\SSH\jsch\Packet.cs" />
+    <Compile Include="Helper\SSH\jsch\PortWatcher.cs" />
+    <Compile Include="Helper\SSH\jsch\Proxy.cs" />
+    <Compile Include="Helper\SSH\jsch\Random.cs" />
+    <Compile Include="Helper\SSH\jsch\Request.cs" />
+    <Compile Include="Helper\SSH\jsch\RequestExec.cs" />
+    <Compile Include="Helper\SSH\jsch\RequestPtyReq.cs" />
+    <Compile Include="Helper\SSH\jsch\RequestSftp.cs" />
+    <Compile Include="Helper\SSH\jsch\RequestShell.cs" />
+    <Compile Include="Helper\SSH\jsch\RequestSignal.cs" />
+    <Compile Include="Helper\SSH\jsch\RequestSubsystem.cs" />
+    <Compile Include="Helper\SSH\jsch\RequestWindowChange.cs" />
+    <Compile Include="Helper\SSH\jsch\RequestX11.cs" />
+    <Compile Include="Helper\SSH\jsch\ServerSocketFactory.cs" />
+    <Compile Include="Helper\SSH\jsch\Session.cs" />
+    <Compile Include="Helper\SSH\jsch\SftpATTRS.cs" />
+    <Compile Include="Helper\SSH\jsch\SftpException.cs" />
+    <Compile Include="Helper\SSH\jsch\SftpProgressMonitor.cs" />
+    <Compile Include="Helper\SSH\jsch\SignatureDSA.cs" />
+    <Compile Include="Helper\SSH\jsch\SignatureRSA.cs" />
+    <Compile Include="Helper\SSH\jsch\SocketFactory.cs" />
+    <Compile Include="Helper\SSH\jsch\UIKeyboardInteractive.cs" />
+    <Compile Include="Helper\SSH\jsch\UserAuth.cs" />
+    <Compile Include="Helper\SSH\jsch\UserAuthKeyboardInteractive.cs" />
+    <Compile Include="Helper\SSH\jsch\UserAuthNone.cs" />
+    <Compile Include="Helper\SSH\jsch\UserAuthPassword.cs" />
+    <Compile Include="Helper\SSH\jsch\UserAuthPublicKey.cs" />
+    <Compile Include="Helper\SSH\jsch\UserInfo.cs" />
+    <Compile Include="Helper\SSH\jsch\Util.cs" />
+    <Compile Include="Helper\SSH\mono\BigInteger.cs" />
+    <Compile Include="Helper\SSH\mono\ConfidenceFactor.cs" />
+    <Compile Include="Helper\SSH\mono\MiniParser.cs" />
+    <Compile Include="Helper\SSH\mono\NextPrimeFinder.cs" />
+    <Compile Include="Helper\SSH\mono\PrimalityTests.cs" />
+    <Compile Include="Helper\SSH\mono\PrimeGeneratorBase.cs" />
+    <Compile Include="Helper\SSH\mono\SecurityParser.cs" />
+    <Compile Include="Helper\SSH\mono\SequentialSearchPrimeGeneratorBase.cs" />
+    <Compile Include="Helper\SSH\Org.Mentalis.Security.Cryptography\HMAC.cs" />
+    <Compile Include="Helper\SSH\Scp.cs" />
+    <Compile Include="Helper\SSH\Sftp.cs" />
+    <Compile Include="Helper\SSH\SshBase.cs" />
+    <Compile Include="Helper\SSH\SshExe.cs" />
+    <Compile Include="Helper\SSH\SshShell.cs" />
+    <Compile Include="Helper\SSH\SshStream.cs" />
+    <Compile Include="Helper\SSH\SshTransferException.cs" />
+    <Compile Include="Helper\SSH\SshTransferProtocolBase.cs" />
+    <Compile Include="Helper\SSH\Streams\CombinedStream.cs" />
+    <Compile Include="Helper\SSH\Streams\InputStream.cs" />
+    <Compile Include="Helper\SSH\Streams\OutputStream.cs" />
+    <Compile Include="Helper\SSH\Streams\PipedInputStream.cs" />
+    <Compile Include="Helper\SSH\Streams\PipedOutputStream.cs" />
+    <Compile Include="Helper\SSH\Streams\ProtectedConsoleStream.cs" />
+    <Compile Include="Mono.Options\Options.cs" />
+    <Compile Include="Common\CheckIP.cs" />
+    <Compile Include="Common\GetOSInfo.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\StreamExtensions.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections.Concurrent.Partitioners\EnumerablePartitioner.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections.Concurrent.Partitioners\ListPartitioner.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections.Concurrent.Partitioners\UserRangePartitioner.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections.Concurrent\BlockingCollection.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections.Concurrent\ConcurrentBag.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections.Concurrent\ConcurrentDictionary.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections.Concurrent\ConcurrentOrderedList.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections.Concurrent\ConcurrentQueue.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections.Concurrent\ConcurrentStack.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections.Concurrent\IProducerConsumerCollection.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections.Concurrent\OrderablePartitioner.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections.Concurrent\Partitioner.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections.Concurrent\SplitOrderedList.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections.Generic\CollectionDebuggerView.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections.Generic\DefaultEqualityComparer.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections.Generic\GenericEqualityComparer.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections\IStructuralComparable.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Collections\IStructuralEquatable.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Diagnostics\CodeAnalysis.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Runtime.CompilerServices\AsyncStateMachineAttribute.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Runtime.CompilerServices\AsyncTaskMethodBuilder.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Runtime.CompilerServices\AsyncTaskMethodBuilder_T.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Runtime.CompilerServices\AsyncVoidMethodBuilder.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Runtime.CompilerServices\ConfiguredTaskAwaitable.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Runtime.CompilerServices\ConfiguredTaskAwaitable_T.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Runtime.CompilerServices\IAsyncStateMachine.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Runtime.CompilerServices\ICriticalNotifyCompletion.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Runtime.CompilerServices\INotifyCompletion.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Runtime.CompilerServices\StateMachineAttribute.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Runtime.CompilerServices\TaskAwaiter.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Runtime.CompilerServices\TaskAwaiter_T.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Runtime.CompilerServices\YieldAwaitable.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Runtime.ExceptionServices\ExceptionDispatchInfo.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Runtime.Remoting.Messaging\AsyncResult.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\CyclicDeque.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\IConcurrentDeque.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\PopResult.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\SynchronizationContextScheduler.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\Task.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskActionInvoker.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskCanceledException.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskCompletionQueue.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskCompletionSource.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskConstants.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskConstants_T.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskContinuation.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskContinuationOptions.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskCreationOptions.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskDebuggerView.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskExceptionSlot.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskExtensions.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskExtensionsImpl.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskFactory.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskFactory_T.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskScheduler.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskSchedulerException.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TaskStatus.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\Task_T.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\TpScheduler.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading.Tasks\UnobservedTaskExceptionEventArgs.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading\AtomicBoolean.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading\CancellationToken.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading\CancellationTokenRegistration.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading\CancellationTokenSource.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading\CountdownEvent.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading\ManualResetEventSlim.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading\SemaphoreSlim.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading\SpinLock.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading\SpinWait.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading\ThreadingHelper.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading\ThreadingHelper.SpinWait.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading\Volatile.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System.Threading\Watch.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System\AggregateException.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System\Funcs.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System\Lazy.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System\LazyThreadSafetyMode.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System\LocalDataStoreSlot.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System\OperationCanceledException.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System\Tuple.cs" />
+    <Compile Include="Helper\System.Threading.Tasks35\System\Tuples.cs" />
+    <Compile Include="Plugins\MS17010.cs" />
+    <Compile Include="Plugins\SSHBroute.cs" />
+    <Compile Include="Plugins\PortScan.cs" />
+    <Compile Include="Plugins\WebTitle.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Packet\ScanPacket.cs" />
+    <Compile Include="Scan\ArpScan.cs" />
+    <Compile Include="Scan\ICMPScan.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
