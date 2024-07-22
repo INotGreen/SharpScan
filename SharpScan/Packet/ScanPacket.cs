@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpScan.Plugins;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace SharpScan
 
             foreach (var IpPort in Program.IpPortList)
             {
-                portscanTasks.Add(Task.Run(()=> ScanPacket.Packet(IpPort)));
+                portscanTasks.Add(Task.Run(() => ScanPacket.Packet(IpPort)));
             }
             await Task.WhenAll(portscanTasks);
         }
@@ -31,6 +32,7 @@ namespace SharpScan
                     {
                         //验证永恒之蓝漏洞
                         new ms17_010scanner().Run(IP);
+                       // new SMB().SMBScan();
                         break;
                     }
                 case "22":
@@ -39,7 +41,7 @@ namespace SharpScan
                         SshBrute.Run(IP);
                         break;
                     }
-               
+
                 default:
                     {
                         //获取web标签
@@ -47,7 +49,7 @@ namespace SharpScan
                         if (webPorts.Contains(Port))
                         {
                             string url = WebTitle.BuildUrl(IP, Port);
-                            WebTitle.ProbeWebTitle(url);
+                            WebTitle.Run(url);
                         }
                         break;
                     }

