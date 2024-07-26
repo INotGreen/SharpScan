@@ -54,7 +54,7 @@ Linux：支持 glibc 2.17以上 的系统
 
 MacOS： arm x64_x86，intel_x64_86
 
-4.使用
+## 4.使用
 
 ```powershell
 C:\>SharpScan.exe
@@ -96,5 +96,69 @@ Options:
 SharpScan.exe -s 192.168.1.1/24
 ```
 
+```powershell
+Delay:0   MaxConcurrency:600
 
+C_Segment: 192.168.244.8/24.
+===================================================================
+IP                           HostName                     OsVersion
+192.168.244.1(ICMP)          LAPTOP-476JT8H0              Windows 11
+192.168.244.169(ICMP)        DESKTOP-PESL5DR.local        Windows 11
+192.168.244.142(ICMP)        NULL                         null
+192.168.244.154(ICMP)        WIN-TNU2SVQRBP9              Windows 8.1 or Windows Server 2012 R2
+192.168.244.171(ICMP)        owa                          Windows 7 SP1 or Windows Server 2008 R2 SP1
+192.168.244.164(ICMP)        NULL                         null
+===================================================================
+[+] onlinePC: 6
+===================================================================
+192.168.244.1:445 (smb) is open
+192.168.244.1:139 (netbios) is open
+192.168.244.169:135 (findnet) is open
+192.168.244.169:3389 (rdp) is open
+192.168.244.154:445 (smb) is open
+192.168.244.169:139 (netbios) is open
+192.168.244.171:135 (findnet) is open
+192.168.244.171:139 (netbios) is open
+192.168.244.171:445 (smb) is open
+192.168.244.164:22 (ssh) is open
+192.168.244.169:445 (smb) is open
+192.168.244.154:139 (netbios) is open
+192.168.244.154:135 (findnet) is open
+192.168.244.1:135 (findnet) is open
+
+[+] Port Scanning completed in 1.92 seconds
+
+192.168.244.171:80 (web) is open
+192.168.244.171:88 (web) is open
+
+[+] WebPort Scanning completed in 5.62 seconds
+
+===================================================================
+[+] alive ports len is: 16
+===================================================================
+[+] (MS17-010) Host: 192.168.244.171 have MS17-010!  User:owa   OS:Windows 7 SP1 or Windows Server 2008 R2 SP1
+[!] (WebTitle) http://192.168.244.171:88 Request error: 基础连接已经关闭: 接收时发生错误。
+[+] SMB logon Success: liukaifeng01:Lang123456789
+[+] SMB logon Success: liukaifeng01:Lang123456789
+[+] SMB logon Success: liukaifeng01:Lang123456789
+[+] (WebTitle) http://192.168.244.171:80 HTTP Status Code: 200 (OK)
+[+] (WebTitle) URL: http://192.168.244.171:80   Title: is: IIS7
+[+] SMB logon Success: liukaifeng01:123456789
+```
+
+扫描指定IP，端口范围80-1024，0延时，最大并发600
+
+```postgresql
+SharpScan.exe -s 192.168.244.169 -p 80-1024 -d 0 -m 600
+```
+
+```powershell
+
+Delay:0   MaxConcurrency:600
+[+] 192.168.244.169:135 (findnet) is open
+[+] 192.168.244.169:139 (netbios) is open
+[+] 192.168.244.169:445 (smb) is open
+
+[+] Scanning completed in 3.53 seconds
+```
 
