@@ -11,9 +11,8 @@ namespace SharpScan.Plugins
         static List<string> usernames = new List<string> { "liukaifeng01" };
         static List<string> passwords = new List<string> { "Lang123456789", "password123" };
 
-        public  void SMBScan()
+        public  void SMBScan(string target)
         {
-            string target = "192.168.244.171";
             string shareName = "cwwin7jhgj_downcc";
             foreach (var user in usernames)
             {
