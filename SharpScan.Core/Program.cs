@@ -22,6 +22,8 @@ namespace SharpScan
         public static bool arpScan = false;
         public static string targetSegment = "";
         public static string outputFile = "";
+        public static List<string> IPlist;
+
         public static string portRange = "";
         public static string MaxConcurrency = "600";
         public static string Delay = "1";
@@ -98,8 +100,17 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 icmpScan = true;
             }
             Console.WriteLine($"Delay:{Delay}   MaxConcurrency:{MaxConcurrency}");
-            if (!string.IsNullOrEmpty(portRange) && !string.IsNullOrEmpty(targetSegment))
+
+
+            if (!string.IsNullOrEmpty(targetSegment))
             {
+                IPlist  = SharpScan.GetOsInfos
+            }
+            if (!string.IsNullOrEmpty(portRange))
+            {
+
+
+
                 await new Portscan().ScanPortRange(targetSegment, portRange, Convert.ToInt32(Delay), Convert.ToInt32(MaxConcurrency));
                 return;
             }

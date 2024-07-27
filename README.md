@@ -10,7 +10,7 @@
 - 参考了Ladon，Fscan、Kscan等扫描器的原理
 - 为了兼容更古老的系统，所以使用.NET Framework3.5 和.NET Core6.0编译
 - 使用异步和高并发、扫描速度快并且可控
-- 用inline-assembly和execute-assembly进行内存加载，考虑绕过AMSI和ETW
+- 用inline-assembly和execute-assembly进行内存加载，实现无文件扫描（免杀需考虑绕过AMSI和ETW）
 
 - 体积相对较小(目前400kb)，传输快，使用方便
 
@@ -21,25 +21,13 @@
 
 - 存活探测(ICMP、ARP)
 - 端口扫描(TCP)
-
-2.爆破功能:
-
-- 各类服务爆破(ssh、smb)
-
-3.系统信息、漏洞扫描:
-
+- 各类服务爆破、账号密码枚举(ssh、smb)
 - netbios探测、域控识别(TODO)
-- 获取目标网卡信息
-- 高危漏洞扫描(ms17010)
-
-4.Web探测功能:
-
+- 获取目标网卡
+- 信息高危漏洞扫描(ms17010)
 - webtitle探测
-- web指纹识别(常见cms、oa框架等)
-
-6.其他功能:
-
-- 文件保存
+- 指纹识别(常见cms、oa框架等)
+- 导出扫描结果
 
 ## 3.正在完成(TODO)
 
@@ -58,10 +46,6 @@ Windows ：支持win7-win11，windows server2008-2022
 Linux：支持 glibc 2.17以上 的系统
 
 MacOS： arm x64_x86，intel_x64_86
-
-
-
-
 
 ## 5.使用
 
@@ -152,7 +136,7 @@ IP                           HostName                     OsVersion
 [+] SMB logon Success: liukaifeng01:Lang123456789
 [+] (WebTitle) http://192.168.244.171:80 HTTP Status Code: 200 (OK)
 [+] (WebTitle) URL: http://192.168.244.171:80   Title: is: IIS7
-[+] SMB logon Success: liukaifeng01:123456789
+[+] SMB logon Success: admin:123456789
 ```
 
 扫描指定IP，端口范围80-1024，0延时，最大并发600

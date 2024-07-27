@@ -1,5 +1,4 @@
 ﻿using SharpHostInfo.Services;
-using SharpScan.Plugins;
 using SSharpScan;
 using System;
 using System.Collections.Generic;
