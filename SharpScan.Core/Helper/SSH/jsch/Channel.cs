@@ -6,6 +6,7 @@ using Tamir.SharpSsh.java.lang;
 using Tamir.SharpSsh.java.util;
 using Tamir.Streams;
 using Str = Tamir.SharpSsh.java.String;
+using Thread = Tamir.SharpSsh.java.lang.Thread;
 
 namespace Tamir.SharpSsh.jsch
 {
@@ -62,7 +63,7 @@ namespace Tamir.SharpSsh.jsch
         internal int rwsize; // remote initial window size
 
         internal Session session;
-        internal java.lang.Thread thread;
+        internal Thread thread;
         internal byte[] type = new Str("foo").getBytes();
 
         internal Channel()
@@ -108,7 +109,10 @@ namespace Tamir.SharpSsh.jsch
             {
                 return new ChannelForwardedTCPIP();
             }
-           
+            if (type.Equals("sftp"))
+            {
+                return new ChannelSftp();
+            }
             if (type.Equals("subsystem"))
             {
                 return new ChannelSubsystem();
@@ -182,7 +186,7 @@ namespace Tamir.SharpSsh.jsch
                 {
                     try
                     {
-                        java.lang.Thread.sleep(50);
+                        Thread.sleep(50);
                     }
                     catch (Exception)
                     {

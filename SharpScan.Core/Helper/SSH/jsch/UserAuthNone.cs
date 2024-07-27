@@ -1,5 +1,4 @@
 using Tamir.SharpSsh.java;
-using String = Tamir.SharpSsh.java.String;
 
 namespace Tamir.SharpSsh.jsch
 {
@@ -126,14 +125,14 @@ namespace Tamir.SharpSsh.jsch
                 else
                 {
                     //      System.out.println("USERAUTH fail ("+buf.buffer[5]+")");
-                    //throw new JSchException("USERAUTH fail (" + buf.buffer[5] + ")");
+                    throw new JSchException("USERAUTH fail (" + buf.buffer[5] + ")");
                 }
             }
             //throw new JSchException("USERAUTH fail");
             return false;
         }
 
-        internal String getMethods()
+        internal java.String getMethods()
         {
             return methods;
         }

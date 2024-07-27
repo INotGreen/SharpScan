@@ -109,7 +109,10 @@ namespace Tamir.Streams
             s.Close();
         }
 
-      
+        public override ObjRef CreateObjRef(Type requestedType)
+        {
+            return s.CreateObjRef(requestedType);
+        }
 
         public override int EndRead(IAsyncResult asyncResult)
         {

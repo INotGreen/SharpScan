@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -13,52 +14,79 @@ namespace SharpScan
     {
         public static Dictionary<string, int> PortGroup = new Dictionary<string, int>
         {
-            { "ftp", 21 }, { "ssh", 22 }, { "findnet", 135 }, { "netbios", 139 }, { "smb", 445 },
-            { "mssql", 1433 }, { "oracle", 1521 }, { "mysql", 3306 }, { "rdp", 3389 }, { "psql", 5432 },
-            { "redis", 6379 }, { "fcgi", 9000 }, { "mem", 11211 }, { "mgo", 27017 }
+            { "ftp", 21 }, { "ssh", 22 }, { "telnet", 23 }, { "smtp", 25 },
+            { "dns", 53 }, { "http", 80 }, { "pop3", 110 }, { "ntp", 123 },
+            { "imap", 143 }, { "snmp", 161 }, { "ldap", 389 }, { "https", 443 },
+            { "smb", 445 }, { "mssql", 1433 }, { "oracle", 1521 }, { "mysql", 3306 },
+            { "rdp", 3389 }, { "psql", 5432 }, { "redis", 6379 }, { "fcgi", 9000 },
+            { "mem", 11211 }, { "mgo", 27017 }, { "vnc", 5900 }, { "sip", 5060 },
+            { "mqtt", 1883 }, { "nfs", 2049 }, { "msrpc", 135 }, { "netbios", 139 },
+            { "rpcbind", 111 }, { "snmptrap", 162 }, { "syslog", 514 }, { "tftp", 69 },
+            { "kerberos", 88 }, { "smtps", 465 }, { "imaps", 993 }, { "pop3s", 995 },
+            { "socks", 1080 }, { "ldaps", 636 }, { "ftps", 990 }, { "nntp", 119 },
+            { "rsh", 514 }, { "exec", 512 }, { "login", 513 }, { "printer", 515 },
+            { "nntps", 563 }, { "rtsp", 554 }, { "sip-tls", 5061 }, { "cifs", 3020 },
+            { "msp", 18 }, { "bgp", 179 }, { "isakmp", 500 }, { "ldp", 646 },
+            { "kpasswd", 464 }, { "submissions", 587 }, { "ircd", 6667 }, { "afs", 7000 },
+            { "kerberos-adm", 749 }, { "kerberos-sec", 750 }, { "kerberos-pwd", 751 },
+            { "klogin", 543 }, { "kshell", 544 }, { "knetd", 2053 }, { "dhcpv6-client", 546 },
+            { "dhcpv6-server", 547 }, { "ntalk", 518 }, { "rtelnet", 107 }, { "sip-tcp", 5061 },
+            { "sip-udp", 5060 }, { "ftam", 62 }, { "nfa", 115 }, { "imap3", 220 },
+            { "sqlnet", 1500 }, { "vxlan", 4789 }, { "cmip-agent", 164 }, { "cmip-man", 163 },
+            { "rsync", 873 }, { "alt-https", 8443 }, { "oracle-oms", 1158 }, { "apple-sasl", 3659 }
         };
 
-        public async Task ScanPortAsync()
+
+        public async Task ScanPortAsync(int delay, int maxConcurrency)
         {
             List<Task> portscanTasks = new List<Task>();
-
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             foreach (var onlineHost in Program.HostList)
             {
-                portscanTasks.Add(Task.Run(() => ScanPorts(onlineHost.IP)));
+                portscanTasks.Add(Task.Run(() => ScanPorts(onlineHost.IP, delay, maxConcurrency)));
             }
 
             await Task.WhenAll(portscanTasks);
-
+            Console.WriteLine($"\n[+] Port Scanning completed in {(stopwatch.ElapsedMilliseconds / 1000.0).ToString("F2")} seconds\n");
             // 开始扫描Web端口
-            await ScanWebPorts();
+            await ScanWebPorts(delay, maxConcurrency);
+            stopwatch.Stop();
+            Console.WriteLine($"\n[+] WebPort Scanning completed in {(stopwatch.ElapsedMilliseconds / 1000.0).ToString("F2")} seconds\n");
         }
 
-        public static async Task ScanPorts(string ip)
+
+        public static async Task ScanPorts(string ip, int delay, int maxConcurrency)
         {
             List<Task> tasks = new List<Task>();
 
-            foreach (var portGroup in PortGroup)
+            using (SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency))
             {
-
-                int port = portGroup.Value;
-                tasks.Add(Task.Run(async () =>
+                foreach (var portGroup in PortGroup)
                 {
-                    using (TcpClient tcpClient = new TcpClient())
+                    int port = portGroup.Value;
+                    await semaphore.WaitAsync();
+
+                    tasks.Add(Task.Run(async () =>
                     {
                         try
                         {
-                            var connectTask = Task.Factory.FromAsync(
-                                tcpClient.BeginConnect(ip, port, null, null),
-                                tcpClient.EndConnect);
-                            if (await Task.WhenAny(connectTask, Task.Delay(1200)) == connectTask)
+                            using (TcpClient tcpClient = new TcpClient())
                             {
-                                if (tcpClient.Connected)
+                                var connectTask = Task.Factory.FromAsync(
+                                    tcpClient.BeginConnect(ip, port, null, null),
+                                    tcpClient.EndConnect);
+                                if (await Task.WhenAny(connectTask, Task.Delay(1200)) == connectTask)
                                 {
-                                    if (!Program.IpPortList.Exists(client => client == $"{ip}:{port}"))
+                                    if (tcpClient.Connected)
                                     {
-                                        Program.alivePort++;
-                                        Console.WriteLine($"{ip}:{port} ({portGroup.Key}) is open");
-                                        Program.IpPortList.Add($"{ip}:{port}");
+                                        if (!Program.IpPortList.Exists(client => client == $"{ip}:{port}"))
+                                        {
+                                            Program.alivePort++;
+                                            Program.IpPortList.Add($"{ip}:{port}");
+                                            Console.WriteLine($"{ip}:{port} ({portGroup.Key}) is open");
+
+                                        }
                                     }
                                 }
                             }
@@ -67,15 +95,23 @@ namespace SharpScan
                         {
                             // Port is closed or not reachable
                         }
-                    }
-                }));
+                        finally
+                        {
+                            semaphore.Release();
+                        }
+
+                        if (delay > 0)
+                        {
+                            await Task.Delay(delay);
+                        }
+                    }));
+                }
+                await Task.WhenAll(tasks);
             }
-
-            await Task.WhenAll(tasks);
         }
-     
 
-        
+
+
         public async Task ScanPortRange(string IP, string PortRange, int delay, int MaxConcurrency)
         {
             List<Task> tasks = new List<Task>();
@@ -101,7 +137,7 @@ namespace SharpScan
                                 {
                                     if (tcpClient.Connected)
                                     {
-                                        Console.WriteLine($"[+] {IP}:{port} is open");
+                                        Console.WriteLine($"[+] {IP}:{port}{GetServiceByPort(port)} is open");
                                     }
                                 }
                             }
@@ -127,7 +163,17 @@ namespace SharpScan
             }
         }
 
+        public static string GetServiceByPort(int port)
+        {
+            var service = Configuration.PortList.FirstOrDefault(p => p.Value == port).Key;
+            if (service != null)
+            {
+                return $" ({service})";
+            }
+            return "";
 
+
+        }
         static int[] ParsePortRange(string portRange)
         {
             List<int> ports = new List<int>();
@@ -163,36 +209,40 @@ namespace SharpScan
 
 
 
-        private static async Task ScanWebPorts()
+        public static async Task ScanWebPorts(int delay, int maxConcurrency)
         {
             List<Task> webScanTasks = new List<Task>();
             string[] webPorts = Configuration.WebPort.Split(',');
-
-            foreach (var onlineHost in Program.HostList)
+            using (SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency))
             {
-                foreach (var port in webPorts)
+                foreach (var onlineHost in Program.HostList)
                 {
-                    int portNumber;
-                    if (int.TryParse(port, out portNumber))
+                    foreach (var port in webPorts)
                     {
-                        webScanTasks.Add(Task.Run(async () =>
+                        if (int.TryParse(port, out int portNumber))
                         {
-                            using (TcpClient tcpClient = new TcpClient())
+                            await semaphore.WaitAsync();
+
+                            webScanTasks.Add(Task.Run(async () =>
                             {
                                 try
                                 {
-                                    var connectTask = Task.Factory.FromAsync(
-                                        tcpClient.BeginConnect(onlineHost.IP, portNumber, null, null),
-                                        tcpClient.EndConnect);
-                                    if (await Task.WhenAny(connectTask, Task.Delay(1200)) == connectTask)
+                                    using (TcpClient tcpClient = new TcpClient())
                                     {
-                                        if (tcpClient.Connected)
+                                        var connectTask = Task.Factory.FromAsync(
+                                            tcpClient.BeginConnect(onlineHost.IP, portNumber, null, null),
+                                            tcpClient.EndConnect);
+
+                                        if (await Task.WhenAny(connectTask, Task.Delay(1200)) == connectTask)
                                         {
-                                            if (!Program.IpPortList.Exists(client => client == $"{onlineHost.IP}:{portNumber}"))
+                                            if (tcpClient.Connected)
                                             {
-                                                Program.alivePort++;
-                                                Program.IpPortList.Add($"{onlineHost.IP}:{portNumber.ToString()}");
-                                                Console.WriteLine($"{onlineHost.IP}:{portNumber} (web) is open");
+                                                if (!Program.IpPortList.Exists(client => client == $"{onlineHost.IP}:{portNumber}"))
+                                                {
+                                                    Program.alivePort++;
+                                                    Program.IpPortList.Add($"{onlineHost.IP}:{portNumber}");
+                                                    Console.WriteLine($"{onlineHost.IP}:{portNumber} (web) is open");
+                                                }
                                             }
                                         }
                                     }
@@ -201,13 +251,25 @@ namespace SharpScan
                                 {
                                     // Port is closed or not reachable
                                 }
-                            }
-                        }));
+                                finally
+                                {
+                                    semaphore.Release();
+                                }
+
+                                if (delay > 0)
+                                {
+                                    await Task.Delay(delay);
+                                }
+                            }));
+                        }
                     }
                 }
+                await Task.WhenAll(webScanTasks);
             }
 
-            await Task.WhenAll(webScanTasks);
+
+
+
         }
     }
 }

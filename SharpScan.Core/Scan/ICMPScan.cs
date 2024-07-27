@@ -31,22 +31,14 @@ namespace SharpScan
                 else if (CheckIP.regIPRegion(enterIP))
                     IPSegment = enterIP;
 
-                //Console.WriteLine("\r\nC_Segment: " + IPSegment + ".");
-                //Console.WriteLine("===================================================================");
-                //Console.WriteLine("{0,-20} {1,-25} {2,-40}", "IP", "HostName", "OsVersion");
-
                 var tasks = new List<Task>();
                 for (int i = 1; i < 255; i++)
                 {
                     string currentIP = IPSegment + "." + i.ToString();
                     tasks.Add(Task.Run(() => ICMPScanPC(currentIP)));
                 }
-
                 await Task.WhenAll(tasks);
-
                 GC.Collect();
-
-
             }
             catch (Exception ex)
             {

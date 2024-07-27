@@ -10,7 +10,7 @@ namespace SharpScan
 {
     public class WebTitle
     {
-        public static void ProbeWebTitle(string url)
+        public static void Run(string url)
         {
             ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(IgnoreCertificateValidation);
             try
@@ -85,9 +85,4 @@ namespace SharpScan
             return null;
         }
     }
-
-
-
-
-
 }
