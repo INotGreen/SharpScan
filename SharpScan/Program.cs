@@ -24,7 +24,7 @@ namespace SharpScan
         public static string outputFile = "";
         public static string portRange = "";
         public static string MaxConcurrency = "600";
-        public static string Delay = "0";
+        public static string Delay = "1";
 
         public class OnlinePC
         {
@@ -69,9 +69,9 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             {
                 { "i|icmp", "Perform ICMP scan", i => icmpScan = i != null },
                 { "a|arp", "Perform ARP scan", a => arpScan = a != null },
-                { "s|segment=", "Target segment to scan", s => targetSegment = s },
+                { "t|Target=", "Target segment to scan", t => targetSegment = t },
                 { "p|ports=", "Ports to scan (e.g. \"0-1024\" or \"80,443,8080\")", p => portRange = p },
-                { "d|delay=", "Scan Delay", p => Delay = p },
+                { "d|delay=", "Scan Delay,Defalt:0", p => Delay = p },
                 { "m|maxconcurrency=", "Maximum number of concurrent scans,Defalt:600", m => MaxConcurrency = m },
                 { "h|help", "Show this usage and help", h => showHelp = h != null },
                 { "o|output=", "Output file to save console output", o => outputFile = o }

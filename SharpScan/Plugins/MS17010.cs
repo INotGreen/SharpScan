@@ -9,12 +9,12 @@ using System.Text;
 namespace SharpScan
 {
     public class ms17_010scanner
-    {
+    {protected static string Format(string args_1, string args_2) => String.Format("  [>] {0,-22}: {1}\r\n", args_1, args_2);
         public void Run(string ip)
         {
             if (ScanForMs17_010(ip))
             {
-                Console.WriteLine($"[+] (MS17-010) Host: {ip} have MS17-010!  {GetHostNameByIp(ip)}");
+                Console.WriteLine($"[*] (MS17-010) Host: {ip} have MS17-010! \n" +Format($"Native OS", $"{GetHostNameByIp(ip)}"));
             }
         }
 
@@ -26,7 +26,6 @@ namespace SharpScan
 
         public static bool ScanForMs17_010(string computer)
         {
-           // Console.WriteLine("Checking " + computer + " for MS17-010");
             TcpClient client = new TcpClient();
             client.Connect(computer, 445);
             try

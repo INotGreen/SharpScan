@@ -72,7 +72,7 @@ namespace SharpScan
                 Thread.Sleep(100);
             }
 
-            PrintResults();
+            //PrintResults();
         }
 
         static async void TryLogin(string host, int port, string username, string password, CancellationTokenSource cts, CancellationToken token)
@@ -88,6 +88,7 @@ namespace SharpScan
                 {
                     try
                     {
+                        
                         var result = client.BeginConnect(host, port, null, null);
                         bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1.5));
                         if (!success)
@@ -103,7 +104,7 @@ namespace SharpScan
                         {
                             string loginInfo = $"[+] (SSH) {host}:{port}  User:{username}  Password:{password}   {ParseOsInfo(output)}";
                             string successKey = $"{username}@{host}:{port}";
-                            //Console.WriteLine(loginInfo);
+                            Console.WriteLine(loginInfo);
                             await semaphore.WaitAsync();
                             try
                             {

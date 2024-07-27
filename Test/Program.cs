@@ -1,99 +1,116 @@
 ﻿using System;
-using System.Net;
 using System.Net.Sockets;
+using System.Security;
+using System.Management.Automation;
+using System.Management.Automation.Runspaces;
 
 class Program
 {
     static void Main(string[] args)
     {
-        // The packet data to be sent
-        byte[] pkt = {   0x00, 0x00, 0x00, 0xC0, 0xFE, 0x53, 0x4D, 0x42, 0x40, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x24, 0x00,
-    0x08, 0x00, 0x01, 0x00, 0x00, 0x00, 0x7F, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x78, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x02,
-    0x10, 0x02, 0x22, 0x02, 0x24, 0x02, 0x00, 0x03, 0x02, 0x03, 0x10, 0x03,
-    0x11, 0x03, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x26, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x01, 0x00, 0x20, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x0A, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+        // 示例调用
+        Smblogin("192.168.244.153", @"desktop-pesl5dr\administrator", "a");
+    }
 
-        // Argument handling for subnet
-        if (args.Length < 1)
+    public static void Smblogin(string ip, string user, string pass)
+    {
+        if (string.IsNullOrEmpty(pass))
         {
-            Console.WriteLine("Usage: <program> <subnet>");
+            Console.WriteLine("usage: smblogin <ip> <user> <password>");
+            Console.WriteLine(" e.g.: smblogin 192.168.1.1 .\\Administrator P@ssw0rd");
             return;
         }
 
-        string subnet = args[0];
-        Console.WriteLine(subnet);
-        var subnetParts = subnet.Split('/');
-        var baseIP = IPAddress.Parse(subnetParts[0]);
-        int cidr = int.Parse(subnetParts[1]);
-        uint mask = ~((1u << (32 - cidr)) - 1);
-        uint ipBase = BitConverter.ToUInt32(baseIP.GetAddressBytes(), 0) & mask;
+        string userm = user.Replace("\\", "\\\\").Replace(".", "\\.");
 
-        uint ipStart = BitConverter.IsLittleEndian ? ReverseBytes(ipBase) : ipBase;
-        uint ipEnd = ipStart + (1u << (32 - cidr)) - 1;
-
-        for (uint ip = ipStart; ip <= ipEnd; ip++)
+        if (!WorkerTestPort(ip, 445))
         {
-            var targetIP = new IPAddress(BitConverter.IsLittleEndian ? ReverseBytes(ip) : ip);
-            using (var sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
-            {
-                sock.ReceiveTimeout = 3000; // Timeout set to 3 seconds
-
-                try
-                {
-                    sock.Connect(new IPEndPoint(targetIP, 445));
-                    sock.Send(pkt);
-
-                    byte[] buffer = new byte[4];
-                    int received = sock.Receive(buffer);
-
-                    if (received == 4)
-                    {
-                        int nb = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(buffer, 0));
-                        byte[] response = new byte[nb];
-                        received = sock.Receive(response);
-
-                        // Check the response bytes for vulnerability
-                        if (response.Length > 70 && !(response[68] == 0x11 && response[69] == 0x03 && response[70] == 0x02 && response[71] == 0x00))
-                        {
-                            Console.WriteLine($"{targetIP} Not vulnerable.");
-                        }
-                        else
-                        {
-                            Console.WriteLine($"{targetIP} Vulnerable");
-                        }
-                    }
-                }
-                catch (SocketException)
-                {
-                    // If there's a socket error (likely timeout or no connection), just continue with the next IP
-                    continue;
-                }
-                finally
-                {
-                    sock.Close();
-                }
-            }
+            Console.WriteLine($"{ip},445,Port unreachable");
+            return;
         }
+
+        string output = $"{ip},{user},{pass},";
+        output += SmbloginWorker(ip, user, pass);
+        Console.WriteLine(output);
     }
 
-    // Utility method to reverse byte order; needed because of different endianess
-    static uint ReverseBytes(uint value)
+    public static string SmbloginWorker(string host, string user, string pass)
     {
-        return (value >> 24) |
-               ((value >> 8) & 0x0000FF00) |
-               ((value << 8) & 0x00FF0000) |
-               (value << 24);
+        user = user.Replace("^.\\", $"{host}\\");
+        SecureString securePassword = new SecureString();
+        foreach (char c in pass)
+        {
+            securePassword.AppendChar(c);
+        }
+
+        PSCredential credential = new PSCredential(user, securePassword);
+
+        using (PowerShell ps = PowerShell.Create())
+        {
+            ps.AddCommand("New-PSDrive")
+                .AddParameter("Name", "Share")
+                .AddParameter("PSProvider", "FileSystem")
+                .AddParameter("Root", $"\\\\{host}\\Admin$")
+                .AddParameter("Credential", credential)
+                .AddParameter("ErrorAction", "SilentlyContinue");
+
+            try
+            {
+                var result = ps.Invoke();
+                if (result.Count > 0)
+                {
+                    ps.Commands.Clear();
+                    ps.AddCommand("Remove-PSDrive")
+                        .AddParameter("Name", "Share");
+                    ps.Invoke();
+
+                    return "True,admin";
+                }
+                else
+                {
+                    string errorMessage = ps.Streams.Error[0].Exception.Message;
+                    if (errorMessage.Contains("password is incorrect"))
+                    {
+                        return "False";
+                    }
+                    else if (errorMessage.Contains("Access is denied"))
+                    {
+                        return "True";
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return "Error";
+            }
+        }
+
+        return "Error";
+    }
+
+    public static bool WorkerTestPort(string remoteHost, int remotePort)
+    {
+        int timeout = 3000; // 3 seconds
+        try
+        {
+            using (TcpClient t = new TcpClient())
+            {
+                var result = t.BeginConnect(remoteHost, remotePort, null, null);
+                var success = result.AsyncWaitHandle.WaitOne(timeout);
+                if (!success)
+                {
+                    t.Close();
+                    return false;
+                }
+
+                t.EndConnect(result);
+                t.Close();
+                return true;
+            }
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
