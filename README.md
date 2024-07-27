@@ -19,14 +19,14 @@
 
 1.信息搜集:
 
-- 存活探测(ICMP、ARP)
-- 端口扫描(TCP)
-- 各类服务爆破、账号密码枚举(ssh、smb)
-- netbios探测、域控识别(TODO)
-- 获取目标网卡
-- 信息高危漏洞扫描(ms17010)
-- webtitle探测
-- 指纹识别(常见cms、oa框架等)
+- 存活探测(Icmp、Arp)
+- 端口扫描(Tcp)
+- 支持NetBios(默认137端口)、SMB(默认445端口)和WMI(默认135端口)服务快速探测
+- 域控识别,主机信息探测、目标网卡探测
+- 高危漏洞扫描(ms17010)
+- Webtitle探测
+- 指纹识别(常见CMS、OA框架等)
+- 各类服务爆破、账号密码枚举(SSH、SMB)
 - 导出扫描结果
 
 ## 3.正在完成(TODO)
@@ -41,11 +41,11 @@
 
 ## 4.兼容性：
 
-Windows ：支持win7-win11，windows server2008-2022
+- Windows ：支持win7-win11，windows server2008-2022
 
-Linux：支持 glibc 2.17以上 的系统
+- Linux：支持 glibc 2.17以上 的系统
 
-MacOS： arm x64_x86，intel_x64_86
+- MacOS： arm x64_x86，intel_x64_86
 
 ## 5.使用
 

@@ -79,7 +79,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 { "h|help", "Show this usage and help", h => showHelp = h != null },
                 { "o|output=", "Output file to save console output", o => outputFile = o }
             };
-
+            Dictionary<string, string> macdict = Options.GetMACDict();
             try
             {
                 options.Parse(args);

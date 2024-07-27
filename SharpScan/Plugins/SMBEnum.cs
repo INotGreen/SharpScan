@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Management;
 using System.Net;
 using System.Net.Sockets;
@@ -9,12 +10,16 @@ namespace SharpScan
 {
     public class SMBEnum
     {
-        //static void Main(string[] args)
-        //{
-        //    // 调用示例
-        //    Smblogin("192.168.244.160", @"god\liukaifeng01", "Lang123459").Wait();
-        //}
+        public async Task Smblogin(List<string> IPlist)
+        {
+            List<Task> IcmpTasks = new List<Task>();
+            foreach (var Ip in IPlist)
+            {
+                IcmpTasks.Add(Task.Run(() => Smblogin(Ip, Program.Username, Program.Password)));
+            }
 
+            await Task.WhenAll(IcmpTasks);
+        }
         public static async Task Smblogin(string ip, string user, string pass)
         {
             string userm = user.Replace("\\", "\\\\").Replace(".", "\\.");

@@ -7,7 +7,7 @@ namespace SharpScan
     {
         public static string Version = "1.8.4";
 
-        public static Dictionary<string, List<string>> UserDict = new Dictionary<string, List<string>>
+        public static Dictionary<string, List<string>> UserDictionary = new Dictionary<string, List<string>>
         {
             { "ftp", new List<string> { "ftp", "admin", "www", "web", "root", "db", "wwwroot", "data" } },
             { "mysql", new List<string> { "root", "mysql" } },
@@ -22,7 +22,7 @@ namespace SharpScan
 
         public static List<string> Passwords = new List<string>
         {
-            
+
             "123456", "admin", "admin123", "root", "", "pass123", "pass@123", "password", "123123", "654321",
             "111111", "123", "1", "admin@123", "Admin@123", "admin123!@#", "{user}", "{user}1", "{user}111",
             "{user}123", "{user}@123", "{user}_123", "{user}#123", "{user}@111", "{user}@2019", "{user}@123#4",
@@ -33,16 +33,38 @@ namespace SharpScan
             "2wsx@WSX", "qwe123!@#", "Aa123456!", "A123456s!", "sa123456", "1q2w3e", "Charge123", "Aa123456789","a",
         };
 
+        //public static Dictionary<string, int> PortList = new Dictionary<string, int>
+        //{
+        //    { "ftp", 21 }, { "ssh", 22 }, { "findnet", 135 }, { "netbios", 139 }, { "smb", 445 },
+        //    { "mssql", 1433 }, { "oracle", 1521 }, { "mysql", 3306 }, { "rdp", 3389 }, { "psql", 5432 },
+        //    { "redis", 6379 }, { "fcgi", 9000 }, { "mem", 11211 }, { "mgo", 27017 },
+        //    { "ms17010", 1000001 }, { "cve20200796", 1000002 }, { "web", 1000003 },
+        //    { "webonly", 1000003 }, { "webpoc", 1000003 }, { "smb2", 1000004 }, { "wmiexec", 1000005 },
+        //    { "all", 0 }, { "portscan", 0 }, { "icmp", 0 }, { "main", 0 }
+        //};
         public static Dictionary<string, int> PortList = new Dictionary<string, int>
         {
-            { "ftp", 21 }, { "ssh", 22 }, { "findnet", 135 }, { "netbios", 139 }, { "smb", 445 },
-            { "mssql", 1433 }, { "oracle", 1521 }, { "mysql", 3306 }, { "rdp", 3389 }, { "psql", 5432 },
-            { "redis", 6379 }, { "fcgi", 9000 }, { "mem", 11211 }, { "mgo", 27017 },
-            { "ms17010", 1000001 }, { "cve20200796", 1000002 }, { "web", 1000003 },
-            { "webonly", 1000003 }, { "webpoc", 1000003 }, { "smb2", 1000004 }, { "wmiexec", 1000005 },
-            { "all", 0 }, { "portscan", 0 }, { "icmp", 0 }, { "main", 0 }
+            { "ftp", 21 }, { "ssh", 22 }, { "telnet", 23 }, { "smtp", 25 },
+            { "dns", 53 }, { "http", 80 }, { "pop3", 110 }, { "ntp", 123 },
+            { "imap", 143 }, { "snmp", 161 }, { "ldap", 389 }, { "https", 443 },
+            { "smb", 445 }, { "mssql", 1433 }, { "oracle", 1521 }, { "mysql", 3306 },
+            { "rdp", 3389 }, { "psql", 5432 }, { "redis", 6379 }, { "fcgi", 9000 },
+            { "mem", 11211 }, { "mgo", 27017 }, { "vnc", 5900 }, { "sip", 5060 },
+            { "mqtt", 1883 }, { "nfs", 2049 }, { "msrpc", 135 }, { "netbios", 139 },
+            { "rpcbind", 111 }, { "snmptrap", 162 }, { "syslog", 514 }, { "tftp", 69 },
+            { "kerberos", 88 }, { "smtps", 465 }, { "imaps", 993 }, { "pop3s", 995 },
+            { "socks", 1080 }, { "ldaps", 636 }, { "ftps", 990 }, { "nntp", 119 },
+            { "rsh", 514 }, { "exec", 512 }, { "login", 513 }, { "printer", 515 },
+            { "nntps", 563 }, { "rtsp", 554 }, { "sip-tls", 5061 }, { "cifs", 3020 },
+            { "msp", 18 }, { "bgp", 179 }, { "isakmp", 500 }, { "ldp", 646 },
+            { "kpasswd", 464 }, { "submissions", 587 }, { "ircd", 6667 }, { "afs", 7000 },
+            { "kerberos-adm", 749 }, { "kerberos-sec", 750 }, { "kerberos-pwd", 751 },
+            { "klogin", 543 }, { "kshell", 544 }, { "knetd", 2053 }, { "dhcpv6-client", 546 },
+            { "dhcpv6-server", 547 }, { "ntalk", 518 }, { "rtelnet", 107 }, { "sip-tcp", 5061 },
+            { "sip-udp", 5060 }, { "ftam", 62 }, { "nfa", 115 }, { "imap3", 220 },
+            { "sqlnet", 1500 }, { "vxlan", 4789 }, { "cmip-agent", 164 }, { "cmip-man", 163 },
+            { "rsync", 873 }, { "alt-https", 8443 }, { "oracle-oms", 1158 }, { "apple-sasl", 3659 }
         };
-
         public static Dictionary<string, string> PortGroup = new Dictionary<string, string>
         {
             { "ftp", "21" }, { "ssh", "22" }, { "findnet", "135" }, { "netbios", "139" }, { "smb", "445" },
@@ -63,5 +85,5 @@ namespace SharpScan
 
         public static string DefaultPorts = "21,22,80,81,135,139,443,445,1433,1521,3306,5432,6379,7001,8000,8080,8089,9000,9200,11211,27017";
 
-                    }
-                }
+    }
+}
