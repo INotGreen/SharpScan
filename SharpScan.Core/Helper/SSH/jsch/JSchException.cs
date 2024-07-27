@@ -1,4 +1,5 @@
 using Tamir.SharpSsh.java;
+using Exception = System.Exception;
 
 namespace Tamir.SharpSsh.jsch
 {

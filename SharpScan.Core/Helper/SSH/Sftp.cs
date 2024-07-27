@@ -160,7 +160,7 @@ namespace Tamir.SharpSsh
             private int elapsed = -1;
             private string src;
 
-            private Timer timer;
+            private System.Timers.Timer timer;
             private long total;
             private long transferred;
 
@@ -175,7 +175,7 @@ namespace Tamir.SharpSsh
                 this.dest = dest;
                 elapsed = 0;
                 total = max;
-                timer = new Timer(1000);
+                timer = new System.Timers.Timer(1000);
                 timer.Start();
                 timer.Elapsed += timer_Elapsed;
 
