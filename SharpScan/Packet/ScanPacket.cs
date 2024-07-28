@@ -17,19 +17,34 @@ namespace SharpScan
 
         public async Task HandlePacket()
         {
-            List<Task> portscanTasks = new List<Task>();
+            List<Task> Task1 = new List<Task>();
             foreach (var IpPort in Program.IpPortList)
             {
-                portscanTasks.Add(Task.Run(() => ServicePacket(IpPort)));
+                Task1.Add(Task.Run(() => ServicePacket(IpPort)));
             }
 
-            await Task.WhenAll(portscanTasks);
+            await Task.WhenAll(Task1);
 
+
+
+            List<Task> Task2 = new List<Task>();
             foreach (string IpPort in Program.IpPortList)
             {
-                portscanTasks.Add(Task.Run(() => BrotePacket(IpPort)));
+                Task2.Add(Task.Run(() => PocPacket(IpPort)));
             }
-            await Task.WhenAll(portscanTasks);
+            await Task.WhenAll(Task2);
+
+
+
+
+            List<Task> Task3 = new List<Task>();
+            foreach (string IpPort in Program.IpPortList)
+            {
+                Task3.Add(Task.Run(() => BrotePacket(IpPort)));
+            }
+            await Task.WhenAll(Task3);
+
+            
         }
 
         public static async Task ServicePacket(string IpPort)
@@ -44,7 +59,7 @@ namespace SharpScan
                         bool success = smb.Execute(IP, 445, Convert.ToInt32(Program.Delay));
                         break;
                     }
-               
+
                 case "135":
                     {
                         WMI wmi = new WMI();
@@ -58,7 +73,6 @@ namespace SharpScan
                         nbns.Execute(IP, 137, Convert.ToInt32(Program.Delay), macdict);
                         break;
                     }
-               
             }
         }
 
@@ -79,6 +93,25 @@ namespace SharpScan
                 //    {
                 //        Smblogin
                 //    }
+               
+            }
+        }
+
+
+        public static async Task PocPacket(string IpPort)
+        {
+            string IP = IpPort.Split(':')[0];
+            string Port = IpPort.Split(':')[1];
+            switch (Port)
+            {
+                case "445":
+                    {
+                        new ms17_010scanner().Run(IP);
+                        break;
+
+                    }
+
+
                 default:
                     {
                         //获取web标签
@@ -92,8 +125,5 @@ namespace SharpScan
                     }
             }
         }
-
-
-
     }
 }

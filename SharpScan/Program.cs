@@ -13,7 +13,7 @@ namespace SharpScan
     {
         public static int onlinePC = 0;
         private static List<Task> scanTasks = new List<Task>();
-        public static List<OnlinePC> HostList = new List<OnlinePC>();
+        public static List<OnlinePC> onlineHostList = new List<OnlinePC>();
         public static List<string> IpPortList = new List<string>();
         public static int alivePort = 0;
         private static StreamWriter fileWriter;
@@ -149,7 +149,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 Console.WriteLine("===================================================================");
             }
 
-            await new Portscan().ScanPortAsync(Convert.ToInt32(Delay), Convert.ToInt32(MaxConcurrency));
+            await new Portscan().ScanPortAsync(Convert.ToInt32(Delay),Configuration.PortList, Convert.ToInt32(MaxConcurrency));
 
             Console.WriteLine("===================================================================");
             Console.WriteLine($"[+] alive ports len is: {alivePort}");

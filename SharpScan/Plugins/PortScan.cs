@@ -15,14 +15,14 @@ namespace SharpScan
         
 
 
-        public async Task ScanPortAsync(int delay, int maxConcurrency)
+        public async Task ScanPortAsync(int delay, Dictionary<string, int> PortList,int maxConcurrency)
         {
             List<Task> portscanTasks = new List<Task>();
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            foreach (var onlineHost in Program.HostList)
+            foreach (var onlineHost in Program.onlineHostList)
             {
-                portscanTasks.Add(Task.Run(() => ScanPorts(onlineHost.IP, delay, maxConcurrency)));
+                portscanTasks.Add(Task.Run(() => ScanPorts(onlineHost.IP, PortList, delay, maxConcurrency)));
             }
 
             await Task.WhenAll(portscanTasks);
@@ -34,13 +34,13 @@ namespace SharpScan
         }
 
 
-        public static async Task ScanPorts(string ip, int delay, int maxConcurrency)
+        public static async Task ScanPorts(string ip, Dictionary<string, int> PortList, int delay, int maxConcurrency)
         {
             List<Task> tasks = new List<Task>();
 
             using (SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency))
             {
-                foreach (var portGroup in Configuration.PortList)
+                foreach (var portGroup in PortList)
                 {
                     int port = portGroup.Value;
                     await semaphore.WaitAsync();
@@ -193,7 +193,7 @@ namespace SharpScan
             string[] webPorts = Configuration.WebPort.Split(',');
             using (SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency))
             {
-                foreach (var onlineHost in Program.HostList)
+                foreach (var onlineHost in Program.onlineHostList)
                 {
                     foreach (var port in webPorts)
                     {

@@ -33,7 +33,7 @@ namespace SharpScan
         {
             try
             {
-                if (!Program.HostList.Exists(onlinepc => onlinepc.IP == ip))
+                if (!Program.onlineHostList.Exists(onlinepc => onlinepc.IP == ip))
                 {
                     if (IsHostAlive(ip))
                     {
@@ -43,7 +43,7 @@ namespace SharpScan
                         onlinePC.HostName = new GetOsInfos().GetHostName(ip);
                         onlinePC.OS = new GetOsInfos().GetOsVersion(ip);
                         string result = $"{ip + "(ARP)",-28} {onlinePC.HostName,-28} {onlinePC.OS,-40}";
-                        Program.HostList.Add(onlinePC);
+                        Program.onlineHostList.Add(onlinePC);
                         Console.WriteLine(result);
                         Program.onlinePC++;
                     }

@@ -32,7 +32,7 @@ namespace SharpHostInfo.Services
                     _SSPKey.NativeLanManager = veraw[1].Replace("\0", "");
                 }
             }
-            new ms17_010scanner().Run(ip);
+           
             Helpers.SSPKeyOutput.Print(ip, _SSPKey);
             return true;
         }

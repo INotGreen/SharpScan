@@ -36,7 +36,7 @@ namespace SharpScan
         {
             try
             {
-                if (!Program.HostList.Exists(onlinepc => onlinepc.IP == ip))
+                if (!Program.onlineHostList.Exists(onlinepc => onlinepc.IP == ip))
                 {
                     System.Net.NetworkInformation.Ping pingSender = new System.Net.NetworkInformation.Ping();
                     System.Net.NetworkInformation.PingOptions options = new System.Net.NetworkInformation.PingOptions();
@@ -55,7 +55,7 @@ namespace SharpScan
                         string result = $"{ip + "(ICMP)",-28} {onlinePC.HostName,-28} {onlinePC.OS,-40}";
                         
                         Console.WriteLine(result);
-                        Program.HostList.Add(onlinePC);
+                        Program.onlineHostList.Add(onlinePC);
                         Program.onlinePC++;
                     }
                 }
