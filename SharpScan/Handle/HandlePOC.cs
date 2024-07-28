@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SharpScan
 {
-    internal class ScanPacket
+    internal class HandlePOC
     {
         private static readonly int maxConcurrency = 10; // 最大并发数
         private static readonly int delay = 1000; // 延迟时间，单位为毫秒
@@ -33,8 +33,6 @@ namespace SharpScan
                 Task2.Add(Task.Run(() => PocPacket(IpPort)));
             }
             await Task.WhenAll(Task2);
-
-
 
 
             List<Task> Task3 = new List<Task>();
