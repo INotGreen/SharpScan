@@ -21,7 +21,7 @@
 - 端口扫描(Tcp)
 - 支持NetBios(默认137端口)、SMB(默认445端口)和WMI(默认135端口)服务快速探测
 - 域控识别、主机信息探测、目标网卡探测
-- 高危漏洞扫描：ms17010、CVE-2020-0796(SMBGhost)、ZeroLogon
+- 高危漏洞扫描：ms17010、CVE-2020-0796(SMBGhost)、ZeroLogon（CVE-2020-1472）
 - Webtitle探测
 - 指纹识别(常见CMS、OA框架等)
 - 各类服务弱口令爆破、账号密码枚举(SSH、SMB、RDP)
@@ -39,6 +39,8 @@
 - redis写公钥或写计划任务
 
 - ssh命令执行
+
+- weblogic、st2、shiro的POC扫描检测
 
 ## 4.兼容性：
 
