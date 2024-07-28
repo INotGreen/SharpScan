@@ -72,6 +72,25 @@
     <Compile Include="Helper\Lib\SSPKeyOutput.cs" />
     <Compile Include="Helper\Lib\TargetParser.cs" />
     <Compile Include="Helper\Lib\TimeoutSocket.cs" />
+    <Compile Include="Helper\RdpFull\Cryptography\ABCDStruct.cs" />
+    <Compile Include="Helper\RdpFull\Cryptography\HMACT64.cs" />
+    <Compile Include="Helper\RdpFull\Cryptography\MD4.cs" />
+    <Compile Include="Helper\RdpFull\Cryptography\MD4Managed.cs" />
+    <Compile Include="Helper\RdpFull\Cryptography\MD5.cs" />
+    <Compile Include="Helper\RdpFull\Cryptography\RC4.cs" />
+    <Compile Include="Helper\RdpFull\Encoding\ASCIIEncoding.cs" />
+    <Compile Include="Helper\RdpFull\Exceptions\RDFatalException.cs" />
+    <Compile Include="Helper\RdpFull\Protocol\Negotiation\ASN1.cs" />
+    <Compile Include="Helper\RdpFull\Protocol\Negotiation\CredSSP.cs" />
+    <Compile Include="Helper\RdpFull\Protocol\Negotiation\MCS.cs" />
+    <Compile Include="Helper\RdpFull\Protocol\Negotiation\NTLM.cs" />
+    <Compile Include="Helper\RdpFull\Protocol\Negotiation\RdpPacket.cs" />
+    <Compile Include="Helper\RdpFull\Protocol\Network\Network.cs" />
+    <Compile Include="Helper\RdpFull\Protocol\Network\NetworkSocket.cs" />
+    <Compile Include="Helper\RdpFull\Protocol\Network\PacketLogger.cs" />
+    <Compile Include="Helper\RdpFull\Protocol\Processing\ISO.cs" />
+    <Compile Include="Helper\RdpFull\Protocol\Processing\IsoLayer.cs" />
+    <Compile Include="Helper\RdpFull\Settings\Options.cs" />
     <Compile Include="Helper\Services\NBNS.cs" />
     <Compile Include="Helper\Services\SMB.cs" />
     <Compile Include="Helper\Services\WMI.cs" />
@@ -294,14 +313,16 @@
     <Compile Include="Helper\System.Threading.Tasks35\System\OperationCanceledException.cs" />
     <Compile Include="Helper\System.Threading.Tasks35\System\Tuple.cs" />
     <Compile Include="Helper\System.Threading.Tasks35\System\Tuples.cs" />
-    <Compile Include="Plugins\MS17010.cs" />
+    <Compile Include="Plugins\MS17-010.cs" />
+    <Compile Include="Plugins\CVE-2020-0796.cs" />
+    <Compile Include="Plugins\RdpBroute.cs" />
     <Compile Include="Plugins\SMBEnum.cs" />
     <Compile Include="Plugins\SSHBroute.cs" />
     <Compile Include="Plugins\PortScan.cs" />
     <Compile Include="Plugins\WebTitle.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Packet\ScanPacket.cs" />
+    <Compile Include="Handle\HandlePOC.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

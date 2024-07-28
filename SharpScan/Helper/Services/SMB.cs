@@ -1,8 +1,8 @@
-﻿using SharpScan;
+﻿
 using System;
 using System.Text;
 
-namespace SharpHostInfo.Services
+namespace SharpScan
 {
     public class SMB
     {
@@ -33,7 +33,7 @@ namespace SharpHostInfo.Services
                 }
             }
            
-            Helpers.SSPKeyOutput.Print(ip, _SSPKey);
+            SSPKeyOutput.Print(ip, _SSPKey);
             return true;
         }
     }

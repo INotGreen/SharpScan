@@ -1,4 +1,4 @@
-﻿using SharpHostInfo.Services;
+﻿
 using SSharpScan;
 using System;
 using System.Collections.Generic;
@@ -11,112 +11,108 @@ namespace SharpScan
 {
     internal class HandlePOC
     {
-        private static readonly int maxConcurrency = 10; // 最大并发数
-        private static readonly int delay = 1000; // 延迟时间，单位为毫秒
-        private static SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency);
+
 
         public async Task HandlePacket()
         {
-            List<Task> Task1 = new List<Task>();
-            foreach (var IpPort in Program.IpPortList)
-            {
-                Task1.Add(Task.Run(() => ServicePacket(IpPort)));
-            }
-
-            await Task.WhenAll(Task1);
-
-
-
-            List<Task> Task2 = new List<Task>();
-            foreach (string IpPort in Program.IpPortList)
-            {
-                Task2.Add(Task.Run(() => PocPacket(IpPort)));
-            }
-            await Task.WhenAll(Task2);
-
-
-            List<Task> Task3 = new List<Task>();
-            foreach (string IpPort in Program.IpPortList)
-            {
-                Task3.Add(Task.Run(() => BrotePacket(IpPort)));
-            }
-            await Task.WhenAll(Task3);
-
-            
+            await ProcessPackets(Program.IpPortList, ServicePacket);
+            await ProcessPackets(Program.IpPortList, PocPacket);
+            await ProcessPackets(Program.IpPortList, BrotePacket);
         }
 
-        public static async Task ServicePacket(string IpPort)
+        private async Task ProcessPackets(List<string> ipPortList, Func<string, Task> packetProcessor)
         {
-            string IP = IpPort.Split(':')[0];
-            string Port = IpPort.Split(':')[1];
-            switch (Port)
+            List<Task> tasks = new List<Task>();
+            using (SemaphoreSlim semaphore = new SemaphoreSlim(Convert.ToInt32(Program.MaxConcurrency)))
+            {
+                foreach (var ipPort in ipPortList)
+                {
+                    await semaphore.WaitAsync();
+                    tasks.Add(Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await packetProcessor(ipPort);
+                        }
+                        finally
+                        {
+                            semaphore.Release();
+                        }
+                    }));
+                    await Task.Delay(Convert.ToInt32(Program.Delay));
+                }
+
+                await Task.WhenAll(tasks);
+            }
+        }
+
+        public static async Task ServicePacket(string ipPort)
+        {
+            string ip = ipPort.Split(':')[0];
+            string port = ipPort.Split(':')[1];
+            switch (port)
             {
                 case "445":
                     {
                         SMB smb = new SMB();
-                        bool success = smb.Execute(IP, 445, Convert.ToInt32(Program.Delay));
+                        bool success = smb.Execute(ip, 445, Convert.ToInt32(Program.Delay));
                         break;
                     }
 
                 case "135":
                     {
                         WMI wmi = new WMI();
-                        wmi.Execute(IP, 135, Convert.ToInt32(Program.Delay));
+                        wmi.Execute(ip, 135, Convert.ToInt32(Program.Delay));
                         break;
                     }
                 case "137":
                     {
                         Dictionary<string, string> macdict = GetIP.GetMACDict();
                         NBNS nbns = new NBNS();
-                        nbns.Execute(IP, 137, Convert.ToInt32(Program.Delay), macdict);
+                        nbns.Execute(ip, 137, Convert.ToInt32(Program.Delay), macdict);
                         break;
                     }
             }
         }
 
-
-        public static async Task BrotePacket(string IpPort)
+        public static async Task BrotePacket(string ipPort)
         {
-            string IP = IpPort.Split(':')[0];
-            string Port = IpPort.Split(':')[1];
-            switch (Port)
+            string ip = ipPort.Split(':')[0];
+            string port = ipPort.Split(':')[1];
+            switch (port)
             {
                 case "22":
                     {
-                        //SSH弱口令
-                        SshBrute.Run(IP);
+                        // SSH 弱口令
+                        SshBrute.Run(ip);
                         break;
                     }
-                //case "445":
-                //    {
-                //        Smblogin
-                //    }
-               
+                    // case "445":
+                    //     {
+                    //         Smblogin
+                    //     }
             }
         }
 
-
-        public static async Task PocPacket(string IpPort)
+        public static async Task PocPacket(string ipPort)
         {
-            string IP = IpPort.Split(':')[0];
-            string Port = IpPort.Split(':')[1];
-            switch (Port)
+            string ip = ipPort.Split(':')[0];
+            string port = ipPort.Split(':')[1];
+            switch (port)
             {
                 case "445":
                     {
-                        new ms17_010scanner().Run(IP);
+                        new ms17_010scanner().Run(ip);
                         break;
-
                     }
-
 
                 default:
                     {
-                        //获取web标签
+                        // 获取 web 标签
                         string[] webPorts = Configuration.WebPort.Split(',');
-                        if (webPorts.Contains(Port))
+                        if (webPorts.Contains(port))
                         {
-                            string url = WebTitle.BuildUrl(IP, Port);
+                            string url = WebTitle.BuildUrl(ip, port);
                             WebTitle.Run(url);
                         }
                         break;

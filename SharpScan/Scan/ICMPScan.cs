@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -15,24 +14,33 @@ namespace SharpScan
 {
     internal class ICMPScan
     {
-        public static int onlinePC = 0;
-        public static bool isCheckPC = true;
-        //public static int ScanOkNum = 0;
-        private static List<Task> scanTasks = new List<Task>();
-
-
-        public async Task ICMPScanPC(List<string> IPlist)
+        public async Task ICMPScanPC(List<string> IPlist, int Delay, int maxConcurrency)
         {
             List<Task> IcmpTasks = new List<Task>();
-            foreach (var Ip in IPlist)
+            using (SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency))
             {
-                IcmpTasks.Add(Task.Run(() => ping(Ip)));
-            }
+                foreach (var Ip in IPlist)
+                {
+                    await semaphore.WaitAsync();
+                    IcmpTasks.Add(Task.Run(async () =>
+                    {
+                        try
+                        {
+                            Ping(Ip);
+                        }
+                        finally
+                        {
+                            semaphore.Release();
+                        }
+                    }));
+                    await Task.Delay(Delay);
+                }
 
-            await Task.WhenAll(IcmpTasks);
+                await Task.WhenAll(IcmpTasks);
+            }
         }
 
-        private static async void ping(string ip)
+        private static  void Ping(string ip)
         {
             try
             {
@@ -44,7 +52,7 @@ namespace SharpScan
                     string data = " ";
                     byte[] buffer = Encoding.ASCII.GetBytes(data);
                     int timeout = 1500; // Reduce timeout for faster scanning
-                    System.Net.NetworkInformation.PingReply reply = pingSender.Send(ip, timeout, buffer, options);
+                    System.Net.NetworkInformation.PingReply reply =  pingSender.Send(ip, timeout, buffer, options);
 
                     if (reply.Status == System.Net.NetworkInformation.IPStatus.Success)
                     {
@@ -53,20 +61,17 @@ namespace SharpScan
                         onlinePC.HostName = new GetOsInfos().GetHostName(ip);
                         onlinePC.OS = new GetOsInfos().GetOsVersion(ip);
                         string result = $"{ip + "(ICMP)",-28} {onlinePC.HostName,-28} {onlinePC.OS,-40}";
-                        
+
                         Console.WriteLine(result);
                         Program.onlineHostList.Add(onlinePC);
                         Program.onlinePC++;
                     }
                 }
-
             }
             catch (Exception ex)
             {
-                //Console.WriteLine($");
                 // Handle exception if necessary
             }
         }
-
     }
 }

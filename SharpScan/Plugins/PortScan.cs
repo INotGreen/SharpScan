@@ -246,8 +246,6 @@ namespace SharpScan
             }
 
 
-
-
         }
     }
 }

@@ -31,6 +31,7 @@ using System;
 using System.IO;
 using Tamir.SharpSsh.java.io;
 using Tamir.SharpSsh.java.lang;
+using Thread = Tamir.SharpSsh.java.lang.Thread;
 
 namespace Tamir.SharpSsh.jsch
 {

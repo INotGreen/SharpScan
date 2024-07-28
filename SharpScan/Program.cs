@@ -25,7 +25,7 @@ namespace SharpScan
         public static List<string> IPlist;
         public static string portRange = "";
         public static string MaxConcurrency = "600";
-        public static string Delay = "1000";
+        public static string Delay = "10";
         public static string Username = "";
         public static string Password = "";
 
@@ -133,8 +133,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
             if (icmpScan)
             {
-                await Task.Run(() => new ICMPScan().ICMPScanPC(Program.IPlist));
-
+                await Task.Run(() => new ICMPScan().ICMPScanPC(Program.IPlist, Convert.ToInt32(Delay), Convert.ToInt32(MaxConcurrency)));
                 Console.WriteLine("===================================================================");
                 Console.WriteLine("[+] onlinePC: " + Program.onlinePC);
                 Console.WriteLine("===================================================================");
@@ -142,7 +141,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
             if (arpScan)
             {
-                var arpTask = Task.Run(() => new ARPScan().ARPScanPC(Program.IPlist));
+                var arpTask = Task.Run(() => new ARPScan().ARPScanPC(Program.IPlist, Convert.ToInt32(Delay), Convert.ToInt32(MaxConcurrency)));
                 await Task.WhenAll(arpTask);
                 Console.WriteLine("===================================================================");
                 Console.WriteLine("[+] onlinePC: " + Program.onlinePC);
@@ -155,7 +154,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             Console.WriteLine($"[+] alive ports len is: {alivePort}");
             Console.WriteLine("===================================================================");
             GC.Collect();
-            await new ScanPacket().HandlePacket();
+            await new HandlePOC().HandlePacket();
 
             if (fileWriter != null)
             {

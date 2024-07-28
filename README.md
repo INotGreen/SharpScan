@@ -8,9 +8,9 @@
 
 - C#开发的内网资产扫描器，用于横向渗透的信息收集
 - 参考了Ladon，Fscan、Kscan等扫描器的原理
-- 为了兼容更古老的系统，所以使用.NET Framework3.5 和.NET Core6.0编译
-- 使用异步和高并发、扫描速度快并且可控
-- 用inline-assembly和execute-assembly进行内存加载，实现无文件扫描
+- 为了兼容更古老的系统，所以采用.NET Framework3.5 和.NET Core6.0开发
+- 使用异步和高并发、扫描速度快并且可控、内存自动回收
+- 用inline-assembly和execute-assembly进行内存加载，实现无文件落地扫描
 
 - 体积相对较小(目前400kb)，传输快，使用方便
 
@@ -51,7 +51,6 @@
 
 ```powershell
 C:\>SharpScan.exe
-
   ______   __                                       ______
  /      \ /  |                                     /      \
 /$$$$$$  |$$ |____    ______    ______    ______  /$$$$$$  |  _______   ______   _______
@@ -65,18 +64,20 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                                         $$ |
                                         $$/
 
-Delay:0   MaxConcurrency:600
-Target segment must be specified using -s or --segment.
+Delay:1000   MaxConcurrency:600
+Target segment must be specified using -t or --Target.
 Usage: SharpScan [OPTIONS]
 Perform network scans using different protocols.
 
 Options:
   -i, --icmp                 Perform ICMP scan
   -a, --arp                  Perform ARP scan
-  -s, --segment=VALUE        Target segment to scan
+  -t, --Target=VALUE         Target segment to scan
   -p, --ports=VALUE          Ports to scan (e.g. "0-1024" or "80,443,8080")
-  -d, --delay=VALUE          Scan Delay
+  -d, --delay=VALUE          Scan Delay(ms),Defalt:1000
   -m, --maxconcurrency=VALUE Maximum number of concurrent scans,Defalt:600
+  -u, --username=VALUE       Username for authentication
+      --pw, --password=VALUE Password for authentication
   -h, --help                 Show this usage and help
   -o, --output=VALUE         Output file to save console output
 ```

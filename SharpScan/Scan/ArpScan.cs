@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -10,25 +9,37 @@ using System.Threading.Tasks;
 using System.Threading;
 using static SharpScan.Program;
 
-
 namespace SharpScan
 {
     internal class ARPScan
     {
-        public static int onlinePC = 0;
-        public static bool isCheckPC = true;
-        //public static int ScanOkNum = 0;
 
-        public async Task ARPScanPC(List<string> IPlist)
+        public async Task ARPScanPC(List<string> IPlist, int Delay, int maxConcurrency)
         {
-            List<Task> IcmpTasks = new List<Task>();
-            foreach (var Ip in IPlist)
+            List<Task> ArpTasks = new List<Task>();
+            using (SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency))
             {
-                IcmpTasks.Add(Task.Run(() => ArpCheck(Ip)));
-            }
+                foreach (var Ip in IPlist)
+                {
+                    await semaphore.WaitAsync();
+                    ArpTasks.Add(Task.Run(async () =>
+                    {
+                        try
+                        {
+                            ArpCheck(Ip);
+                        }
+                        finally
+                        {
+                            semaphore.Release();
+                        }
+                    }));
+                    await Task.Delay(Delay);
+                }
 
-            await Task.WhenAll(IcmpTasks);
+                await Task.WhenAll(ArpTasks);
+            }
         }
+
         public static void ArpCheck(string ip)
         {
             try
@@ -47,12 +58,12 @@ namespace SharpScan
                         Console.WriteLine(result);
                         Program.onlinePC++;
                     }
-
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // Handle exception if necessary
+                Console.WriteLine($"Error checking IP {ip}: {ex.Message}");
             }
         }
 
@@ -88,7 +99,5 @@ namespace SharpScan
 
         [DllImport("Ws2_32.dll")]
         public static extern uint inet_addr(string ipaddr);
-
-
     }
 }

@@ -4,6 +4,7 @@ using Tamir.SharpSsh.java.lang;
 using Tamir.SharpSsh.java.net;
 using Tamir.SharpSsh.java.util;
 using Str = Tamir.SharpSsh.java.String;
+using Thread = Tamir.SharpSsh.java.lang.Thread;
 
 namespace Tamir.SharpSsh.jsch
 {

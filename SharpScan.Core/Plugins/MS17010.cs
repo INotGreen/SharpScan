@@ -20,7 +20,7 @@ namespace SharpScan
 
         public static string GetHostNameByIp(string ip)
         {
-            var onlinePC = Program.HostList.FirstOrDefault(pc => pc.IP == ip);
+            var onlinePC = Program.onlineHostList.FirstOrDefault(pc => pc.IP == ip);
             return $"User:{onlinePC?.HostName}   OS:{ onlinePC.OS}";
         }
 

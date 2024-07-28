@@ -1,151 +1,104 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using System.Net;
-using System.Security.Cryptography;
+using System.Net.Sockets;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Web.Script.Serialization;
 
-namespace CmsFingerprint
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static string targetIp;
-
-        static void Main(string[] args)
+        if (args.Length < 1)
         {
-            if (args.Length != 1)
-            {
-                Console.WriteLine("Usage: CmsFingerprint <target IP>");
-                return;
-            }
-
-            targetIp = args[0].TrimEnd('/');
-
-            var cmsFingerprints = LoadCmsFingerprints("cms.json");
-
-            ScanCMS(targetIp, cmsFingerprints);
+            Console.WriteLine("Usage: <IP>");
+            return;
         }
 
-        static Dictionary<string, List<Fingerprint>> LoadCmsFingerprints(string filePath)
-        {
-            var json = File.ReadAllText(filePath);
-            var serializer = new JavaScriptSerializer();
-            return serializer.Deserialize<Dictionary<string, List<Fingerprint>>>(json);
-        }
+        string ipAddress = args[0];
+        int port = 445;
+        int timeout = 10000; // 10 seconds
+        int retryCount = 3;
 
-        static string FetchContent(string url)
+        byte[] packet = BuildPacket();
+
+        for (int i = 0; i < retryCount; i++)
         {
             try
             {
-                var request = (HttpWebRequest)WebRequest.Create(url);
-                request.Method = "GET";
-                request.Timeout = 10000; // 10 seconds
-                request.KeepAlive = false; // Disable persistent connections
-
-                using (var response = (HttpWebResponse)request.GetResponse())
+                using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
                 {
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        using (var reader = new StreamReader(response.GetResponseStream()))
+                    socket.Connect(new IPEndPoint(IPAddress.Parse(ipAddress), port));
+                    socket.SendTimeout = timeout;
+                    socket.ReceiveTimeout = timeout;
+
+                   
+                    if (socket.Connected) {
+                        Console.WriteLine("calc");
+                        socket.Send(packet);
+                        byte[] buffer = new byte[1024];
+                        int received = socket.Receive(buffer);
+
+                        if (received == 0)
                         {
-                            return reader.ReadToEnd();
+                            Console.WriteLine("No response received from the server.");
+                            return;
                         }
+
+                        if (IsVulnerable(buffer, received))
+                        {
+                            Console.WriteLine($"[+] {ipAddress} CVE-2020-0796 SmbGhost Vulnerable");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"[-] {ipAddress} Not Vulnerable");
+                        }
+
+
                     }
-                    else
-                    {
-                        Console.WriteLine($"Error: Received HTTP {response.StatusCode} - {response.StatusDescription} for {url} using GET");
-                        return null;
-                    }
+                   
+
+                    break;
                 }
             }
-            catch (WebException ex)
+            catch (SocketException ex)
             {
-                if (ex.Response != null)
+                Console.WriteLine($"Socket error: {ex.Message}");
+                if (i == retryCount - 1)
                 {
-                    using (var errorResponse = (HttpWebResponse)ex.Response)
-                    {
-                        Console.WriteLine($"Error: {errorResponse.StatusCode} - {errorResponse.StatusDescription} for {url} using GET");
-                    }
+                    Console.WriteLine("Maximum retry attempts reached. Exiting.");
                 }
                 else
                 {
-                    Console.WriteLine($"Error: {ex.Message} for {url} using GET");
+                    Console.WriteLine("Retrying...");
                 }
-                return null;
             }
-        }
-
-        static void ScanCMS(string targetIp, Dictionary<string, List<Fingerprint>> fingerprints)
-        {
-            foreach (var cms in fingerprints)
+            catch (Exception ex)
             {
-                foreach (var fingerprint in cms.Value)
-                {
-                    // 尝试http和https协议
-                    string[] protocols = { "http://", "https://" };
-                    bool identified = false;
-
-                    foreach (var protocol in protocols)
-                    {
-                        string url = $"{protocol}{targetIp}{fingerprint.Path}";
-                        string content = FetchContent(url);
-
-                        if (content == null)
-                        {
-                            continue;
-                        }
-
-                        bool match = false;
-                        if (fingerprint.Option == "md5")
-                        {
-                            match = VerifyMd5(content, fingerprint.Content);
-                        }
-                        else if (fingerprint.Option == "keyword")
-                        {
-                            match = content.Contains(fingerprint.Content);
-                        }
-                        else if (fingerprint.Option == "regex")
-                        {
-                            match = Regex.IsMatch(content, fingerprint.Content);
-                        }
-
-                        if (match)
-                        {
-                            Console.WriteLine($"CMS identified: {cms.Key} using {protocol}");
-                            identified = true;
-                            break;
-                        }
-                    }
-
-                    if (identified)
-                    {
-                        break;
-                    }
-                }
-                
-            }
-
-            Console.WriteLine("CMS could not be identified.");
-        }
-
-        static bool VerifyMd5(string content, string expectedMd5)
-        {
-            using (var md5 = MD5.Create())
-            {
-                byte[] contentBytes = Encoding.UTF8.GetBytes(content);
-                byte[] hashBytes = md5.ComputeHash(contentBytes);
-                string hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
-                return hash == expectedMd5;
+                Console.WriteLine($"Unexpected error: {ex.Message}");
+                break;
             }
         }
+    }
 
-        class Fingerprint
+    static byte[] BuildPacket()
+    {
+        return new byte[]
         {
-            public string Path { get; set; }
-            public string Option { get; set; }
-            public string Content { get; set; }
+            0x00, 0x00, 0x00, 0xc0,
+            0xfe, 0x53, 0x4d, 0x42, 0x40, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x24, 0x00, 0x08, 0x00, 0x01, 0x00, 0x00, 0x00, 0x7f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x78, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x02, 0x10, 0x02, 0x22, 0x02, 0x24, 0x02, 0x00, 0x03, 0x02, 0x03, 0x10, 0x03, 0x11, 0x03, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x26, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x20, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00
+        };
+    }
+
+    static bool IsVulnerable(byte[] response, int length)
+    {
+        if (length < 76)
+        {
+            return false;
         }
+
+        return response.Length >= 76 &&
+               response[72] == 0x11 && response[73] == 0x03 &&
+               response[74] == 0x02 && response[75] == 0x00;
     }
 }

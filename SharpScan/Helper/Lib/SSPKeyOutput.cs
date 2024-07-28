@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace SharpHostInfo.Helpers
+namespace SharpScan
 {
     public class SSPKeyOutput
     {
@@ -10,7 +10,7 @@ namespace SharpHostInfo.Helpers
         protected static string Format(string args_1, string args_2) => String.Format("  [>] {0,-22}: {1}\r\n", args_1, args_2);
         public static string GetHostNameByIp(string ip)
         {
-            var onlinePC = Program.HostList.FirstOrDefault(pc => pc.IP == ip);
+            var onlinePC = Program.onlineHostList.FirstOrDefault(pc => pc.IP == ip);
             return $"{onlinePC.OS}";
         }
         public static void Print(string ip, SSPKey _SSPKey)
