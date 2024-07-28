@@ -90,7 +90,8 @@ Options:
 默认扫描C段，使用所有模块
 
 ```powershell
-SharpScan.exe -s 192.168.1.1/24
+SharpScan.exe -s 192.168.1.1/24  (扫描C段)
+SharpScan.exe -s 192.168.1.1/16  (扫描B段)
 ```
 
 ```powershell
