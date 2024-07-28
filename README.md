@@ -10,7 +10,7 @@
 - 参考了Ladon，Fscan、Kscan等扫描器的原理
 - 为了兼容更古老的系统，所以使用.NET Framework3.5 和.NET Core6.0编译
 - 使用异步和高并发、扫描速度快并且可控
-- 用inline-assembly和execute-assembly进行内存加载，实现无文件扫描（免杀需考虑绕过AMSI和ETW）
+- 用inline-assembly和execute-assembly进行内存加载，实现无文件扫描
 
 - 体积相对较小(目前400kb)，传输快，使用方便
 

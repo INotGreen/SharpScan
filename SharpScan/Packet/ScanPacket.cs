@@ -18,49 +18,21 @@ namespace SharpScan
         public async Task HandlePacket()
         {
             List<Task> portscanTasks = new List<Task>();
-
-            // 先扫描135端口和445端口
-            var highPriorityPorts = new[] { "135", "445" };
-            var highPriorityIpPorts = Program.IpPortList
-                .Where(ipPort => highPriorityPorts.Contains(ipPort.Split(':')[1]))
-                .ToList();
-
-            foreach (var IpPort in highPriorityIpPorts)
+            foreach (var IpPort in Program.IpPortList)
             {
-                portscanTasks.Add(Task.Run(() => PacketWithSemaphore(IpPort)));
+                portscanTasks.Add(Task.Run(() => ServicePacket(IpPort)));
             }
 
             await Task.WhenAll(portscanTasks);
 
-            // 清空任务列表以便处理其他端口
-            portscanTasks.Clear();
-
-            // 再扫描其他端口
-            List<string> otherIpPorts = Program.IpPortList .Where(ipPort => !highPriorityPorts.Contains(ipPort.Split(':')[1])).ToList();
-
-            foreach (string IpPort in otherIpPorts)
+            foreach (string IpPort in Program.IpPortList)
             {
-                portscanTasks.Add(Task.Run(() => PacketWithSemaphore(IpPort)));
+                portscanTasks.Add(Task.Run(() => BrotePacket(IpPort)));
             }
-
             await Task.WhenAll(portscanTasks);
         }
 
-        public static async Task PacketWithSemaphore(string IpPort)
-        {
-            await semaphore.WaitAsync(); // 等待信号量
-            try
-            {
-                await PocPacket(IpPort);
-            }
-            finally
-            {
-                semaphore.Release(); // 释放信号量
-                await Task.Delay(delay); // 延时
-            }
-        }
-
-        public static async Task PocPacket(string IpPort)
+        public static async Task ServicePacket(string IpPort)
         {
             string IP = IpPort.Split(':')[0];
             string Port = IpPort.Split(':')[1];
@@ -72,12 +44,7 @@ namespace SharpScan
                         bool success = smb.Execute(IP, 445, Convert.ToInt32(Program.Delay));
                         break;
                     }
-                case "22":
-                    {
-                        //SSH弱口令
-                        SshBrute.Run(IP);
-                        break;
-                    }
+               
                 case "135":
                     {
                         WMI wmi = new WMI();
@@ -86,10 +53,32 @@ namespace SharpScan
                     }
                 case "137":
                     {
-                        //NBNS nbns = new NBNS();
-                        //nbns.Execute(IP, 137, Convert.ToInt32(Program.Delay), macdict);
+                        Dictionary<string, string> macdict = GetIP.GetMACDict();
+                        NBNS nbns = new NBNS();
+                        nbns.Execute(IP, 137, Convert.ToInt32(Program.Delay), macdict);
                         break;
                     }
+               
+            }
+        }
+
+
+        public static async Task BrotePacket(string IpPort)
+        {
+            string IP = IpPort.Split(':')[0];
+            string Port = IpPort.Split(':')[1];
+            switch (Port)
+            {
+                case "22":
+                    {
+                        //SSH弱口令
+                        SshBrute.Run(IP);
+                        break;
+                    }
+                //case "445":
+                //    {
+                //        Smblogin
+                //    }
                 default:
                     {
                         //获取web标签
@@ -103,5 +92,8 @@ namespace SharpScan
                     }
             }
         }
+
+
+
     }
 }
