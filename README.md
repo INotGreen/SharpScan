@@ -24,12 +24,10 @@
 - 高危漏洞扫描(ms17010)
 - Webtitle探测
 - 指纹识别(常见CMS、OA框架等)
-- 各类服务爆破、账号密码枚举(SSH、SMB)
+- 各类服务弱口令爆破、账号密码枚举(SSH、SMB、RDP)
 - 导出扫描结果
 
 ## 3.正在完成(TODO)
-
-- RDP 弱口令
 
 - 数据库密码爆破(mysql、mssql、redis、psql、oracle等)
 
