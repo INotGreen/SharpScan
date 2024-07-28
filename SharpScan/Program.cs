@@ -65,7 +65,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
         static async Task Main(string[] args)
         {
             Console.WriteLine(StringPating);
-
+            
             var options = new OptionSet
             {
                 { "i|icmp", "Perform ICMP scan", i => icmpScan = i != null },
@@ -101,7 +101,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 icmpScan = true;
             }
             Console.WriteLine($"Delay:{Delay}   MaxConcurrency:{MaxConcurrency}");
-
+            new SetTls12UserRegistryKeys();
             if (!string.IsNullOrEmpty(targetSegment))
             {
                 IPlist = SharpScan.GetIP.IPList(targetSegment);
@@ -154,7 +154,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             Console.WriteLine($"[+] alive ports len is: {alivePort}");
             Console.WriteLine("===================================================================");
             GC.Collect();
-            await new HandlePOC().HandlePacket();
+            await new HandlePOC().HandleDefault();
 
             if (fileWriter != null)
             {

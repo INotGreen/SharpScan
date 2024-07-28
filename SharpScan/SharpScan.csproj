@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Config.cs" />
+    <Compile Include="Helper\SetTls12UserRegistryKeys.cs" />
     <Compile Include="Helper\Lib\Writer.cs" />
     <Compile Include="Helper\HookConhost.cs" />
     <Compile Include="Helper\Lib\NBNSResolver.cs" />
@@ -315,7 +316,10 @@
     <Compile Include="Helper\System.Threading.Tasks35\System\Tuples.cs" />
     <Compile Include="Plugins\MS17-010.cs" />
     <Compile Include="Plugins\CVE-2020-0796.cs" />
+    <Compile Include="Helper\Netapi32.cs" />
+    <Compile Include="Plugins\ZeroLogon.cs" />
     <Compile Include="Plugins\RdpBroute.cs" />
+    <Compile Include="Plugins\RDPlogs.cs" />
     <Compile Include="Plugins\SMBEnum.cs" />
     <Compile Include="Plugins\SSHBroute.cs" />
     <Compile Include="Plugins\PortScan.cs" />

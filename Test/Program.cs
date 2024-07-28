@@ -1,104 +1,130 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+using Tamir.SharpSsh;
 
-class Program
+namespace SharpScan
 {
-    static void Main(string[] args)
+    internal class SshBrute
     {
-        if (args.Length < 1)
+        public static Dictionary<string, List<string>> UserDict = new Dictionary<string, List<string>>
         {
-            Console.WriteLine("Usage: <IP>");
-            return;
+            { "ssh", new List<string> { "root", "admin", "kali" } },
+        };
+
+        private static readonly ConcurrentBag<string> SuccessfulLogins = new ConcurrentBag<string>();
+        private static readonly ConcurrentDictionary<string, bool> TriedCombinations = new ConcurrentDictionary<string, bool>();
+        private static readonly ConcurrentDictionary<string, bool> SuccessfulCombinations = new ConcurrentDictionary<string, bool>();
+        private static readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
+        private static int activeThreads = 0;
+        private static readonly int maxDegreeOfParallelism = 20;
+
+        
+
+        static void Main(string[] args)
+        {
+            TryLogin("192.168.244.142", 22, "kali", "kali");
         }
 
-        string ipAddress = args[0];
-        int port = 445;
-        int timeout = 10000; // 10 seconds
-        int retryCount = 3;
-
-        byte[] packet = BuildPacket();
-
-        for (int i = 0; i < retryCount; i++)
+        static  void TryLogin(string host, int port, string username, string password)
         {
             try
             {
-                using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+
+                using (var client = new TcpClient())
                 {
-                    socket.Connect(new IPEndPoint(IPAddress.Parse(ipAddress), port));
-                    socket.SendTimeout = timeout;
-                    socket.ReceiveTimeout = timeout;
+                    try
+                    {
 
-                   
-                    if (socket.Connected) {
-                        Console.WriteLine("calc");
-                        socket.Send(packet);
-                        byte[] buffer = new byte[1024];
-                        int received = socket.Receive(buffer);
-
-                        if (received == 0)
+                        var result = client.BeginConnect(host, port, null, null);
+                        bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1.5));
+                        if (!success)
                         {
-                            Console.WriteLine("No response received from the server.");
-                            return;
+                            throw new Exception("Connection timed out");
                         }
 
-                        if (IsVulnerable(buffer, received))
+                        client.EndConnect(result);
+                        SshExec exec = new SshExec(host, username, password);
+                        exec.Connect();
+                        string output = exec.RunCommand("cat /etc/os-release");
+                        if (output != null)
                         {
-                            Console.WriteLine($"[+] {ipAddress} CVE-2020-0796 SmbGhost Vulnerable");
-                        }
-                        else
-                        {
-                            Console.WriteLine($"[-] {ipAddress} Not Vulnerable");
+                            string loginInfo = $"[+] (SSH) {host}:{port}  User:{username}  Password:{password}   {ParseOsInfo(output)}";
+                            string successKey = $"{username}@{host}:{port}";
+                            Console.WriteLine(loginInfo);
+                           
+                            try
+                            {
+                                if (SuccessfulCombinations.TryAdd(successKey, true))
+                                {
+                                    SuccessfulLogins.Add(loginInfo);
+                                    
+                                }
+                            }
+                            finally
+                            {
+                                semaphore.Release();
+                            }
                         }
 
-
+                        exec.Close();
                     }
-                   
-
-                    break;
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
                 }
             }
-            catch (SocketException ex)
+            finally
             {
-                Console.WriteLine($"Socket error: {ex.Message}");
-                if (i == retryCount - 1)
-                {
-                    Console.WriteLine("Maximum retry attempts reached. Exiting.");
-                }
-                else
-                {
-                    Console.WriteLine("Retrying...");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Unexpected error: {ex.Message}");
-                break;
+                Interlocked.Decrement(ref activeThreads);
             }
         }
-    }
 
-    static byte[] BuildPacket()
-    {
-        return new byte[]
+        static string ParseOsInfo(string output)
         {
-            0x00, 0x00, 0x00, 0xc0,
-            0xfe, 0x53, 0x4d, 0x42, 0x40, 0x00,
-            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x24, 0x00, 0x08, 0x00, 0x01, 0x00, 0x00, 0x00, 0x7f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x78, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x02, 0x10, 0x02, 0x22, 0x02, 0x24, 0x02, 0x00, 0x03, 0x02, 0x03, 0x10, 0x03, 0x11, 0x03, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x26, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x20, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00
-        };
-    }
+            Dictionary<string, string> osInfo = new Dictionary<string, string>();
+            Regex regex = new Regex(@"^(\w+)=""?([^""]*)""?$", RegexOptions.Multiline);
 
-    static bool IsVulnerable(byte[] response, int length)
-    {
-        if (length < 76)
-        {
-            return false;
+            foreach (Match match in regex.Matches(output))
+            {
+                if (match.Success)
+                {
+                    string key = match.Groups[1].Value;
+                    string value = match.Groups[2].Value;
+                    osInfo[key] = value;
+                }
+            }
+
+            if (osInfo.ContainsKey("NAME") && osInfo.ContainsKey("VERSION"))
+            {
+                return $"OS: {osInfo["NAME"]}, Version: {osInfo["VERSION"]}";
+            }
+            else
+            {
+                return "Unable to determine the operating system version.";
+            }
         }
 
-        return response.Length >= 76 &&
-               response[72] == 0x11 && response[73] == 0x03 &&
-               response[74] == 0x02 && response[75] == 0x00;
+        static void LogException(Exception ex)
+        {
+            // 这里可以将异常信息记录到日志文件中
+            // 例如：
+            // File.AppendAllText("error.log", $"{DateTime.Now}: {ex.Message}{Environment.NewLine}");
+        }
+
+        static void PrintResults()
+        {
+            foreach (var login in SuccessfulLogins)
+            {
+                Console.WriteLine(login);
+            }
+        }
+
     }
 }

@@ -10,9 +10,9 @@
 - 参考了Ladon，Fscan、Kscan等扫描器的原理
 - 为了兼容更古老的系统，所以采用.NET Framework3.5 和.NET Core6.0开发
 - 使用异步和高并发、扫描速度快并且可控、内存自动回收
-- 用inline-assembly和execute-assembly进行内存加载，实现无文件落地扫描
+- 用inline-assembly或者execute-assembly进行内存加载，实现无文件落地扫描
 
-- 体积相对较小(目前400kb)，传输快，使用方便
+- 体积相对较小(目前500kb)，传输快，使用方便
 
 
 ## 2. 主要功能
@@ -21,10 +21,11 @@
 - 端口扫描(Tcp)
 - 支持NetBios(默认137端口)、SMB(默认445端口)和WMI(默认135端口)服务快速探测
 - 域控识别、主机信息探测、目标网卡探测
-- 高危漏洞扫描(ms17010)
+- 高危漏洞扫描：ms17010、CVE-2020-0796(SMBGhost)、ZeroLogon
 - Webtitle探测
 - 指纹识别(常见CMS、OA框架等)
 - 各类服务弱口令爆破、账号密码枚举(SSH、SMB、RDP)
+- 导出本地RDP登录日志(rdp端口、mstsc缓存、cmdkey缓存、登录成功、失败日志)
 - 导出扫描结果
 
 ## 3.正在完成(TODO)
@@ -35,7 +36,9 @@
 
 - LDAP查询
 
-  
+- redis写公钥或写计划任务
+
+- ssh命令执行
 
 ## 4.兼容性：
 

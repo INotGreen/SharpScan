@@ -16,25 +16,9 @@ namespace SharpScan
 
         static void Run(string IP, string User, string Password)
         {
-            SetTls12UserRegistryKeys();
+          
 
-            // 使用反射设置 TLS 1.2
-            const SslProtocols Tls12 = (SslProtocols)3072;
-            Type t = typeof(ServicePointManager);
-            BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Static;
-            FieldInfo field = t.GetField("s_SecurityProtocolType", flags);
-            if (field != null)
-            {
-                field.SetValue(null, Tls12);
-            }
-            else
-            {
-                PropertyInfo property = t.GetProperty("SecurityProtocol", flags);
-                if (property != null)
-                {
-                    property.SetValue(null, Tls12, null);
-                }
-            }
+
 
             try
             {
@@ -54,26 +38,6 @@ namespace SharpScan
         }
 
 
-        static void SetTls12UserRegistryKeys()
-        {
-            try
-            {
-                // 设置当前用户的 .NET Framework 的注册表键
-                using (RegistryKey netFrameworkKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\.NETFramework", true))
-                {
-                    if (netFrameworkKey != null)
-                    {
-                        netFrameworkKey.SetValue("SchUseStrongCrypto", 1, RegistryValueKind.DWord);
-                        netFrameworkKey.SetValue("SystemDefaultTlsVersions", 1, RegistryValueKind.DWord);
-                    }
-                }
-
-                //Console.WriteLine("TLS 1.2 registry keys for current user have been set successfully.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Failed to set TLS 1.2 registry keys for current user: " + ex.Message);
-            }
-        }
+       
     }
 }

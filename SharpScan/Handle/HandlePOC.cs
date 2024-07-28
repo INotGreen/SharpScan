@@ -13,7 +13,7 @@ namespace SharpScan
     {
 
 
-        public async Task HandlePacket()
+        public async Task HandleDefault()
         {
             await ProcessPackets(Program.IpPortList, ServicePacket);
             await ProcessPackets(Program.IpPortList, PocPacket);
