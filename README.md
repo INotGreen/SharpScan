@@ -91,7 +91,7 @@ SharpScan.exe -s 192.168.244.169 -p 80-1024 -d 0 -m 600
 
 ```powershell
 
-Delay:0   MaxConcurrency:600
+Delay:10   MaxConcurrency:600
 [+] 192.168.244.169:135 (findnet) is open
 [+] 192.168.244.169:139 (netbios) is open
 [+] 192.168.244.169:445 (smb) is open
@@ -101,7 +101,7 @@ Delay:0   MaxConcurrency:600
 
 使用UDP协议扫描端口，端口范围100-10000，10ms延时，最大并发600，用时21秒
 
-```
+```powershell
 SharpScan.exe -t 192.168.244.141 -U -p 100-10000
 ```
 
