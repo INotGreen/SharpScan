@@ -21,6 +21,8 @@ namespace SharpScan
         public static bool showHelp = false;
         public static bool icmpScan = false;
         public static bool arpScan = false;
+        public static bool isUDP = false;
+        public static bool POC = false;
         public static string targetSegment = "";
         public static string outputFile = "";
         public static List<string> IPlist;
@@ -56,31 +58,34 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 ";
         static void ShowHelp(OptionSet p)
         {
-            Console.WriteLine("Usage: SharpScan [OPTIONS]");
-            Console.WriteLine("Perform network scans using different protocols.");
-            Console.WriteLine();
+            Console.WriteLine("Usage: SharpScan [OPTIONS]\n");
             Console.WriteLine("Options:");
             p.WriteOptionDescriptions(Console.Out);
+
+            Console.WriteLine("\nExample:");
+            Console.WriteLine("  SharpScan.exe -t 192.168.1.1/24");
+            Console.WriteLine("  SharpScan.exe -t 192.168.1.107 -p 100-1024");
         }
 
         static async Task Main(string[] args)
         {
             Console.WriteLine(StringPating);
-            
+
             var options = new OptionSet
             {
-                { "i|icmp", "Perform ICMP scan", i => icmpScan = i != null },
-                { "a|arp", "Perform ARP scan", a => arpScan = a != null },
+                { "i|icmp", "Perform icmp scan", i => icmpScan = i != null },
+                { "a|arp", "Perform arp scan", a => arpScan = a != null },
+                { "U|udp", "Perform udp scan", udp => isUDP = udp != null },
                 { "t|Target=", "Target segment to scan", t => targetSegment = t },
                 { "p|ports=", "Ports to scan (e.g. \"0-1024\" or \"80,443,8080\")", p => portRange = p },
-                { "d|delay=", "Scan Delay(ms),Defalt:1000", p => delay = p },
+                { "d|delay=", "Scan delay(ms),Defalt:1000", p => delay = p },
                 { "m|maxconcurrency=", "Maximum number of concurrent scans,Defalt:600", m => maxConcurrency = m },
                 { "u|username=", "Username for authentication", u => userName = u },
                 { "pw|password=", "Password for authentication", pw => passWord = pw },
                 { "h|help", "Show this usage and help", h => showHelp = h != null },
                 { "o|output=", "Output file to save console output", o => outputFile = o }
             };
-            
+
             try
             {
                 options.Parse(args);
@@ -97,6 +102,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 ShowHelp(options);
                 return;
             }
+
             if (!icmpScan && !arpScan)
             {
                 icmpScan = true;
@@ -109,13 +115,19 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             }
             if (!string.IsNullOrEmpty(portRange))
             {
-                await new Portscan().ScanPortRange(targetSegment, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency));
+                if (isUDP)
+                {
+                    await new UdpPortscan().ScanPortRange(targetSegment, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency));
+
+                }
+                else { await new TcpPortscan().ScanPortRange(targetSegment, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)); }
+
                 return;
             }
 
             if (string.IsNullOrEmpty(targetSegment))
             {
-                Console.WriteLine("Target segment must be specified using -s or --segment.");
+                //Console.WriteLine("Target segment must be specified using -s or --segment.");
                 ShowHelp(options);
                 return;
             }
@@ -149,7 +161,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 Console.WriteLine("===================================================================");
             }
 
-            await new Portscan().ScanPortAsync(Convert.ToInt32(delay),Configuration.PortList, Convert.ToInt32(maxConcurrency));
+            await new TcpPortscan().ScanPortAsync(Convert.ToInt32(delay), Configuration.PortList, Convert.ToInt32(maxConcurrency));
 
             Console.WriteLine("===================================================================");
             Console.WriteLine($"[+] alive ports len is: {alivePort}");

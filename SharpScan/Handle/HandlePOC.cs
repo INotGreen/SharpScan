@@ -103,6 +103,7 @@ namespace SharpScan
                 case "445":
                     {
                         new ms17_010scanner().Run(ip);
+                        new SMBGhost().SMBGhostScan(ip);
                         break;
                     }
 

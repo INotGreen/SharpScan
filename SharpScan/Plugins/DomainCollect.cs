@@ -16,14 +16,11 @@ namespace SharpScan.Plugins
     {
         public DomainCollect()
         {
-            new EDRCheck();
-            Console.WriteLine("===================================================================\n");
-            new RDPlog();
+           
             SystemInfo();
             NetworkConnections();
             ReadRegistry();
             Domain_p();
-            Console.WriteLine("End!!");
         }
 
 
@@ -38,13 +35,15 @@ namespace SharpScan.Plugins
             Console.WriteLine("[+] Current User: " + Environment.UserName);
             Console.WriteLine("[+] .NET Version: {0}", Environment.Version.ToString());
             Console.WriteLine("[+] Operating System: " + new ComputerInfo().OSFullName + (Is64Bit() ? " 64-bit" : " 32-bit")); // Operating System
-
-            List<string> users = GetLocalUsers();
-            Console.Write("[+] Existing Users: ");
-            foreach (var user in users)
-            {
-                Console.Write(user + " | ");
-            }
+            new EDRCheck();
+            //List<string> users = GetLocalUsers();
+            //Console.Write("[+] Existing Users: ");
+            //foreach (var user in users)
+            //{
+            //    Console.Write(user + " | ");
+            //}
+            //Console.WriteLine("\n");
+            new RDPlog();
         }
 
         public static bool Is64Bit()
@@ -54,17 +53,21 @@ namespace SharpScan.Plugins
 
         static List<string> GetLocalUsers()
         {
-            List<string> users = new List<string>();
-            using (PrincipalContext ctx = new PrincipalContext(ContextType.Machine))
+            try
             {
-                UserPrincipal user = new UserPrincipal(ctx);
-                PrincipalSearcher searcher = new PrincipalSearcher(user);
-                foreach (var result in searcher.FindAll())
+                List<string> users = new List<string>();
+                using (PrincipalContext ctx = new PrincipalContext(ContextType.Machine))
                 {
-                    users.Add(result.SamAccountName);
+                    UserPrincipal user = new UserPrincipal(ctx);
+                    PrincipalSearcher searcher = new PrincipalSearcher(user);
+                    foreach (var result in searcher.FindAll())
+                    {
+                        users.Add(result.SamAccountName);
+                    }
                 }
+                return users;
             }
-            return users;
+            catch (Exception ex) { return null; }
         }
 
         public static void Domain_p() // Invoke Domain to detect information within the domain
@@ -97,13 +100,11 @@ namespace SharpScan.Plugins
             }
         }
 
-
-
         public static void ReadRegistry()
         {
             RegistryKey rk = Registry.LocalMachine;
             RegistryKey SYS = rk.OpenSubKey("system").OpenSubKey("CurrentControlSet").OpenSubKey("Control").OpenSubKey("Terminal Server");
-            Console.WriteLine("[+] RDP Information:");
+            Console.Write("[+] RDP Information:");
             foreach (string b in SYS.GetValueNames()) // Use shell.getvaluenames() here instead of shell.getsubkeynames() 
             {
                 string a = SYS.GetValue(b).ToString();
@@ -113,11 +114,11 @@ namespace SharpScan.Plugins
                     int num = int.Parse(e);
                     if (num == 1)
                     {
-                        Console.WriteLine("\t[-] RDP is not enabled");
+                        Console.WriteLine("\t RDP is not enabled");
                     }
                     else
                     {
-                        Console.WriteLine("\t[+] RDP is enabled");
+                        Console.WriteLine("\t RDP is enabled");
                     }
                 }
             }

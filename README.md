@@ -14,6 +14,8 @@
 
 - 体积较小(目前500kb)、传输快、一键自动化扫描+信息收集，一条龙服务
 
+- 尽最大可能地OPSEC，
+
 
 ## 2. 主要功能
 
@@ -22,12 +24,11 @@
 - 支持NetBios(默认137端口)、SMB(默认445端口)和WMI(默认135端口)服务快速探测
 - 主机信息探测、目标网卡探测
 - 高危漏洞扫描：ms17010、CVE-2020-0796(SMBGhost)、ZeroLogon（CVE-2020-1472）
-- Webtitle探测
-- 指纹识别(常见CMS、OA框架等)
+- Webtitle探测，指纹识别常见CMS、OA框架等
 - 各类服务弱口令爆破、账号密码枚举(SSH、SMB、RDP)，ssh命令执行
 - 探测当前主机.net版本、操作系统版本信息、杀毒软件/内网设备（AV/EDR/XDR）查询等
 - 导出本地RDP登录日志(rdp端口、mstsc缓存、cmdkey缓存、登录成功、失败日志)
-- 判断是否在域内、定位域控IP、信息收集域控的FQDN、域管理员组、域企业管理员组等信息、LDAP查询
+- 判断是否在域内、定位域控IP、信息收集域控的FQDN、域管理员组、域企业管理员组、LDAP查询等
 - 导出扫描结果
 
 ## 3.正在完成(TODO)
@@ -48,36 +49,25 @@
 ## 5.使用
 
 ```powershell
-C:\>SharpScan.exe
-  ______   __                                       ______
- /      \ /  |                                     /      \
-/$$$$$$  |$$ |____    ______    ______    ______  /$$$$$$  |  _______   ______   _______
-$$ \__$$/ $$      \  /      \  /      \  /      \ $$ \__$$/  /       | /      \ /       \
-$$      \ $$$$$$$  | $$$$$$  |/$$$$$$  |/$$$$$$  |$$      \ /$$$$$$$/  $$$$$$  |$$$$$$$  |
- $$$$$$  |$$ |  $$ | /    $$ |$$ |  $$/ $$ |  $$ | $$$$$$  |$$ |       /    $$ |$$ |  $$ |
-/  \__$$ |$$ |  $$ |/$$$$$$$ |$$ |      $$ |__$$ |/  \__$$ |$$ \_____ /$$$$$$$ |$$ |  $$ |
-$$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |$$ |  $$ |
- $$$$$$/  $$/   $$/  $$$$$$$/ $$/       $$$$$$$/   $$$$$$/   $$$$$$$/  $$$$$$$/ $$/   $$/
-                                        $$ |
-                                        $$ |
-                                        $$/
-
-Delay:1000   MaxConcurrency:600
-Target segment must be specified using -t or --Target.
+Delay:10   MaxConcurrency:600
 Usage: SharpScan [OPTIONS]
-Perform network scans using different protocols.
 
 Options:
-  -i, --icmp                 Perform ICMP scan
-  -a, --arp                  Perform ARP scan
+  -i, --icmp                 Perform icmp scan
+  -a, --arp                  Perform arp scan
+  -U, --udp                  Perform udp scan
   -t, --Target=VALUE         Target segment to scan
   -p, --ports=VALUE          Ports to scan (e.g. "0-1024" or "80,443,8080")
-  -d, --delay=VALUE          Scan Delay(ms),Defalt:1000
+  -d, --delay=VALUE          Scan delay(ms),Defalt:1000
   -m, --maxconcurrency=VALUE Maximum number of concurrent scans,Defalt:600
   -u, --username=VALUE       Username for authentication
       --pw, --password=VALUE Password for authentication
   -h, --help                 Show this usage and help
   -o, --output=VALUE         Output file to save console output
+
+Example:
+  SharpScan.exe -t 192.168.1.1/24
+  SharpScan.exe -t 192.168.1.107 -p 100-1024
 ```
 
 
@@ -89,57 +79,11 @@ SharpScan.exe -s 192.168.1.1/24  (扫描C段)
 SharpScan.exe -s 192.168.1.1/16  (扫描B段)
 ```
 
-```powershell
-Delay:0   MaxConcurrency:600
+[demo](https://private-user-images.githubusercontent.com/89376703/352985272-6c4d2f2d-b21e-43b3-ad8b-578cd6163f05.mp4)
 
-C_Segment: 192.168.244.8/24.
-===================================================================
-IP                           HostName                     OsVersion
-192.168.244.1(ICMP)          LAPTOP-476JT8H0              Windows 11
-192.168.244.169(ICMP)        DESKTOP-PESL5DR.local        Windows 11
-192.168.244.142(ICMP)        NULL                         null
-192.168.244.154(ICMP)        WIN-TNU2SVQRBP9              Windows 8.1 or Windows Server 2012 R2
-192.168.244.171(ICMP)        owa                          Windows 7 SP1 or Windows Server 2008 R2 SP1
-192.168.244.164(ICMP)        NULL                         null
-===================================================================
-[+] onlinePC: 6
-===================================================================
-192.168.244.1:445 (smb) is open
-192.168.244.1:139 (netbios) is open
-192.168.244.169:135 (findnet) is open
-192.168.244.169:3389 (rdp) is open
-192.168.244.154:445 (smb) is open
-192.168.244.169:139 (netbios) is open
-192.168.244.171:135 (findnet) is open
-192.168.244.171:139 (netbios) is open
-192.168.244.171:445 (smb) is open
-192.168.244.164:22 (ssh) is open
-192.168.244.169:445 (smb) is open
-192.168.244.154:139 (netbios) is open
-192.168.244.154:135 (findnet) is open
-192.168.244.1:135 (findnet) is open
 
-[+] Port Scanning completed in 1.92 seconds
 
-192.168.244.171:80 (web) is open
-192.168.244.171:88 (web) is open
-
-[+] WebPort Scanning completed in 5.62 seconds
-
-===================================================================
-[+] alive ports len is: 16
-===================================================================
-[+] (MS17-010) Host: 192.168.244.171 have MS17-010!  User:owa   OS:Windows 7 SP1 or Windows Server 2008 R2 SP1
-[!] (WebTitle) http://192.168.244.171:88 Request error: 基础连接已经关闭: 接收时发生错误。
-[+] SMB logon Success: liukaifeng01:Lang123456789
-[+] SMB logon Success: liukaifeng01:Lang123456789
-[+] SMB logon Success: liukaifeng01:Lang123456789
-[+] (WebTitle) http://192.168.244.171:80 HTTP Status Code: 200 (OK)
-[+] (WebTitle) URL: http://192.168.244.171:80   Title: is: IIS7
-[+] SMB logon Success: admin:123456789
-```
-
-扫描指定IP，端口范围80-1024，0延时，最大并发600
+扫描指定IP(默认使用TCP)，端口范围80-1024，0延时，最大并发600，用时3秒
 
 ```postgresql
 SharpScan.exe -s 192.168.244.169 -p 80-1024 -d 0 -m 600
@@ -153,5 +97,28 @@ Delay:0   MaxConcurrency:600
 [+] 192.168.244.169:445 (smb) is open
 
 [+] Scanning completed in 3.53 seconds
+```
+
+使用UDP协议扫描端口，端口范围100-10000，10ms延时，最大并发600，用时21秒
+
+```
+SharpScan.exe -t 192.168.244.141 -U -p 100-10000
+```
+
+```powershell
+Delay:10   MaxConcurrency:600
+[+] TLS 1.2 registry keys for current user have been set successfully.
+[+] 192.168.244.141:135 (msrpc) is open
+[+] 192.168.244.141:139 (netbios) is open
+[+] 192.168.244.141:389 (ldap) is open
+[+] 192.168.244.141:445 (smb) is open
+[+] 192.168.244.141:464 (kpasswd) is open
+[+] 192.168.244.141:636 (ldaps) is open
+[+] 192.168.244.141:593 is open
+[+] 192.168.244.141:3268 is open
+[+] 192.168.244.141:3269 is open
+[+] 192.168.244.141:9389 is open
+
+[+] Scanning completed in 21.07 seconds
 ```
 

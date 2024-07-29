@@ -34,7 +34,7 @@ namespace SharpScan
                             netFrameworkKey.SetValue("SchUseStrongCrypto", 1, RegistryValueKind.DWord);
                             netFrameworkKey.SetValue("SystemDefaultTlsVersions", 1, RegistryValueKind.DWord);
                             isTls12Enabled = true;
-                            Console.WriteLine("[+] TLS 1.2 registry keys for current user have been set successfully.");
+                           // Console.WriteLine("[+] TLS 1.2 registry keys for current user have been set successfully.");
                         }
                     }
                 }
@@ -58,7 +58,7 @@ namespace SharpScan
                         }
                     }
 
-                    Console.WriteLine("[+] TLS 1.2 registry keys for current user have been set successfully.");
+                    //Console.WriteLine("[+] TLS 1.2 registry keys for current user have been set successfully.");
                 }
                 catch (Exception ex)
                 {

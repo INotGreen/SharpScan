@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -10,12 +11,9 @@ using System.Threading.Tasks;
 
 namespace SharpScan
 {
-    internal class Portscan
+    internal class UdpPortscan
     {
-        
-
-
-        public async Task ScanPortAsync(int delay, Dictionary<string, int> PortList,int maxConcurrency)
+        public async Task ScanPortAsync(int delay, Dictionary<string, int> PortList, int maxConcurrency)
         {
             List<Task> portscanTasks = new List<Task>();
             Stopwatch stopwatch = new Stopwatch();
@@ -33,7 +31,6 @@ namespace SharpScan
             Console.WriteLine($"\n[+] WebPort Scanning completed in {(stopwatch.ElapsedMilliseconds / 1000.0).ToString("F2")} seconds\n");
         }
 
-
         public static async Task ScanPorts(string ip, Dictionary<string, int> PortList, int delay, int maxConcurrency)
         {
             List<Task> tasks = new List<Task>();
@@ -49,22 +46,37 @@ namespace SharpScan
                     {
                         try
                         {
-                            using (TcpClient tcpClient = new TcpClient())
+                            using (UdpClient udpClient = new UdpClient())
                             {
-                                var connectTask = Task.Factory.FromAsync(
-                                    tcpClient.BeginConnect(ip, port, null, null),
-                                    tcpClient.EndConnect);
-                                if (await Task.WhenAny(connectTask, Task.Delay(1200)) == connectTask)
-                                {
-                                    if (tcpClient.Connected)
-                                    {
-                                        if (!Program.IpPortList.Exists(client => client == $"{ip}:{port}"))
-                                        {
-                                            Program.alivePort++;
-                                            Program.IpPortList.Add($"{ip}:{port}");
-                                            Console.WriteLine($"{ip}:{port} ({portGroup.Key}) is open");
+                                udpClient.Connect(ip, port);
+                                byte[] sendBytes = Encoding.ASCII.GetBytes("test");
+                                udpClient.Send(sendBytes, sendBytes.Length);
 
+                                var receiveTask = Task.Run(() =>
+                                {
+                                    try
+                                    {
+                                        IPEndPoint remoteEP = new IPEndPoint(IPAddress.Any, 0);
+                                        udpClient.Receive(ref remoteEP);
+                                    }
+                                    catch (SocketException ex)
+                                    {
+                                        // Handle specific exceptions, such as ICMP Port Unreachable
+                                        if (ex.SocketErrorCode == SocketError.ConnectionReset)
+                                        {
+                                            // Port is closed
                                         }
+                                    }
+                                });
+
+                                if (await Task.WhenAny(receiveTask, Task.Delay(1200)) == receiveTask)
+                                {
+                                    // Note: UDP is connectionless, we assume the port is open if no exception was thrown.
+                                    if (!Program.IpPortList.Exists(client => client == $"{ip}:{port}"))
+                                    {
+                                        Program.alivePort++;
+                                        Program.IpPortList.Add($"{ip}:{port}");
+                                        Console.WriteLine($"{ip}:{port} ({portGroup.Key}) is open (UDP)");
                                     }
                                 }
                             }
@@ -88,8 +100,6 @@ namespace SharpScan
             }
         }
 
-
-
         public async Task ScanPortRange(string IP, string PortRange, int delay, int MaxConcurrency)
         {
             List<Task> tasks = new List<Task>();
@@ -105,22 +115,37 @@ namespace SharpScan
                     {
                         try
                         {
-                            using (TcpClient tcpClient = new TcpClient())
+                            using (UdpClient udpClient = new UdpClient())
                             {
-                                var connectTask = Task.Factory.FromAsync(
-                                    tcpClient.BeginConnect(IP, port, null, null),
-                                    tcpClient.EndConnect);
+                                udpClient.Connect(IP, port);
+                                byte[] sendBytes = Encoding.ASCII.GetBytes("test");
+                                udpClient.Send(sendBytes, sendBytes.Length);
 
-                                if (await Task.WhenAny(connectTask, Task.Delay(1200)) == connectTask)
+                                var receiveTask = Task.Run(() =>
                                 {
-                                    if (tcpClient.Connected)
+                                    try
                                     {
-                                        Console.WriteLine($"[+] {IP}:{port}{GetServiceByPort(port)} is open");
+                                        IPEndPoint remoteEP = new IPEndPoint(IPAddress.Any, 0);
+                                        udpClient.Receive(ref remoteEP);
                                     }
+                                    catch (SocketException ex)
+                                    {
+                                        // Handle specific exceptions, such as ICMP Port Unreachable
+                                        if (ex.SocketErrorCode == SocketError.ConnectionReset)
+                                        {
+                                            // Port is closed
+                                        }
+                                    }
+                                });
+
+                                if (await Task.WhenAny(receiveTask, Task.Delay(3300)) == receiveTask)
+                                {
+                                    // Note: UDP is connectionless, we assume the port is open if no exception was thrown.
+                                    Console.WriteLine($"[+] {IP}:{port}{GetServiceByPort(port)} is open (UDP)");
                                 }
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             // Handle exception (if necessary)
                         }
@@ -149,9 +174,8 @@ namespace SharpScan
                 return $" ({service})";
             }
             return "";
-
-
         }
+
         static int[] ParsePortRange(string portRange)
         {
             List<int> ports = new List<int>();
@@ -185,8 +209,6 @@ namespace SharpScan
             return ports.ToArray();
         }
 
-
-
         public static async Task ScanWebPorts(int delay, int maxConcurrency)
         {
             List<Task> webScanTasks = new List<Task>();
@@ -219,7 +241,7 @@ namespace SharpScan
                                                 {
                                                     Program.alivePort++;
                                                     Program.IpPortList.Add($"{onlineHost.IP}:{portNumber}");
-                                                    Console.WriteLine($"{onlineHost.IP}:{portNumber} (web) is open");
+                                                    Console.WriteLine($"UDP:{onlineHost.IP}:{portNumber} (web) is open");
                                                 }
                                             }
                                         }
@@ -244,8 +266,6 @@ namespace SharpScan
                 }
                 await Task.WhenAll(webScanTasks);
             }
-
-
         }
     }
 }

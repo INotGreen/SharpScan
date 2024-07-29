@@ -7,7 +7,7 @@ namespace SharpScan
 {
     public class SMBGhost
     {
-        static void SMBGhostScan(string ipAddress)
+        public void SMBGhostScan(string ipAddress)
         {
             int port = 445;
             int timeout = 10000; // 10 seconds
@@ -55,19 +55,19 @@ namespace SharpScan
                 }
                 catch (SocketException ex)
                 {
-                    Console.WriteLine($"Socket error: {ex.Message}");
-                    if (i == retryCount - 1)
-                    {
-                        Console.WriteLine("Maximum retry attempts reached. Exiting.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Retrying...");
-                    }
+                    //Console.WriteLine($"Socket error: {ex.Message}");
+                    //if (i == retryCount - 1)
+                    //{
+                    //    Console.WriteLine("Maximum retry attempts reached. Exiting.");
+                    //}
+                    //else
+                    //{
+                    //    Console.WriteLine("Retrying...");
+                    //}
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Unexpected error: {ex.Message}");
+                    //Console.WriteLine($"Unexpected error: {ex.Message}");
                     break;
                 }
             }

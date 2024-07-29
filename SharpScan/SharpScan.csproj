@@ -45,9 +45,9 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NET_4_5;</DefineConstants>
+    <DefineConstants>NET_4_5;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -321,14 +321,15 @@
     <Compile Include="Helper\System.Threading.Tasks35\System\Tuples.cs" />
     <Compile Include="Plugins\DomainCollect.cs" />
     <Compile Include="Plugins\MS17-010.cs" />
-    <Compile Include="Plugins\CVE-2020-0796.cs" />
+    <Compile Include="Plugins\SMBGhost.cs" />
     <Compile Include="Helper\Netapi32.cs" />
+    <Compile Include="Plugins\UdpPortScan.cs" />
     <Compile Include="Plugins\ZeroLogon.cs" />
     <Compile Include="Plugins\RdpBroute.cs" />
     <Compile Include="Helper\RdpLogs.cs" />
     <Compile Include="Plugins\SMBEnum.cs" />
     <Compile Include="Plugins\SSHBroute.cs" />
-    <Compile Include="Plugins\PortScan.cs" />
+    <Compile Include="Plugins\TcpPortScan.cs" />
     <Compile Include="Plugins\WebTitle.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -357,8 +358,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

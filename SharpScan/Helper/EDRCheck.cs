@@ -8,7 +8,7 @@ namespace SharpScan.Helper
 {
     internal class EDRCheck
     {
-        protected static string Format(string args_1, string args_2) => String.Format("[>] {0,-28}: {1}\r", args_1, args_2);
+        protected static string Format(string args_1, string args_2) => String.Format("  [>] {0,-28}: {1}\r", args_1, args_2);
         public EDRCheck()
         {
             // 获取当前系统的进程列表
@@ -31,7 +31,7 @@ namespace SharpScan.Helper
             // 打印已安装的杀毒软件及对应的进程
             if (matchedProcesses.Any())
             {
-                Console.WriteLine("Installed AV, EDR and corresponding processes:");
+                Console.WriteLine("[+] Installed AV, EDR and corresponding processes:\n");
                 foreach (var kvp in matchedProcesses)
                 {
                     Console.WriteLine(Format(kvp.Key, kvp.Value));
@@ -41,6 +41,7 @@ namespace SharpScan.Helper
             {
                 Console.WriteLine("No installed anti-virus software was detected.");
             }
+            Console.WriteLine("\n");
         }
     }
 }

@@ -12,7 +12,8 @@ namespace SharpScan
     {
         public RDPlog()
         {
-            string text = "========== RDP Report ==========\r\n";
+            string text = "============================= RDP Report ==========================\r\n";
+            //string text = "===================================================================\r\n";
             text = text + "Time: " + DateTime.Now.ToString() + "\r\n";
             text = text + GetRegRDPTcpPort() + "\r\n";
             //text += GetRegCurrentUserMstsc();
@@ -32,7 +33,8 @@ namespace SharpScan
                 string username = managementObject["Name"].ToString();
                 string sid = managementObject["SID"].ToString();
 
-                sb.AppendLine($"========== Username: {username} ==========");
+                sb.AppendLine($"======================== Username: {username} =====================");
+                //sb.AppendLine($"===================================================================");
                 sb.AppendLine($"SID: {sid}\r\n");
                 sb.AppendLine(GetRegUserKeylist(sid));
             }
@@ -47,6 +49,7 @@ namespace SharpScan
                 RegistryKey users = Registry.Users;
                 string name = sid + "\\SOFTWARE\\Microsoft\\Terminal Server Client\\Servers";
                 RegistryKey registryKey = users.OpenSubKey(name, true);
+                sb.AppendLine(Format("Server IP", "HostName"));
                 foreach (string subKeyName in registryKey.GetSubKeyNames())
                 {
                     string username = registryKey.OpenSubKey(subKeyName).GetValue("UsernameHint").ToString();
@@ -62,7 +65,8 @@ namespace SharpScan
 
         public static string GetRegRDPTcpPort()
         {
-            string text = "\r\n========== Local RDP Port ==========\r\n";
+            string text = "\r\n============================ Local RDP Port =======================\r\n";
+            // string text = "\r\n===================================================================\r\n";
             try
             {
                 string port = Registry.LocalMachine.OpenSubKey("SYSTEM\\CurrentControlSet\\Control\\Terminal Server\\WinStations\\RDP-Tcp", true).GetValue("PortNumber").ToString();
@@ -98,7 +102,8 @@ namespace SharpScan
         public static string GetRegCurrentUserKeylist()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("\r\n========== Current User cmdkey Cache Records ==========\r\n");
+            sb.AppendLine("\r\n=============== Current User cmdkey Cache Records ==============\r\n");
+            // sb.AppendLine("\r\n===================================================================\r\n");
             try
             {
                 RegistryKey registryKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Terminal Server Client\\Servers", true);
@@ -121,7 +126,8 @@ namespace SharpScan
             try
             {
                 EventLog eventLog = new EventLog("Security");
-                sb.AppendLine("\r\n========== Logon Success Event ID: 4624 ==========\r\n");
+                sb.AppendLine("\r\n================== Logon Success Event ID: 4624 ==================\r\n");
+                //sb.AppendLine("\r\n===================================================================\r\n");
 
                 var logEntries = from EventLogEntry entry in eventLog.Entries
                                  where entry.InstanceId == 4624L
@@ -163,5 +169,5 @@ namespace SharpScan
         }
     }
 
-   
+
 }
