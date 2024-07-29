@@ -23,7 +23,7 @@ namespace SharpScan
         private async Task ProcessPackets(List<string> ipPortList, Func<string, Task> packetProcessor)
         {
             List<Task> tasks = new List<Task>();
-            using (SemaphoreSlim semaphore = new SemaphoreSlim(Convert.ToInt32(Program.MaxConcurrency)))
+            using (SemaphoreSlim semaphore = new SemaphoreSlim(Convert.ToInt32(Program.maxConcurrency)))
             {
                 foreach (var ipPort in ipPortList)
                 {
@@ -39,7 +39,7 @@ namespace SharpScan
                             semaphore.Release();
                         }
                     }));
-                    await Task.Delay(Convert.ToInt32(Program.Delay));
+                    await Task.Delay(Convert.ToInt32(Program.delay));
                 }
 
                 await Task.WhenAll(tasks);
@@ -55,21 +55,21 @@ namespace SharpScan
                 case "445":
                     {
                         SMB smb = new SMB();
-                        bool success = smb.Execute(ip, 445, Convert.ToInt32(Program.Delay));
+                        bool success = smb.Execute(ip, 445, Convert.ToInt32(Program.delay));
                         break;
                     }
 
                 case "135":
                     {
                         WMI wmi = new WMI();
-                        wmi.Execute(ip, 135, Convert.ToInt32(Program.Delay));
+                        wmi.Execute(ip, 135, Convert.ToInt32(Program.delay));
                         break;
                     }
                 case "137":
                     {
                         Dictionary<string, string> macdict = GetIP.GetMACDict();
                         NBNS nbns = new NBNS();
-                        nbns.Execute(ip, 137, Convert.ToInt32(Program.Delay), macdict);
+                        nbns.Execute(ip, 137, Convert.ToInt32(Program.delay), macdict);
                         break;
                     }
             }

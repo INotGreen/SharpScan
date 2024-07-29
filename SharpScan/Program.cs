@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Mono.Options;
+using SharpScan.Plugins;
 using Tamir.SharpSsh.java.io;
 
 namespace SharpScan
@@ -24,10 +25,10 @@ namespace SharpScan
         public static string outputFile = "";
         public static List<string> IPlist;
         public static string portRange = "";
-        public static string MaxConcurrency = "600";
-        public static string Delay = "10";
-        public static string Username = "";
-        public static string Password = "";
+        public static string maxConcurrency = "600";
+        public static string delay = "10";
+        public static string userName = "";
+        public static string passWord = "";
 
         public class OnlinePC
         {
@@ -72,10 +73,10 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 { "a|arp", "Perform ARP scan", a => arpScan = a != null },
                 { "t|Target=", "Target segment to scan", t => targetSegment = t },
                 { "p|ports=", "Ports to scan (e.g. \"0-1024\" or \"80,443,8080\")", p => portRange = p },
-                { "d|delay=", "Scan Delay(ms),Defalt:1000", p => Delay = p },
-                { "m|maxconcurrency=", "Maximum number of concurrent scans,Defalt:600", m => MaxConcurrency = m },
-                { "u|username=", "Username for authentication", u => Username = u },
-                { "pw|password=", "Password for authentication", pw => Password = pw },
+                { "d|delay=", "Scan Delay(ms),Defalt:1000", p => delay = p },
+                { "m|maxconcurrency=", "Maximum number of concurrent scans,Defalt:600", m => maxConcurrency = m },
+                { "u|username=", "Username for authentication", u => userName = u },
+                { "pw|password=", "Password for authentication", pw => passWord = pw },
                 { "h|help", "Show this usage and help", h => showHelp = h != null },
                 { "o|output=", "Output file to save console output", o => outputFile = o }
             };
@@ -100,7 +101,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             {
                 icmpScan = true;
             }
-            Console.WriteLine($"Delay:{Delay}   MaxConcurrency:{MaxConcurrency}");
+            Console.WriteLine($"Delay:{delay}   MaxConcurrency:{maxConcurrency}");
             new SetTls12UserRegistryKeys();
             if (!string.IsNullOrEmpty(targetSegment))
             {
@@ -108,7 +109,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             }
             if (!string.IsNullOrEmpty(portRange))
             {
-                await new Portscan().ScanPortRange(targetSegment, portRange, Convert.ToInt32(Delay), Convert.ToInt32(MaxConcurrency));
+                await new Portscan().ScanPortRange(targetSegment, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency));
                 return;
             }
 
@@ -133,7 +134,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
             if (icmpScan)
             {
-                await Task.Run(() => new ICMPScan().ICMPScanPC(Program.IPlist, Convert.ToInt32(Delay), Convert.ToInt32(MaxConcurrency)));
+                await Task.Run(() => new ICMPScan().ICMPScanPC(Program.IPlist, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)));
                 Console.WriteLine("===================================================================");
                 Console.WriteLine("[+] onlinePC: " + Program.onlinePC);
                 Console.WriteLine("===================================================================");
@@ -141,19 +142,23 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
             if (arpScan)
             {
-                var arpTask = Task.Run(() => new ARPScan().ARPScanPC(Program.IPlist, Convert.ToInt32(Delay), Convert.ToInt32(MaxConcurrency)));
+                var arpTask = Task.Run(() => new ARPScan().ARPScanPC(Program.IPlist, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)));
                 await Task.WhenAll(arpTask);
                 Console.WriteLine("===================================================================");
                 Console.WriteLine("[+] onlinePC: " + Program.onlinePC);
                 Console.WriteLine("===================================================================");
             }
 
-            await new Portscan().ScanPortAsync(Convert.ToInt32(Delay),Configuration.PortList, Convert.ToInt32(MaxConcurrency));
+            await new Portscan().ScanPortAsync(Convert.ToInt32(delay),Configuration.PortList, Convert.ToInt32(maxConcurrency));
 
             Console.WriteLine("===================================================================");
             Console.WriteLine($"[+] alive ports len is: {alivePort}");
             Console.WriteLine("===================================================================");
             GC.Collect();
+
+            new DomainCollect();
+
+
             await new HandlePOC().HandleDefault();
 
             if (fileWriter != null)

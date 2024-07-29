@@ -15,7 +15,6 @@ namespace SharpScan
         public SetTls12UserRegistryKeys()
         {
             bool isTls12Enabled = false;
-
             try
             {
                 // 检查 .NET Framework 的注册表键

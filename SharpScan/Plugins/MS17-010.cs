@@ -16,7 +16,7 @@ namespace SharpScan
         {
             if (ScanForMs17_010(ip))
             {
-                Console.WriteLine($"[*] (MS17-010) Host: {ip} have MS17-010! \n" + Format($"Native OS", $"{GetHostNameByIp(ip)}"));
+                Console.WriteLine($"\n[*] (MS17-010) Host: {ip} have MS17-010! \n" + Format($"Native OS", $"{GetHostNameByIp(ip)}"));
             }
         }
 

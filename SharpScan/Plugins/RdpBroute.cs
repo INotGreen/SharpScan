@@ -12,14 +12,8 @@ namespace SharpScan
 {
     internal class RdpBroute
     {
-
-
-        static void Run(string IP, string User, string Password)
+        public RdpBroute(string IP, string User, string Password)
         {
-          
-
-
-
             try
             {
                 Options.Host = IP;
@@ -36,8 +30,5 @@ namespace SharpScan
             }
 
         }
-
-
-       
     }
 }

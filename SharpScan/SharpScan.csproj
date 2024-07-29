@@ -52,8 +52,11 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Management" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
@@ -63,6 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Config.cs" />
+    <Compile Include="Helper\Domain.cs" />
+    <Compile Include="Helper\EDRCheck.cs" />
     <Compile Include="Helper\SetTls12UserRegistryKeys.cs" />
     <Compile Include="Helper\Lib\Writer.cs" />
     <Compile Include="Helper\HookConhost.cs" />
@@ -314,12 +319,13 @@
     <Compile Include="Helper\System.Threading.Tasks35\System\OperationCanceledException.cs" />
     <Compile Include="Helper\System.Threading.Tasks35\System\Tuple.cs" />
     <Compile Include="Helper\System.Threading.Tasks35\System\Tuples.cs" />
+    <Compile Include="Plugins\DomainCollect.cs" />
     <Compile Include="Plugins\MS17-010.cs" />
     <Compile Include="Plugins\CVE-2020-0796.cs" />
     <Compile Include="Helper\Netapi32.cs" />
     <Compile Include="Plugins\ZeroLogon.cs" />
     <Compile Include="Plugins\RdpBroute.cs" />
-    <Compile Include="Plugins\RDPlogs.cs" />
+    <Compile Include="Helper\RdpLogs.cs" />
     <Compile Include="Plugins\SMBEnum.cs" />
     <Compile Include="Plugins\SSHBroute.cs" />
     <Compile Include="Plugins\PortScan.cs" />
