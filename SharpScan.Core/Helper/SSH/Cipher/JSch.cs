@@ -3,12 +3,12 @@ using System.Collections;
 using System.IO;
 using System.Text;
 using System.Threading;
-using Tamir.SharpSsh.java.util;
+using Tamir.SharpSsh.Sharp.util;
 using Hashtable = System.Collections.Hashtable;
 
 namespace Tamir.SharpSsh.jsch
 {
-    /* -*-mode:java; c-basic-offset:2; -*- */
+    /* -*-mode:Sharp; c-basic-offset:2; -*- */
     /*
 	Copyright (c) 2002,2003,2004 ymnk, JCraft,Inc. All rights reserved.
 

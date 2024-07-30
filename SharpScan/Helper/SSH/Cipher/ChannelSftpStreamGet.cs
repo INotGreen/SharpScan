@@ -3,7 +3,7 @@
 //
 //namespace Tamir.SharpSsh.jsch
 //{
-//	public class InputStreamGet : java.io.InputStream
+//	public class InputStreamGet : Sharp.io.InputStream
 //	{
 //		bool closed=false;
 //		int rest_length=0;

@@ -1,14 +1,14 @@
 using System;
 using System.IO;
-using Tamir.SharpSsh.java.lang;
-using Tamir.SharpSsh.java.net;
-using Tamir.SharpSsh.java.util;
+using Tamir.SharpSsh.Sharp.lang;
+using Tamir.SharpSsh.Sharp.net;
+using Tamir.SharpSsh.Sharp.util;
 using Exception = System.Exception;
-using String = Tamir.SharpSsh.java.String;
+using String = Tamir.SharpSsh.Sharp.String;
 
 namespace Tamir.SharpSsh.jsch
 {
-    /* -*-mode:java; c-basic-offset:2; -*- */
+    /* -*-mode:Sharp; c-basic-offset:2; -*- */
     /*
 	Copyright (c) 2002,2003,2004 ymnk, JCraft,Inc. All rights reserved.
 

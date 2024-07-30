@@ -1,15 +1,15 @@
 using System;
 using System.IO;
 using System.Runtime.CompilerServices;
-using Tamir.SharpSsh.java.io;
-using Tamir.SharpSsh.java.lang;
-using Tamir.SharpSsh.java.util;
+using Tamir.SharpSsh.Sharp.io;
+using Tamir.SharpSsh.Sharp.lang;
+using Tamir.SharpSsh.Sharp.util;
 using Tamir.Streams;
-using Str = Tamir.SharpSsh.java.String;
+using Str = Tamir.SharpSsh.Sharp.String;
 
 namespace Tamir.SharpSsh.jsch
 {
-    /* -*-mode:java; c-basic-offset:2; -*- */
+    /* -*-mode:Sharp; c-basic-offset:2; -*- */
     /*
 	Copyright (c) 2002,2003,2004 ymnk, JCraft,Inc. All rights reserved.
 

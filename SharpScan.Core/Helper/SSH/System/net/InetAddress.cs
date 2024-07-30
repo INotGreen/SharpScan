@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace Tamir.SharpSsh.java.net
+namespace Tamir.SharpSsh.Sharp.net
 {
     /// <summary>
     /// Summary description for InetAddress.

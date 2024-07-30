@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace Tamir.SharpSsh.jsch.jce
 {
-/* -*-mode:java; c-basic-offset:2; -*- */
+/* -*-mode:Sharp; c-basic-offset:2; -*- */
 /*
 Copyright (c) 2002,2003,2004 ymnk, JCraft,Inc. All rights reserved.
 
@@ -35,7 +35,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     public class SignatureRSA : jsch.SignatureRSA
     {
-        //java.security.Signature signature;	
+        //Sharp.security.Signature signature;	
         //  KeyFactory keyFactory;
         private RSAParameters RSAKeyInfo;
         private CryptoStream cs;
@@ -45,7 +45,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         public void init()
         {
-            //    signature=java.security.Signature.getInstance("SHA1withRSA");
+            //    signature=Sharp.security.Signature.getInstance("SHA1withRSA");
             //    keyFactory=KeyFactory.getInstance("RSA");
             sha1 = new SHA1CryptoServiceProvider();
             cs = new CryptoStream(Stream.Null, sha1, CryptoStreamMode.Write);

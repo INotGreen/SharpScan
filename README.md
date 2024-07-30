@@ -6,7 +6,7 @@
 
 ## 1.特点
 
-- C#开发的内网资产扫描器，用于内网横向移动和域内的信息收集
+- C#开发的内网资产扫描器，方便内网横向移动和域内信息收集
 - 参考了Ladon，Fscan、Kscan等扫描器的原理
 - 为了兼容更古老的系统，所以采用.NET Framework3.5 和.NET Core6.0开发
 - 使用异步和高并发、扫描速度快并且可控、内存自动回收
@@ -34,7 +34,7 @@
 ## 3.正在完成(TODO)
 
 - 数据库密码爆破(mysql、mssql、redis、psql、oracle等)
-- UDP端口扫描
+- ftp服务爆破
 - redis写公钥或写计划任务
 - weblogic、st2、shiro的POC扫描检测
 

@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace Tamir.SharpSsh.jsch.jce
 {
-    /* -*-mode:java; c-basic-offset:2; -*- */
+    /* -*-mode:Sharp; c-basic-offset:2; -*- */
     /*
 	Copyright (c) 2002,2003,2004 ymnk, JCraft,Inc. All rights reserved.
 
@@ -35,7 +35,7 @@ namespace Tamir.SharpSsh.jsch.jce
 
     public class SignatureDSA : jsch.SignatureDSA
     {
-        //java.security.Signature signature;
+        //Sharp.security.Signature signature;
         //  KeyFactory keyFactory;
         private DSAParameters DSAKeyInfo;
         private CryptoStream cs;

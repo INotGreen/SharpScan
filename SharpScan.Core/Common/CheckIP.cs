@@ -126,7 +126,7 @@ namespace SharpScan
             {
                 return MACDict;
             }
-            //JavaScriptSerializer jss = new JavaScriptSerializer();
+            //SharpScriptSerializer jss = new SharpScriptSerializer();
             try
             {
                 string jsonData = File.ReadAllText(path);

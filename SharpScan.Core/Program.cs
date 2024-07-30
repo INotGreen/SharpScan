@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Mono.Options;
 
-using Tamir.SharpSsh.java.io;
+using Tamir.SharpSsh.Sharp.io;
 
 namespace SharpScan
 {

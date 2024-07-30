@@ -2,7 +2,7 @@ using System;
 
 namespace Tamir.SharpSsh.jsch
 {
-/* -*-mode:java; c-basic-offset:2; -*- */
+/* -*-mode:Sharp; c-basic-offset:2; -*- */
 /*
 Copyright (c) 2002,2003,2004 ymnk, JCraft,Inc. All rights reserved.
 
@@ -83,7 +83,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 }
                 catch
                 {
-//(java.io.UnsupportedEncodingException e){
+//(Sharp.io.UnsupportedEncodingException e){
                     _username = Util.getBytes(username);
                 }
 
@@ -94,7 +94,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 }
                 catch
                 {
-//(java.io.UnsupportedEncodingException e){
+//(Sharp.io.UnsupportedEncodingException e){
                     _password = Util.getBytes(password);
                 }
 
@@ -140,7 +140,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                         }
                         catch
                         {
-//(java.io.UnsupportedEncodingException e){
+//(Sharp.io.UnsupportedEncodingException e){
                             message = Util.getString(_message);
                         }
                         if (userinfo != null)

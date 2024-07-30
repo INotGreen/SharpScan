@@ -1,4 +1,4 @@
-/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
+/* -*-mode:Sharp; c-basic-offset:2; indent-tabs-mode:nil -*- */
 /*
 Copyright (c) 2005 ymnk, JCraft,Inc. All rights reserved.
 
@@ -29,8 +29,8 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
 using System.IO;
-using Tamir.SharpSsh.java.io;
-using Tamir.SharpSsh.java.lang;
+using Tamir.SharpSsh.Sharp.io;
+using Tamir.SharpSsh.Sharp.lang;
 
 namespace Tamir.SharpSsh.jsch
 {

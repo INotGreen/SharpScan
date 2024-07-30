@@ -2,12 +2,12 @@ using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Tamir.SharpSsh.java.io;
+using Tamir.SharpSsh.Sharp.io;
 
 namespace Tamir.Streams
 {
     /*
-	 * @(#)PipedOutputStream.java	1.26 03/12/19
+	 * @(#)PipedOutputStream.Sharp	1.26 03/12/19
 	 *
 	 * Copyright 2004 Sun Microsystems, Inc. All rights reserved.
 	 * SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -24,7 +24,7 @@ namespace Tamir.Streams
 	 *
 	 * @author  James Gosling
 	 * @version 1.26, 12/19/03
-	 * @see     java.io.PipedInputStream
+	 * @see     Sharp.io.PipedInputStream
 	 * @since   JDK1.0
 	 */
 
@@ -55,8 +55,8 @@ namespace Tamir.Streams
 		* piped input stream. It must be connected to a piped input stream, 
 		* either by the receiver or the sender, before being used. 
 		*
-		* @see     java.io.PipedInputStream#connect(java.io.PipedOutputStream)
-		* @see     java.io.PipedOutputStream#connect(java.io.PipedInputStream)
+		* @see     Sharp.io.PipedInputStream#connect(Sharp.io.PipedOutputStream)
+		* @see     Sharp.io.PipedOutputStream#connect(Sharp.io.PipedInputStream)
 		*/
 
         public PipedOutputStream()

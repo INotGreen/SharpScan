@@ -110,6 +110,7 @@ namespace SharpScan
             {
                 foreach (var port in Ports)
                 {
+                    //Console.WriteLine($"{port}");
                     await semaphore.WaitAsync();
                     tasks.Add(Task.Run(async () =>
                     {
@@ -205,9 +206,14 @@ namespace SharpScan
                     }
                 }
             }
+            else if (int.TryParse(portRange, out int singlePort))
+            {
+                ports.Add(singlePort);
+            }
 
             return ports.ToArray();
         }
+
 
         public static async Task ScanWebPorts(int delay, int maxConcurrency)
         {

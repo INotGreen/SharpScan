@@ -68,6 +68,7 @@
     <Compile Include="Common\Config.cs" />
     <Compile Include="Helper\Domain.cs" />
     <Compile Include="Helper\EDRCheck.cs" />
+    <Compile Include="Helper\Helper.cs" />
     <Compile Include="Helper\SetTls12UserRegistryKeys.cs" />
     <Compile Include="Helper\Lib\Writer.cs" />
     <Compile Include="Helper\HookConhost.cs" />

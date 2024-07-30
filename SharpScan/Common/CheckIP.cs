@@ -19,7 +19,6 @@ namespace SharpScan
             // 输出IP地址列表
             foreach (var ip in ipList)
             {
-                //Console.WriteLine(ip);
                 strings.Add(ip);
             }
             return strings;
@@ -34,15 +33,19 @@ namespace SharpScan
                 throw new ArgumentException("Invalid IP address format");
             }
 
+            if (!ipRange.Contains("/"))
+            {
+                // 如果没有CIDR前缀，直接返回单个IP
+                ipList.Add(baseAddress.ToString());
+                return ipList;
+            }
+
             int prefixLength = GetPrefixLength(baseAddress);
 
-            if (ipRange.Contains("/"))
+            string[] parts = ipRange.Split('/');
+            if (parts.Length != 2 || !int.TryParse(parts[1], out prefixLength))
             {
-                string[] parts = ipRange.Split('/');
-                if (parts.Length != 2 || !int.TryParse(parts[1], out prefixLength))
-                {
-                    throw new ArgumentException("Invalid CIDR format");
-                }
+                throw new ArgumentException("Invalid CIDR format");
             }
 
             uint mask = ~(uint.MaxValue >> prefixLength);
@@ -68,7 +71,6 @@ namespace SharpScan
 
             return ipList;
         }
-
         public static int GetPrefixLength(IPAddress ipAddress)
         {
             byte[] addressBytes = ipAddress.GetAddressBytes();
@@ -126,11 +128,11 @@ namespace SharpScan
             {
                 return MACDict;
             }
-            JavaScriptSerializer jss = new JavaScriptSerializer();
+            //SharpScriptSerializer jss = new SharpScriptSerializer();
             try
             {
                 string jsonData = File.ReadAllText(path);
-                MACDict = jss.Deserialize<Dictionary<string, string>>(jsonData);
+                //MACDict = jss.Deserialize<Dictionary<string, string>>(jsonData);
             }
             catch
             {

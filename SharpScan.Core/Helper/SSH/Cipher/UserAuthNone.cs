@@ -1,9 +1,9 @@
-using Tamir.SharpSsh.java;
-using String = Tamir.SharpSsh.java.String;
+using Tamir.SharpSsh.Sharp;
+using String = Tamir.SharpSsh.Sharp.String;
 
 namespace Tamir.SharpSsh.jsch
 {
-    /* -*-mode:java; c-basic-offset:2; -*- */
+    /* -*-mode:Sharp; c-basic-offset:2; -*- */
     /*
 	Copyright (c) 2002,2003,2004 ymnk, JCraft,Inc. All rights reserved.
 
@@ -57,7 +57,7 @@ namespace Tamir.SharpSsh.jsch
             }
             catch
             {
-//(java.io.UnsupportedEncodingException e){
+//(Sharp.io.UnsupportedEncodingException e){
                 _username = Util.getBytes(username);
             }
 
@@ -99,7 +99,7 @@ namespace Tamir.SharpSsh.jsch
                     }
                     catch
                     {
-//(java.io.UnsupportedEncodingException e){
+//(Sharp.io.UnsupportedEncodingException e){
                         message = Util.getString(_message);
                     }
                     if (userinfo != null)
@@ -133,7 +133,7 @@ namespace Tamir.SharpSsh.jsch
             return false;
         }
 
-        internal java.String getMethods()
+        internal Sharp.String getMethods()
         {
             return methods;
         }

@@ -1,4 +1,4 @@
-/* -*-mode:java; c-basic-offset:2; -*- */
+/* -*-mode:Sharp; c-basic-offset:2; -*- */
 /*
 	Copyright (c) 2004 ymnk, JCraft,Inc. All rights reserved.
 

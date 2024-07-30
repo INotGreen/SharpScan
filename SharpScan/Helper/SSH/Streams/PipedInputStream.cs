@@ -2,12 +2,12 @@ using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Tamir.SharpSsh.java.io;
+using Tamir.SharpSsh.Sharp.io;
 
 namespace Tamir.Streams
 {
 /*
- * @(#)PipedInputStream.java	1.35 03/12/19
+ * @(#)PipedInputStream.Sharp	1.35 03/12/19
  *
  * Copyright 2004 Sun Microsystems, Inc. All rights reserved.
  * SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -30,7 +30,7 @@ namespace Tamir.Streams
  *
  * @author  James Gosling
  * @version 1.35, 12/19/03
- * @see     java.io.PipedOutputStream
+ * @see     Sharp.io.PipedOutputStream
  * @since   JDK1.0
  */
 
@@ -91,8 +91,8 @@ namespace Tamir.Streams
 		 * connected to a <code>PipedOutputStream</code>
 		 * before being used.
 		 *
-		 * @see     java.io.PipedInputStream#connect(java.io.PipedOutputStream)
-		 * @see     java.io.PipedOutputStream#connect(java.io.PipedInputStream)
+		 * @see     Sharp.io.PipedInputStream#connect(Sharp.io.PipedOutputStream)
+		 * @see     Sharp.io.PipedOutputStream#connect(Sharp.io.PipedInputStream)
 		 */
 
         public PipedInputStream()
@@ -265,11 +265,11 @@ namespace Tamir.Streams
                     throw new IOException("Pipe broken");
                 }
                 /* full: kick any waiting readers */
-                //java: notifyAll();
+                //Sharp: notifyAll();
                 Monitor.PulseAll(this);
                 try
                 {
-                    //java: wait(1000);
+                    //Sharp: wait(1000);
                     Monitor.Wait(this, 1000);
                 }
                 catch (ThreadInterruptedException  ex)

@@ -4,7 +4,7 @@ using System.DirectoryServices;
 using System.Linq;
 using System.Text;
 
-namespace SharpScan.Helper
+namespace SharpScan
 {
     internal class Domain
     {

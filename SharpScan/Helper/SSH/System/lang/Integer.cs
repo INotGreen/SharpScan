@@ -1,4 +1,4 @@
-namespace Tamir.SharpSsh.java.lang
+namespace Tamir.SharpSsh.Sharp.lang
 {
     /// <summary>
     /// Summary description for Integer.

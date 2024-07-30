@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Mono.Options;
 using SharpScan.Plugins;
-using Tamir.SharpSsh.java.io;
+using Tamir.SharpSsh.Sharp.io;
 
 namespace SharpScan
 {
@@ -24,14 +24,16 @@ namespace SharpScan
         public static bool isUDP = false;
         public static bool POC = false;
         public static string Mode = "";
-        public static string targetSegment = "";
+        public static string hTarget = "";
         public static string outputFile = "";
         public static List<string> IPlist;
         public static string portRange = "";
         public static string maxConcurrency = "600";
         public static string delay = "10";
         public static string userName = "";
+        public static string userNameFile = "";
         public static string passWord = "";
+        public static string passWordFile = "";
 
         public class OnlinePC
         {
@@ -77,14 +79,16 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 { "i|icmp", "Perform icmp scan", i => icmpScan = i != null },
                 { "a|arp", "Perform arp scan", a => arpScan = a != null },
                 { "U|udp", "Perform udp scan", udp => isUDP = udp != null },
-                { "t|Target=", "Target segment to scan", t => targetSegment = t },
+                { "h|hTarget=", "Target segment to scan", h => hTarget = h },
                 { "p|ports=", "Ports to scan (e.g. \"0-1024\" or \"80,443,8080\")", p => portRange = p },
                 { "d|delay=", "Scan delay(ms),Defalt:1000", p => delay = p },
-                { "t|Thread=", "Maximum number of concurrent scans(Thread number),Defalt:600", m => maxConcurrency = m },
+                { "t|thread=", "Maximum number of concurrent scans(Thread number),Defalt:600", t => maxConcurrency = t },
                 { "u|username=", "Username for authentication", u => userName = u },
-                { "pw|password=", "Password for authentication", pw => passWord = pw },
-                { "m|mode=", "Password for authentication", mode => Mode = mode },
-                { "h|help", "Show this usage and help", h => showHelp = h != null },
+               {"pw|password=", "Password for authentication", pwd => passWord = pwd },
+                {"uf|ufile=", "Username for authentication", uf => userNameFile = uf },
+               {"pwf|pwdfile=", "Password for authentication", pwdf => passWord = pwdf },
+                 {"m|mode=", "Password for authentication", m => Mode = m },
+              {"help|show", "Show this usage and help", h => showHelp = h != null },
                 { "o|output=", "Output file to save console output", o => outputFile = o }
             };
 
@@ -111,23 +115,16 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             }
             Console.WriteLine($"Delay:{delay}   MaxConcurrency:{maxConcurrency}");
             new SetTls12UserRegistryKeys();
-            if (!string.IsNullOrEmpty(targetSegment))
+            if (!string.IsNullOrEmpty(hTarget))
             {
-                IPlist = SharpScan.GetIP.IPList(targetSegment);
-            }
-            if (!string.IsNullOrEmpty(portRange))
-            {
-                if (isUDP)
-                {
-                    await new UdpPortscan().ScanPortRange(targetSegment, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency));
-
-                }
-                else { await new TcpPortscan().ScanPortRange(targetSegment, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)); }
-
-                return;
+                IPlist = SharpScan.GetIP.IPList(hTarget);
             }
 
-            if (string.IsNullOrEmpty(targetSegment))
+
+
+
+
+            if (string.IsNullOrEmpty(hTarget))
             {
                 ShowHelp(options);
                 return;
@@ -141,7 +138,27 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 Console.SetError(multiTextWriter);
             }
 
-            Console.WriteLine("\r\nC_Segment: " + targetSegment + ".");
+            if (!string.IsNullOrEmpty(portRange))
+            {
+                if (isUDP)
+                {
+                    await new UdpPortscan().ScanPortRange(hTarget, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency));
+
+                }
+                else { await new TcpPortscan().ScanPortRange(hTarget, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)); }
+
+                return;
+            }
+            if (!string.IsNullOrEmpty(Mode))
+            {
+
+                await new HandlePOC().ModPacket(Mode);
+
+                return;
+            }
+
+
+            Console.WriteLine("\r\nC_Segment: " + hTarget + ".");
             Console.WriteLine("===================================================================");
             Console.WriteLine($"{"IP",-28} {"HostName",-28} {"OsVersion",-40}");
 

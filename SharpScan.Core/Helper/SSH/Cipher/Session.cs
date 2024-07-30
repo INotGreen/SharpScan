@@ -5,13 +5,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Tamir.SharpSsh.java;
-using Tamir.SharpSsh.java.lang;
-using Tamir.SharpSsh.java.net;
-using Tamir.SharpSsh.java.util;
+using Tamir.SharpSsh.Sharp;
+using Tamir.SharpSsh.Sharp.lang;
+using Tamir.SharpSsh.Sharp.net;
+using Tamir.SharpSsh.Sharp.util;
 using Exception = System.Exception;
-using String = Tamir.SharpSsh.java.String;
-using Thread = Tamir.SharpSsh.java.lang.Thread;
+using String = Tamir.SharpSsh.Sharp.String;
+using Thread = Tamir.SharpSsh.Sharp.lang.Thread;
 
 namespace Tamir.SharpSsh.jsch
 {
@@ -584,14 +584,14 @@ namespace Tamir.SharpSsh.jsch
                 }
 
                 V_S = new byte[i];
-                java.System.arraycopy(buf.buffer, 0, V_S, 0, i);
+                Sharp.System.arraycopy(buf.buffer, 0, V_S, 0, i);
                 //System.Console.WriteLine("V_S: ("+i+") ["+new String(V_S)+"]");
 
                 //io.put(V_C, 0, V_C.Length); io.put("\n".getBytes(), 0, 1);
                 {
                     // Some Cisco devices will miss to read '\n' if it is sent separately.
                     var foo = new byte[V_C.Length + 1];
-                    java.System.arraycopy(V_C, 0, foo, 0, V_C.Length);
+                    Sharp.System.arraycopy(V_C, 0, foo, 0, V_C.Length);
                     foo[foo.Length - 1] = (byte) '\n';
                     io.put(foo, 0, foo.Length);
                 }
@@ -807,11 +807,11 @@ namespace Tamir.SharpSsh.jsch
                 I_S = new byte[j - 1 - buf.getByte()];
             }
 
-            java.System.arraycopy(buf.buffer, buf.s, I_S, 0, I_S.Length);
+            Sharp.System.arraycopy(buf.buffer, buf.s, I_S, 0, I_S.Length);
             /*
 			try{
 			byte[] tmp=new byte[I_S.Length];
-			Tamir.SharpSsh.java.System.arraycopy(I_S, 0, tmp, 0, I_S.Length);
+			Tamir.SharpSsh.Sharp.System.arraycopy(I_S, 0, tmp, 0, I_S.Length);
 			Buffer tmpb=new Buffer(tmp);
 			System.Console.WriteLine("I_S: len="+I_S.Length);
 			tmpb.setOffSet(17);
@@ -1250,7 +1250,7 @@ namespace Tamir.SharpSsh.jsch
             if (session_id == null)
             {
                 session_id = new byte[H.Length];
-                java.System.arraycopy(H, 0, session_id, 0, H.Length);
+                Sharp.System.arraycopy(H, 0, session_id, 0, H.Length);
             }
 
             /*
@@ -1307,8 +1307,8 @@ namespace Tamir.SharpSsh.jsch
                     hash.update(buf.buffer, 0, buf.index);
                     byte[] foo = hash.digest();
                     var bar = new byte[Es2c.Length + foo.Length];
-                    java.System.arraycopy(Es2c, 0, bar, 0, Es2c.Length);
-                    java.System.arraycopy(foo, 0, bar, Es2c.Length, foo.Length);
+                    Sharp.System.arraycopy(Es2c, 0, bar, 0, Es2c.Length);
+                    Sharp.System.arraycopy(foo, 0, bar, Es2c.Length, foo.Length);
                     Es2c = bar;
                 }
                 s2ccipher.init(Cipher.DECRYPT_MODE, Es2c, IVs2c);
@@ -1329,8 +1329,8 @@ namespace Tamir.SharpSsh.jsch
                     hash.update(buf.buffer, 0, buf.index);
                     byte[] foo = hash.digest();
                     var bar = new byte[Ec2s.Length + foo.Length];
-                    java.System.arraycopy(Ec2s, 0, bar, 0, Ec2s.Length);
-                    java.System.arraycopy(foo, 0, bar, Ec2s.Length, foo.Length);
+                    Sharp.System.arraycopy(Ec2s, 0, bar, 0, Ec2s.Length);
+                    Sharp.System.arraycopy(foo, 0, bar, Ec2s.Length, foo.Length);
                     Ec2s = bar;
                 }
                 c2scipher.init(Cipher.ENCRYPT_MODE, Ec2s, IVc2s);

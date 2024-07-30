@@ -51,17 +51,17 @@ namespace SharpRDPCheck
                 sendConnectNegotiation(NegotiationProtocol.PROTOCOL_RDP, loadBalanceToken);
 
                 // Server X.224 Connection Confirm PDU
-                num = receiveConnectNegotiation();
+                //num = receiveConnectNegotiation();
 
-                if (num != 0)
-                {
-                    throw new RDFatalException("Security negotiation failed!");
-                }
+                //if (num != 0)
+                //{
+                //    //throw new RDFatalException("Security negotiation failed!");
+                //}
             }
             if(Options.hash.Length>0)
-                Console.WriteLine("[+] Valid:" + Options.Username + "  " + Options.hash);
+                Console.WriteLine($"[+] {Options.Host} login successful:" + Options.Username + "  " + Options.hash);
             else
-                Console.WriteLine("[+] Valid:" + Options.Username + "  " + Options.Password);
+                Console.WriteLine($"[+] {Options.Host} Login failed:" + Options.Username + "  " + Options.Password);
 
         }
 

@@ -1,4 +1,4 @@
-namespace Tamir.SharpSsh.java
+namespace Tamir.SharpSsh.Sharp
 {
     /// <summary>
     /// Summary description for RuntimeException.

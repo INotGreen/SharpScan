@@ -1,23 +1,23 @@
-namespace Tamir.SharpSsh.java.util
+namespace Tamir.SharpSsh.Sharp.util
 {
     /// <summary>
-    /// Summary description for JavaString.
+    /// Summary description for SharpString.
     /// </summary>
-    public class JavaString : String
+    public class SharpString : String
     {
-        public JavaString(string s) : base(s)
+        public SharpString(string s) : base(s)
         {
         }
 
-        public JavaString(object o) : base(o)
+        public SharpString(object o) : base(o)
         {
         }
 
-        public JavaString(byte[] arr) : base(arr)
+        public SharpString(byte[] arr) : base(arr)
         {
         }
 
-        public JavaString(byte[] arr, int offset, int len) : base(arr, offset, len)
+        public SharpString(byte[] arr, int offset, int len) : base(arr, offset, len)
         {
         }
     }

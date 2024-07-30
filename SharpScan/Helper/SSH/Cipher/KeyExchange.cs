@@ -2,7 +2,7 @@ using System;
 
 namespace Tamir.SharpSsh.jsch
 {
-    /* -*-mode:java; c-basic-offset:2; -*- */
+    /* -*-mode:Sharp; c-basic-offset:2; -*- */
     /*
 	Copyright (c) 2002,2003,2004 ymnk, JCraft,Inc. All rights reserved.
 
@@ -65,7 +65,7 @@ namespace Tamir.SharpSsh.jsch
         protected byte[] K;
         protected byte[] K_S;
 
-        public java.String[] _guess;
+        public Sharp.String[] _guess;
         protected Session session;
         protected HASH sha;
 
@@ -87,10 +87,10 @@ namespace Tamir.SharpSsh.jsch
 		} 
 		*/
 
-        internal static java.String[] guess(byte[] I_S, byte[] I_C)
+        internal static Sharp.String[] guess(byte[] I_S, byte[] I_C)
         {
             //System.out.println("guess: ");
-            var guess = new java.String[PROPOSAL_MAX];
+            var guess = new Sharp.String[PROPOSAL_MAX];
             var sb = new Buffer(I_S);
             sb.setOffSet(17);
             var cb = new Buffer(I_C);

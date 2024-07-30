@@ -3,11 +3,11 @@ using System.Collections;
 using System.IO;
 using System.Text;
 using System.Threading;
-using Tamir.SharpSsh.java.net;
+using Tamir.SharpSsh.Sharp.net;
 
 namespace Tamir.SharpSsh.jsch
 {
-    /* -*-mode:java; c-basic-offset:2; -*- */
+    /* -*-mode:Sharp; c-basic-offset:2; -*- */
     /*
 	Copyright (c) 2002,2003,2004 ymnk, JCraft,Inc. All rights reserved.
 
@@ -484,10 +484,10 @@ namespace Tamir.SharpSsh.jsch
         }
 
         /*
-		Based on: http://www.orlingrabbe.com/dsa_java.htm
-		And on: http://groups.google.com/group/comp.lang.java.security/browse_thread/thread/8f3bb93f9348434f/a1681ec252084483?lnk=st&q=ASN.1+signature+dsa+format&rnum=5&hl=en#a1681ec252084483
+		Based on: http://www.orlingrabbe.com/dsa_Sharp.htm
+		And on: http://groups.google.com/group/comp.lang.Sharp.security/browse_thread/thread/8f3bb93f9348434f/a1681ec252084483?lnk=st&q=ASN.1+signature+dsa+format&rnum=5&hl=en#a1681ec252084483
 		If you're asking about the SHA/DSA signature format from 
-		java.security.Signature, it looks like this, for example: 
+		Sharp.security.Signature, it looks like this, for example: 
 
 		% od -tx1 sig 
 		0000000 30 2c 02 14 4f 01 01 92 24 7c b3 c7 af 76 71 92 
@@ -545,7 +545,7 @@ namespace Tamir.SharpSsh.jsch
             s.Close();
         }
 
-        internal static java.String unquote(java.String _path)
+        internal static Sharp.String unquote(Sharp.String _path)
         {
             byte[] path = _path.getBytes();
             int pathlen = path.Length;
@@ -556,7 +556,7 @@ namespace Tamir.SharpSsh.jsch
                 {
                     if (i + 1 == pathlen)
                         break;
-                    java.System.arraycopy(path, i + 1, path, i, path.Length - (i + 1));
+                    Sharp.System.arraycopy(path, i + 1, path, i, path.Length - (i + 1));
                     pathlen--;
                     continue;
                 }
@@ -564,8 +564,8 @@ namespace Tamir.SharpSsh.jsch
             }
             if (pathlen == path.Length) return _path;
             var foo = new byte[pathlen];
-            java.System.arraycopy(path, 0, foo, 0, pathlen);
-            return new java.String(foo);
+            Sharp.System.arraycopy(path, 0, foo, 0, pathlen);
+            return new Sharp.String(foo);
         }
 
         #region Nested type: createSocketRun

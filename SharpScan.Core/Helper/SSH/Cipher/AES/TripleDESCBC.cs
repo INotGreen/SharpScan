@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace Tamir.SharpSsh.jsch.jce
 {
-    /* -*-mode:java; c-basic-offset:2; -*- */
+    /* -*-mode:Sharp; c-basic-offset:2; -*- */
     /*
 	Copyright (c) 2002,2003,2004 ymnk, JCraft,Inc. All rights reserved.
 
@@ -38,7 +38,7 @@ namespace Tamir.SharpSsh.jsch.jce
         private const int bsize = 24;
         private ICryptoTransform cipher;
         private TripleDES triDes;
-        //private javax.crypto.Cipher cipher;    
+        //private Sharpx.crypto.Cipher cipher;    
         public override int getIVSize()
         {
             return ivsize;
@@ -72,21 +72,21 @@ namespace Tamir.SharpSsh.jsch.jce
 
             try
             {
-                //      cipher=javax.crypto.Cipher.getInstance("DESede/CBC/"+pad);
+                //      cipher=Sharpx.crypto.Cipher.getInstance("DESede/CBC/"+pad);
                 /*
 					  // The following code does not work on IBM's JDK 1.4.1
 					  SecretKeySpec skeySpec = new SecretKeySpec(key, "DESede");
 					  cipher.init((mode==ENCRYPT_MODE?
-						   javax.crypto.Cipher.ENCRYPT_MODE:
-						   javax.crypto.Cipher.DECRYPT_MODE),
+						   Sharpx.crypto.Cipher.ENCRYPT_MODE:
+						   Sharpx.crypto.Cipher.DECRYPT_MODE),
 						  skeySpec, new IvParameterSpec(iv));
 				*/
                 //      DESedeKeySpec keyspec=new DESedeKeySpec(key);
                 //      SecretKeyFactory keyfactory=SecretKeyFactory.getInstance("DESede");
                 //      SecretKey _key=keyfactory.generateSecret(keyspec);
                 //      cipher.init((mode==ENCRYPT_MODE?
-                //		   javax.crypto.Cipher.ENCRYPT_MODE:
-                //		   javax.crypto.Cipher.DECRYPT_MODE),
+                //		   Sharpx.crypto.Cipher.ENCRYPT_MODE:
+                //		   Sharpx.crypto.Cipher.DECRYPT_MODE),
                 //		  _key, new IvParameterSpec(iv));
                 cipher = (mode == ENCRYPT_MODE
                               ? triDes.CreateEncryptor(key, iv)

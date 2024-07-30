@@ -3,11 +3,11 @@ using System.Collections;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using Tamir.SharpSsh.java.lang;
+using Tamir.SharpSsh.Sharp.lang;
 
 namespace Tamir.SharpSsh.jsch
 {
-    /* -*-mode:java; c-basic-offset:2; -*- */
+    /* -*-mode:Sharp; c-basic-offset:2; -*- */
     /*
 	Copyright (c) 2002,2003,2004 ymnk, JCraft,Inc. All rights reserved.
 

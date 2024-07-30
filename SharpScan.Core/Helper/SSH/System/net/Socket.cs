@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using Sock = System.Net.Sockets.Socket;
 
-namespace Tamir.SharpSsh.java.net
+namespace Tamir.SharpSsh.Sharp.net
 {
     /// <summary>
     /// Summary description for Socket.

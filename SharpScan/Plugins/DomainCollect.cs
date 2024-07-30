@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using SharpScan.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;

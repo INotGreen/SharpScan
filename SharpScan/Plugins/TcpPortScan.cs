@@ -113,7 +113,9 @@ namespace SharpScan
                                 {
                                     if (tcpClient.Connected)
                                     {
-                                        Console.WriteLine($"[*] {IP}:{port}{GetServiceByPort(port)} is open");
+                                        Program.alivePort++;
+                                        Program.IpPortList.Add($"{IP}:{port}");
+                                        Console.WriteLine($"[*] {IP}:{port}{Helper.GetServiceByPort(port)} is open");
                                     }
                                 }
                             }
@@ -139,17 +141,7 @@ namespace SharpScan
             }
         }
 
-        public static string GetServiceByPort(int port)
-        {
-            var service = Configuration.PortList.FirstOrDefault(p => p.Value == port).Key;
-            if (service != null)
-            {
-                return $" ({service})";
-            }
-            return "";
 
-
-        }
         static int[] ParsePortRange(string portRange)
         {
             List<int> ports = new List<int>();
@@ -179,9 +171,14 @@ namespace SharpScan
                     }
                 }
             }
+            else if (int.TryParse(portRange, out int singlePort))
+            {
+                ports.Add(singlePort);
+            }
 
             return ports.ToArray();
         }
+
 
 
 

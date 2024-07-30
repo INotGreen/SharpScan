@@ -3,17 +3,17 @@
 using System;
 using System.IO;
 using System.Runtime.CompilerServices;
-using Tamir.SharpSsh.java.io;
-using Tamir.SharpSsh.java.lang;
-using Tamir.SharpSsh.java.util;
+using Tamir.SharpSsh.Sharp.io;
+using Tamir.SharpSsh.Sharp.lang;
+using Tamir.SharpSsh.Sharp.util;
 using Tamir.Streams;
-using Exception = Tamir.SharpSsh.java.Exception;
-using File = Tamir.SharpSsh.java.io.File;
-using String = Tamir.SharpSsh.java.String;
+using Exception = Tamir.SharpSsh.Sharp.Exception;
+using File = Tamir.SharpSsh.Sharp.io.File;
+using String = Tamir.SharpSsh.Sharp.String;
 
 namespace Tamir.SharpSsh.jsch
 {
-    /* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
+    /* -*-mode:Sharp; c-basic-offset:2; indent-tabs-mode:nil -*- */
     /*
 	Copyright (c) 2002,2003,2004,2005,2006 ymnk, JCraft,Inc. All rights reserved.
 
@@ -687,7 +687,7 @@ namespace Tamir.SharpSsh.jsch
                                     {
                                         if (_ackid == seq)
                                         {
-                                            java.System.err.println("ack error: startid=" + startid + " seq=" + seq +
+                                            Sharp.System.err.println("ack error: startid=" + startid + " seq=" + seq +
                                                                     " _ackid=" + _ackid);
                                         }
                                         else
@@ -860,7 +860,7 @@ namespace Tamir.SharpSsh.jsch
                 //  private int _ackid=0;
                 //  private int ackcount=0;
 
-                //  public void write(byte[] d, int s, int len) { //throws java.io.IOException{
+                //  public void write(byte[] d, int s, int len) { //throws Sharp.io.IOException{
 
                 //    if(init){
                 //      startid=count;
@@ -899,11 +899,11 @@ namespace Tamir.SharpSsh.jsch
                 //    catch(Exception e){ throw new IOException(e.toString());  }
                 //  }
                 //  byte[] _data=new byte[1];
-                //  public void write(int foo) { //throws java.io.IOException{
+                //  public void write(int foo) { //throws Sharp.io.IOException{
                 //    _data[0]=(byte)foo;
                 //    write(_data, 0, 1);
                 //  }
-                //  public void close() { //throws java.io.IOException{
+                //  public void close() { //throws Sharp.io.IOException{
 
                 //    try{
                 //      int _ackcount=count-startid;
@@ -1290,17 +1290,17 @@ namespace Tamir.SharpSsh.jsch
                 //  bool closed=false;
                 //  int rest_length=0;
                 //  byte[] _data=new byte[1];
-                //  public int read() { //throws java.io.IOException{
+                //  public int read() { //throws Sharp.io.IOException{
                 //    int i=read(_data, 0, 1);
                 //    if (i==-1) { return -1; }
                 //    else {
                 //      return _data[0]&0xff;
                 //    }
                 //  }
-                //  public int read(byte[] d) { //throws java.io.IOException{
+                //  public int read(byte[] d) { //throws Sharp.io.IOException{
                 //    return read(d, 0, d.Length);
                 //  }
-                //  public int read(byte[] d, int s, int len) { //throws java.io.IOException{
+                //  public int read(byte[] d, int s, int len) { //throws Sharp.io.IOException{
                 //    if(d==null){throw new NullPointerException();}
                 //    if(s<0 || len <0 || s+len>d.Length){
                 //      throw new IndexOutOfBoundsException();
@@ -2373,11 +2373,11 @@ namespace Tamir.SharpSsh.jsch
             else
             {
                 dir = new byte[i];
-                java.System.arraycopy(path, 0, dir, 0, i);
+                Sharp.System.arraycopy(path, 0, dir, 0, i);
             }
             //System.err.println("dir: "+new String(dir));
             var pattern = new byte[path.Length - i - 1];
-            java.System.arraycopy(path, i + 1, pattern, 0, pattern.Length);
+            Sharp.System.arraycopy(path, i + 1, pattern, 0, pattern.Length);
             //System.err.println("file: "+new String(pattern));
 
             sendOPENDIR(dir);
@@ -2491,10 +2491,10 @@ namespace Tamir.SharpSsh.jsch
             else
             {
                 dir = new byte[i];
-                java.System.arraycopy(path, 0, dir, 0, i);
+                Sharp.System.arraycopy(path, 0, dir, 0, i);
             }
             var pattern = new byte[path.Length - i - 1];
-            java.System.arraycopy(path, i + 1, pattern, 0, pattern.Length);
+            Sharp.System.arraycopy(path, i + 1, pattern, 0, pattern.Length);
             //System.out.println("dir: "+new String(dir)+" pattern: "+new String(pattern));
             try
             {
@@ -2726,10 +2726,10 @@ namespace Tamir.SharpSsh.jsch
                 {
                     foo = rest_length;
                     if (foo > len) foo = len;
-                    java.System.arraycopy(rest_byte, 0, d, s, foo);
+                    Sharp.System.arraycopy(rest_byte, 0, d, s, foo);
                     if (foo != rest_length)
                     {
-                        java.System.arraycopy(rest_byte, foo,
+                        Sharp.System.arraycopy(rest_byte, foo,
                                               rest_byte, 0, rest_length - foo);
                     }
                     if (monitor != null)

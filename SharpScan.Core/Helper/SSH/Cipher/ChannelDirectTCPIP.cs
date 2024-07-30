@@ -1,12 +1,12 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using Tamir.SharpSsh.java.lang;
-using Thread = Tamir.SharpSsh.java.lang.Thread;
+using Tamir.SharpSsh.Sharp.lang;
+using Thread = Tamir.SharpSsh.Sharp.lang.Thread;
 
 namespace Tamir.SharpSsh.jsch
 {
-    /* -*-mode:java; c-basic-offset:2; -*- */
+    /* -*-mode:Sharp; c-basic-offset:2; -*- */
     /*
 	Copyright (c) 2002,2003,2004 ymnk, JCraft,Inc. All rights reserved.
 

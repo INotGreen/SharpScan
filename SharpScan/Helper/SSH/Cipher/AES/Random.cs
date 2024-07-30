@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace Tamir.SharpSsh.jsch.jce
 {
-    /* -*-mode:java; c-basic-offset:2; -*- */
+    /* -*-mode:Sharp; c-basic-offset:2; -*- */
     /*
 	Copyright (c) 2002,2003,2004 ymnk, JCraft,Inc. All rights reserved.
 
@@ -45,12 +45,12 @@ namespace Tamir.SharpSsh.jsch.jce
             //	  random = new SecureRandom();
             //	  
             //    try{ random=SecureRandom.getInstance("SHA1PRNG"); }
-            //    catch(java.security.NoSuchAlgorithmException e){ 
+            //    catch(Sharp.security.NoSuchAlgorithmException e){ 
             //      // System.out.println(e); 
             //
             //      // The following code is for IBM's JCE
             //      try{ random=SecureRandom.getInstance("IBMSecureRandom"); }
-            //      catch(java.security.NoSuchAlgorithmException ee){ 
+            //      catch(Sharp.security.NoSuchAlgorithmException ee){ 
             //	System.out.println(ee); 
             //      }
             //    }

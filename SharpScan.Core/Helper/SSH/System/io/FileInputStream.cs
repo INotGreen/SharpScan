@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace Tamir.SharpSsh.java.io
+namespace Tamir.SharpSsh.Sharp.io
 {
     /// <summary>
     /// Summary description for FileInputStream.

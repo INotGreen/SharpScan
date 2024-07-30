@@ -1,4 +1,4 @@
-using Tamir.SharpSsh.java.net;
+using Tamir.SharpSsh.Sharp.net;
 
 namespace Tamir.SharpSsh.jsch
 {

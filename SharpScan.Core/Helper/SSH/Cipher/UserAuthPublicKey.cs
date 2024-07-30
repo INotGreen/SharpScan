@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Tamir.SharpSsh.jsch
 {
-    /* -*-mode:java; c-basic-offset:2; -*- */
+    /* -*-mode:Sharp; c-basic-offset:2; -*- */
     /*
 	Copyright (c) 2002,2003,2004 ymnk, JCraft,Inc. All rights reserved.
 
@@ -61,7 +61,7 @@ namespace Tamir.SharpSsh.jsch
             }
             catch
             {
-//(java.io.UnsupportedEncodingException e){
+//(Sharp.io.UnsupportedEncodingException e){
                 _username = Util.getBytes(username);
             }
 
@@ -123,7 +123,7 @@ namespace Tamir.SharpSsh.jsch
                             }
                             catch
                             {
-//(java.io.UnsupportedEncodingException e){
+//(Sharp.io.UnsupportedEncodingException e){
                                 message = Util.getString(_message);
                             }
                             if (userinfo != null)
@@ -249,7 +249,7 @@ namespace Tamir.SharpSsh.jsch
                         }
                         catch
                         {
-//(java.io.UnsupportedEncodingException e){
+//(Sharp.io.UnsupportedEncodingException e){
                             message = Util.getString(_message);
                         }
                         if (userinfo != null)

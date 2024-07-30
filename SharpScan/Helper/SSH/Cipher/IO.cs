@@ -1,11 +1,11 @@
 using System;
 using System.IO;
-using Tamir.SharpSsh.java.io;
+using Tamir.SharpSsh.Sharp.io;
 using Tamir.Streams;
 
 namespace Tamir.SharpSsh.jsch
 {
-    /* -*-mode:java; c-basic-offset:2; -*- */
+    /* -*-mode:Sharp; c-basic-offset:2; -*- */
     /*
 	Copyright (c) 2002,2003,2004 ymnk, JCraft,Inc. All rights reserved.
 

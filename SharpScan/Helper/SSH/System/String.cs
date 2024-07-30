@@ -1,7 +1,7 @@
 using System.Text;
 using Str = System.String;
 
-namespace Tamir.SharpSsh.java
+namespace Tamir.SharpSsh.Sharp
 {
     /// <summary>
     /// Summary description for String.

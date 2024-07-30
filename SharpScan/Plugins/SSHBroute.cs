@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using Tamir.SharpSsh;
 
 namespace SharpScan
@@ -30,41 +32,60 @@ namespace SharpScan
             var cts = new CancellationTokenSource();
             var token = cts.Token;
 
-            foreach (var userPair in UserDict)
+
+            if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
             {
-                foreach (var user in userPair.Value)
+                using (var client = new TcpClient())
                 {
-                    foreach (var pass in Configuration.Passwords)
+                    var result = client.BeginConnect(host, port, null, null);
+                    bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1.5));
+                    if (success)
                     {
-                        if (token.IsCancellationRequested)
-                        {
-                           // PrintResults();
-                            return;
-                        }
-
-                        string comboKey = $"{host}:{port}:{user}:{pass}";
-
-                        if (TriedCombinations.ContainsKey(comboKey))
-                        {
-                            continue;
-                        }
-
-                        TriedCombinations[comboKey] = true;
-
-                        while (true)
-                        {
-                            if (activeThreads < maxDegreeOfParallelism)
-                            {
-                                Interlocked.Increment(ref activeThreads);
-                                ThreadPool.QueueUserWorkItem(_ => TryLogin(host, port, user, pass, cts, token));
-                                // Thread.Sleep(100);
-                                break;
-                            }
-                            Thread.Sleep(100); // 等待，直到有可用的线程池线程
-                        }
+                        Console.WriteLine($"[*] {host}:{port}{Helper.GetServiceByPort(port)} is open");
+                        TryLogin(host, port, Program.userName, Program.passWord, cts, token);
                     }
                 }
             }
+            else
+            {
+                foreach (var userPair in UserDict)
+                {
+                    foreach (var user in userPair.Value)
+                    {
+                        foreach (var pass in Configuration.Passwords)
+                        {
+                            if (token.IsCancellationRequested)
+                            {
+                                // PrintResults();
+                                return;
+                            }
+
+                            string comboKey = $"{host}:{port}:{user}:{pass}";
+
+                            if (TriedCombinations.ContainsKey(comboKey))
+                            {
+                                continue;
+                            }
+
+                            TriedCombinations[comboKey] = true;
+
+                            while (true)
+                            {
+                                if (activeThreads < maxDegreeOfParallelism)
+                                {
+                                    Interlocked.Increment(ref activeThreads);
+                                    ThreadPool.QueueUserWorkItem(_ => TryLogin(host, port, user, pass, cts, token));
+                                    // Thread.Sleep(100);
+                                    break;
+                                }
+                                Thread.Sleep(100); // 等待，直到有可用的线程池线程
+                            }
+                        }
+                    }
+                }
+
+            }
+
 
             // 等待所有线程完成
             while (activeThreads > 0)
@@ -74,6 +95,7 @@ namespace SharpScan
 
             //PrintResults();
         }
+
 
         static async void TryLogin(string host, int port, string username, string password, CancellationTokenSource cts, CancellationToken token)
         {
@@ -88,7 +110,7 @@ namespace SharpScan
                 {
                     try
                     {
-                        
+
                         var result = client.BeginConnect(host, port, null, null);
                         bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1.5));
                         if (!success)
@@ -158,7 +180,7 @@ namespace SharpScan
                 return "Unable to determine the operating system version.";
             }
         }
-
+        
         static void LogException(Exception ex)
         {
             // 这里可以将异常信息记录到日志文件中

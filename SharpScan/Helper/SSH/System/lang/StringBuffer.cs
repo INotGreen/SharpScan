@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Tamir.SharpSsh.java.lang
+namespace Tamir.SharpSsh.Sharp.lang
 {
     /// <summary>
     /// Summary description for StringBuffer.

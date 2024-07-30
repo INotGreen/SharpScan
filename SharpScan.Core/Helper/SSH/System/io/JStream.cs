@@ -1,7 +1,7 @@
 using System.IO;
 using Tamir.Streams;
 
-namespace Tamir.SharpSsh.java.io
+namespace Tamir.SharpSsh.Sharp.io
 {
     /// <summary>
     /// Summary description for Stream.

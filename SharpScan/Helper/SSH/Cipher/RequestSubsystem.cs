@@ -1,9 +1,9 @@
-using Tamir.SharpSsh.java;
-using Tamir.SharpSsh.java.lang;
+using Tamir.SharpSsh.Sharp;
+using Tamir.SharpSsh.Sharp.lang;
 
 namespace Tamir.SharpSsh.jsch
 {
-    /* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
+    /* -*-mode:Sharp; c-basic-offset:2; indent-tabs-mode:nil -*- */
     /*
 	Copyright (c) 2005 ymnk, JCraft,Inc. All rights reserved.
 

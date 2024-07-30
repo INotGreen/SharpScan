@@ -1,5 +1,5 @@
 using System.IO;
-using Tamir.SharpSsh.java.io;
+using Tamir.SharpSsh.Sharp.io;
 
 namespace Tamir.Streams
 {

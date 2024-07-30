@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace Tamir.SharpSsh.jsch.jce
 {
-    /* -*-mode:java; c-basic-offset:2; -*- */
+    /* -*-mode:Sharp; c-basic-offset:2; -*- */
     /*
 	Copyright (c) 2002,2003,2004 ymnk, JCraft,Inc. All rights reserved.
 
@@ -74,11 +74,11 @@ namespace Tamir.SharpSsh.jsch.jce
             try
             {
                 //      SecretKeySpec keyspec=new SecretKeySpec(key, "AES");
-                //		cipher=javax.crypto.Cipher.getInstance("AES/CBC/"+pad);
+                //		cipher=Sharpx.crypto.Cipher.getInstance("AES/CBC/"+pad);
 
                 //      cipher.init((mode==ENCRYPT_MODE?
-                //		   javax.crypto.Cipher.ENCRYPT_MODE:
-                //		   javax.crypto.Cipher.DECRYPT_MODE),
+                //		   Sharpx.crypto.Cipher.ENCRYPT_MODE:
+                //		   Sharpx.crypto.Cipher.DECRYPT_MODE),
                 //		  keyspec, new IvParameterSpec(iv));
                 cipher = (mode == ENCRYPT_MODE
                               ? rijndael.CreateEncryptor(key, iv)

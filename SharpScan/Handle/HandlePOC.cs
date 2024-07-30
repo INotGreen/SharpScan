@@ -1,6 +1,7 @@
 ﻿
-using SSharpScan;
+
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -87,12 +88,90 @@ namespace SharpScan
                         SshBrute.Run(ip);
                         break;
                     }
-                    // case "445":
-                    //     {
-                    //         Smblogin
-                    //     }
+                case "3389":
+                    {
+                        new RdpBroute(ip);
+                        break;
+
+                    }
             }
         }
+
+        public async Task ModPacket(string Mode)
+        {
+
+            using (SemaphoreSlim semaphore = new SemaphoreSlim(Convert.ToInt32(Program.maxConcurrency)))
+            {
+                switch (Mode.ToLower())
+                {
+                    case "ssh":
+                        {
+                            List<Task> tasks = new List<Task>();
+
+                            foreach (var ip in Program.IPlist)
+                            {
+                                await semaphore.WaitAsync();
+                                tasks.Add(Task.Run(async () =>
+                                {
+                                    try
+                                    {
+
+                                        BrotePacket($"{ip}:{22}");
+                                    }
+                                    finally
+                                    {
+                                        semaphore.Release();
+                                    }
+                                }));
+                                await Task.Delay(Convert.ToInt32(Program.delay));
+                            }
+                            await Task.WhenAll(tasks);
+                            break;
+                        }
+                    case "rdp":
+                        {
+                            List<Task> tasks = new List<Task>();
+
+                            foreach (var ip in Program.IPlist)
+                            {
+                                await semaphore.WaitAsync();
+                                tasks.Add(Task.Run(async () =>
+                                {
+                                    try
+                                    {
+                                        BrotePacket($"{ip}:{3389}");
+                                    }
+                                    finally
+                                    {
+                                        semaphore.Release();
+                                    }
+                                }));
+                                await Task.Delay(Convert.ToInt32(Program.delay));
+                            }
+                            await Task.WhenAll(tasks);
+                            break;
+                        }
+                    case "ms17010":
+                        {
+                            break;
+                        }
+
+                    case "smb":
+                        {
+                            break;
+                        }
+                    case "ftp":
+                        {
+                            break;
+                        }
+
+                }
+            }
+
+
+        }
+
+
 
         public static async Task PocPacket(string ipPort)
         {

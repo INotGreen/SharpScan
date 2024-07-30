@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace Tamir.SharpSsh.java.util
+namespace Tamir.SharpSsh.Sharp.util
 {
     /// <summary>
     /// Summary description for Vector.
