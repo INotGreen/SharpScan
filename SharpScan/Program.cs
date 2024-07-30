@@ -23,6 +23,7 @@ namespace SharpScan
         public static bool arpScan = false;
         public static bool isUDP = false;
         public static bool POC = false;
+        public static string Mode = "";
         public static string targetSegment = "";
         public static string outputFile = "";
         public static List<string> IPlist;
@@ -79,9 +80,10 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 { "t|Target=", "Target segment to scan", t => targetSegment = t },
                 { "p|ports=", "Ports to scan (e.g. \"0-1024\" or \"80,443,8080\")", p => portRange = p },
                 { "d|delay=", "Scan delay(ms),Defalt:1000", p => delay = p },
-                { "m|maxconcurrency=", "Maximum number of concurrent scans,Defalt:600", m => maxConcurrency = m },
+                { "t|Thread=", "Maximum number of concurrent scans(Thread number),Defalt:600", m => maxConcurrency = m },
                 { "u|username=", "Username for authentication", u => userName = u },
                 { "pw|password=", "Password for authentication", pw => passWord = pw },
+                { "m|mode", "Password for authentication", mode => Mode = mode },
                 { "h|help", "Show this usage and help", h => showHelp = h != null },
                 { "o|output=", "Output file to save console output", o => outputFile = o }
             };
@@ -127,7 +129,6 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
             if (string.IsNullOrEmpty(targetSegment))
             {
-                //Console.WriteLine("Target segment must be specified using -s or --segment.");
                 ShowHelp(options);
                 return;
             }
@@ -169,7 +170,6 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             GC.Collect();
 
             new DomainCollect();
-
 
             await new HandlePOC().HandleDefault();
 

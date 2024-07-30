@@ -52,7 +52,7 @@ namespace SharpScan
                 }
                 catch (Exception ex)
                 {
-                    return "null";
+                    return "";
                 }
             }
         }
@@ -61,7 +61,7 @@ namespace SharpScan
         {
             if (majorVersion == 10)
             {
-                if (buildNumber >= 22000) return "Windows 11";
+                if (buildNumber >= 22000) return "Windows 11 later";
                 if (buildNumber >= 19041) return "Windows 10 Version 2004 or later";
                 if (buildNumber >= 18362) return "Windows 10 Version 1903 or 1909";
                 if (buildNumber >= 17763) return "Windows 10 Version 1809";
@@ -146,14 +146,14 @@ namespace SharpScan
 
                 string OSname = Dns.GetHostEntry(IP).HostName;
                 if (OSname == IP)
-                    return "NULL";
+                    return "";
 
                 dnsCache.TryAdd(IP, OSname);
                 return OSname;
             }
             catch (Exception)
             {
-                return "NULL";
+                return "";
             }
         }
     }

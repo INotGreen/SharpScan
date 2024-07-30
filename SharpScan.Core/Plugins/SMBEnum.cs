@@ -12,12 +12,12 @@ namespace SharpScan
     {
         public async Task Smblogin(List<string> IPlist)
         {
-            if (!string.IsNullOrEmpty(Program.Username) && !string.IsNullOrEmpty(Program.Password))
+            if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
             {
                 List<Task> IcmpTasks = new List<Task>();
                 foreach (var Ip in IPlist)
                 {
-                    IcmpTasks.Add(Task.Run(() => Smblogin(Ip, Program.Username, Program.Password)));
+                    IcmpTasks.Add(Task.Run(() => Smblogin(Ip, Program.userName, Program.passWord)));
                 }
 
                 await Task.WhenAll(IcmpTasks);

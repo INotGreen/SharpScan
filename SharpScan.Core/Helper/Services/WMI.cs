@@ -2,7 +2,7 @@
 using System;
 using System.Threading;
 
-namespace SharpHostInfo.Services
+namespace SharpScan
 {
     public class WMI
     {
@@ -33,7 +33,7 @@ namespace SharpHostInfo.Services
             if (response.Length == 0) return false;
 
             NTLMSSPExtract.ParsingSocketStremResponse(ref response, ref _SSPKey);
-            Helpers.SSPKeyOutput.Print(host, _SSPKey);
+            SSPKeyOutput.Print(host, _SSPKey);
             return true;
         }
     }

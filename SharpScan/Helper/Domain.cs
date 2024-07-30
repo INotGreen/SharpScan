@@ -13,7 +13,6 @@ namespace SharpScan.Helper
         {
             try
             {
-                string q = null;
                 GetAllGroup();
                 GetAllOu();
                 GetAllAdmins();
@@ -197,6 +196,7 @@ namespace SharpScan.Helper
                 Console.WriteLine("[!] ERROR: {0}", e.Message);
             }
         }
+
         static void GetAllAdministrators()
         {
             try

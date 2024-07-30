@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace SharpHostInfo.Helpers
+namespace SharpScan
 {
     public class SSPKeyOutput
     {

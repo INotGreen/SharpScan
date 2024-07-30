@@ -6,64 +6,89 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 
+
 namespace SharpScan
 {
     public class GetIP
     {
         public static List<string> IPList(string IPRange)
         {
-
             List<string> strings = new List<string>();
-            List<IPAddress> ipList = GetIPRange(IPRange);
+            List<string> ipList = GetIPRange(IPRange);
 
             // 输出IP地址列表
             foreach (var ip in ipList)
             {
-                strings.Add(ip.ToString());
+                //Console.WriteLine(ip);
+                strings.Add(ip);
             }
             return strings;
         }
 
-        public static List<IPAddress> GetIPRange(string cidr)
+        public static List<string> GetIPRange(string ipRange)
         {
-            var ipList = new List<IPAddress>();
+            var ipList = new List<string>();
 
-            // 解析CIDR
-            string[] parts = cidr.Split('/');
-            if (parts.Length != 2)
+            if (!IPAddress.TryParse(ipRange.Split('/')[0], out IPAddress baseAddress))
             {
-                throw new ArgumentException("Invalid CIDR format");
+                throw new ArgumentException("Invalid IP address format");
             }
 
-            IPAddress baseAddress = IPAddress.Parse(parts[0]);
-            int prefixLength = int.Parse(parts[1]);
+            int prefixLength = GetPrefixLength(baseAddress);
 
-            // 获取子网掩码
+            if (ipRange.Contains("/"))
+            {
+                string[] parts = ipRange.Split('/');
+                if (parts.Length != 2 || !int.TryParse(parts[1], out prefixLength))
+                {
+                    throw new ArgumentException("Invalid CIDR format");
+                }
+            }
+
             uint mask = ~(uint.MaxValue >> prefixLength);
-
-            // 获取起始IP地址的整数表示
             byte[] baseAddressBytes = baseAddress.GetAddressBytes();
-            Array.Reverse(baseAddressBytes); // 以网络字节顺序排列
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(baseAddressBytes); // 以网络字节顺序排列
+            }
             uint baseAddressInt = BitConverter.ToUInt32(baseAddressBytes, 0);
 
-            // 计算子网中的起始IP地址
             uint startAddressInt = baseAddressInt & mask;
-
-            // 计算子网中的结束IP地址
             uint endAddressInt = startAddressInt | ~mask;
 
-            // 生成IP地址列表
             for (uint addressInt = startAddressInt; addressInt <= endAddressInt; addressInt++)
             {
                 byte[] addressBytes = BitConverter.GetBytes(addressInt);
-                Array.Reverse(addressBytes); // 转换为主机字节顺序
-                ipList.Add(new IPAddress(addressBytes));
+                if (BitConverter.IsLittleEndian)
+                {
+                    Array.Reverse(addressBytes); // 转换为主机字节顺序
+                }
+                ipList.Add(new IPAddress(addressBytes).ToString());
             }
 
             return ipList;
         }
 
-
+        public static int GetPrefixLength(IPAddress ipAddress)
+        {
+            byte[] addressBytes = ipAddress.GetAddressBytes();
+            if (addressBytes[0] >= 1 && addressBytes[0] <= 126)
+            {
+                return 8;  // A类地址
+            }
+            else if (addressBytes[0] >= 128 && addressBytes[0] <= 191)
+            {
+                return 16; // B类地址
+            }
+            else if (addressBytes[0] >= 192 && addressBytes[0] <= 223)
+            {
+                return 24; // C类地址
+            }
+            else
+            {
+                throw new ArgumentException("IP address is not in the A, B, or C class ranges");
+            }
+        }
         public static Dictionary<string, string> GetMACDict()
         {
             Dictionary<string, string> MACDict = new Dictionary<string, string>()
@@ -102,15 +127,15 @@ namespace SharpScan
                 return MACDict;
             }
             //JavaScriptSerializer jss = new JavaScriptSerializer();
-            //try
-            //{
-            //    string jsonData = File.ReadAllText(path);
-            //    MACDict = jss.Deserialize<Dictionary<string, string>>(jsonData);
-            //}
-            //catch
-            //{
-            //    return MACDict;
-            //}
+            try
+            {
+                string jsonData = File.ReadAllText(path);
+               // MACDict = jss.Deserialize<Dictionary<string, string>>(jsonData);
+            }
+            catch
+            {
+                return MACDict;
+            }
             return MACDict;
         }
         //检测输入的ip是否是一个有效的 IPv4 地址。

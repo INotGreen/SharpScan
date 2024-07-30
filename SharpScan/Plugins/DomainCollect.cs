@@ -9,6 +9,7 @@ using System.Text;
 using System.DirectoryServices.AccountManagement;
 using Microsoft.VisualBasic.Devices;
 using System.DirectoryServices;
+using System.Management;
 
 namespace SharpScan.Plugins
 {
@@ -16,11 +17,14 @@ namespace SharpScan.Plugins
     {
         public DomainCollect()
         {
-           
-            SystemInfo();
-            NetworkConnections();
-            ReadRegistry();
-            Domain_p();
+            try
+            {
+                SystemInfo();
+                NetworkConnections();
+                ReadRegistry();
+                Domain_p();
+            }
+            catch (Exception ex) { }
         }
 
 
@@ -36,13 +40,13 @@ namespace SharpScan.Plugins
             Console.WriteLine("[+] .NET Version: {0}", Environment.Version.ToString());
             Console.WriteLine("[+] Operating System: " + new ComputerInfo().OSFullName + (Is64Bit() ? " 64-bit" : " 32-bit")); // Operating System
             new EDRCheck();
-            //List<string> users = GetLocalUsers();
-            //Console.Write("[+] Existing Users: ");
-            //foreach (var user in users)
-            //{
-            //    Console.Write(user + " | ");
-            //}
-            //Console.WriteLine("\n");
+            List<string> users = GetLocalUsers();
+            Console.Write("[+] Existing Users: ");
+            foreach (var user in users)
+            {
+                Console.Write(user + " | ");
+            }
+            Console.WriteLine("\n");
             new RDPlog();
         }
 
@@ -53,21 +57,23 @@ namespace SharpScan.Plugins
 
         static List<string> GetLocalUsers()
         {
+            List<string> users = new List<string>();
             try
             {
-                List<string> users = new List<string>();
-                using (PrincipalContext ctx = new PrincipalContext(ContextType.Machine))
+                string query = "SELECT * FROM Win32_UserAccount WHERE LocalAccount=True";
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
+
+                foreach (ManagementObject obj in searcher.Get())
                 {
-                    UserPrincipal user = new UserPrincipal(ctx);
-                    PrincipalSearcher searcher = new PrincipalSearcher(user);
-                    foreach (var result in searcher.FindAll())
-                    {
-                        users.Add(result.SamAccountName);
-                    }
+                    users.Add(obj["Name"].ToString());
                 }
-                return users;
             }
-            catch (Exception ex) { return null; }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving users: {ex.Message}");
+                return null;
+            }
+            return users;
         }
 
         public static void Domain_p() // Invoke Domain to detect information within the domain

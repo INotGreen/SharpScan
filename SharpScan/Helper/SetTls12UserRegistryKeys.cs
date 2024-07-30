@@ -15,26 +15,31 @@ namespace SharpScan
         public SetTls12UserRegistryKeys()
         {
             bool isTls12Enabled = false;
+            const string registryPath = @"SOFTWARE\Microsoft\.NETFramework";
+            const string schUseStrongCryptoValue = "SchUseStrongCrypto";
+            const string systemDefaultTlsVersionsValue = "SystemDefaultTlsVersions";
+            const int enabledValue = 1;
+
             try
             {
-                // 检查 .NET Framework 的注册表键
-                using (RegistryKey netFrameworkKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\.NETFramework", true))
+                using (RegistryKey netFrameworkKey = Registry.CurrentUser.OpenSubKey(registryPath, true))
                 {
                     if (netFrameworkKey != null)
                     {
-                        object schUseStrongCrypto = netFrameworkKey.GetValue("SchUseStrongCrypto");
-                        object systemDefaultTlsVersions = netFrameworkKey.GetValue("SystemDefaultTlsVersions");
+                        object schUseStrongCrypto = netFrameworkKey.GetValue(schUseStrongCryptoValue);
+                        object systemDefaultTlsVersions = netFrameworkKey.GetValue(systemDefaultTlsVersionsValue);
 
                         if (schUseStrongCrypto != null && systemDefaultTlsVersions != null)
                         {
-                            isTls12Enabled = (int)schUseStrongCrypto == 1 && (int)systemDefaultTlsVersions == 1;
+                            isTls12Enabled = (int)schUseStrongCrypto == enabledValue && (int)systemDefaultTlsVersions == enabledValue;
                         }
-                        else
+
+                        if (!isTls12Enabled)
                         {
-                            netFrameworkKey.SetValue("SchUseStrongCrypto", 1, RegistryValueKind.DWord);
-                            netFrameworkKey.SetValue("SystemDefaultTlsVersions", 1, RegistryValueKind.DWord);
+                            netFrameworkKey.SetValue(schUseStrongCryptoValue, enabledValue, RegistryValueKind.DWord);
+                            netFrameworkKey.SetValue(systemDefaultTlsVersionsValue, enabledValue, RegistryValueKind.DWord);
                             isTls12Enabled = true;
-                           // Console.WriteLine("[+] TLS 1.2 registry keys for current user have been set successfully.");
+                            Console.WriteLine("[+] TLS 1.2 registry keys for current user have been set successfully.");
                         }
                     }
                 }
@@ -44,45 +49,28 @@ namespace SharpScan
                 Console.WriteLine("[!] Error checking or setting TLS 1.2 registry keys: " + ex.Message);
             }
 
-            if (!isTls12Enabled)
+            if (isTls12Enabled)
             {
-                try
+                // 使用反射设置 TLS 1.2
+                const SslProtocols Tls12 = (SslProtocols)3072;
+                Type t = typeof(ServicePointManager);
+                BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Static;
+                FieldInfo field = t.GetField("s_SecurityProtocolType", flags);
+                if (field != null)
                 {
-                    // 设置当前用户的 .NET Framework 的注册表键
-                    using (RegistryKey netFrameworkKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\.NETFramework", true))
+                    field.SetValue(null, Tls12);
+                }
+                else
+                {
+                    PropertyInfo property = t.GetProperty("SecurityProtocol", flags);
+                    if (property != null)
                     {
-                        if (netFrameworkKey != null)
-                        {
-                            netFrameworkKey.SetValue("SchUseStrongCrypto", 1, RegistryValueKind.DWord);
-                            netFrameworkKey.SetValue("SystemDefaultTlsVersions", 1, RegistryValueKind.DWord);
-                        }
+                        property.SetValue(null, Tls12, null);
                     }
-
-                    //Console.WriteLine("[+] TLS 1.2 registry keys for current user have been set successfully.");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("[!] Failed to set TLS 1.2 registry keys for current user: " + ex.Message);
-                }
-            }
-
-            // 使用反射设置 TLS 1.2
-            const SslProtocols Tls12 = (SslProtocols)3072;
-            Type t = typeof(ServicePointManager);
-            BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Static;
-            FieldInfo field = t.GetField("s_SecurityProtocolType", flags);
-            if (field != null)
-            {
-                field.SetValue(null, Tls12);
-            }
-            else
-            {
-                PropertyInfo property = t.GetProperty("SecurityProtocol", flags);
-                if (property != null)
-                {
-                    property.SetValue(null, Tls12, null);
                 }
             }
         }
+
+
     }
 }

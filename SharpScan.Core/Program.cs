@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Mono.Options;
+
 using Tamir.SharpSsh.java.io;
 
 namespace SharpScan
@@ -20,14 +21,16 @@ namespace SharpScan
         public static bool showHelp = false;
         public static bool icmpScan = false;
         public static bool arpScan = false;
+        public static bool isUDP = false;
+        public static bool POC = false;
         public static string targetSegment = "";
         public static string outputFile = "";
         public static List<string> IPlist;
         public static string portRange = "";
-        public static string MaxConcurrency = "600";
-        public static string Delay = "1000";
-        public static string Username = "";
-        public static string Password = "";
+        public static string maxConcurrency = "600";
+        public static string delay = "10";
+        public static string userName = "";
+        public static string passWord = "";
 
         public class OnlinePC
         {
@@ -55,11 +58,13 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 ";
         static void ShowHelp(OptionSet p)
         {
-            Console.WriteLine("Usage: SharpScan [OPTIONS]");
-            Console.WriteLine("Perform network scans using different protocols.");
-            Console.WriteLine();
+            Console.WriteLine("Usage: SharpScan [OPTIONS]\n");
             Console.WriteLine("Options:");
             p.WriteOptionDescriptions(Console.Out);
+
+            Console.WriteLine("\nExample:");
+            Console.WriteLine("  SharpScan.exe -t 192.168.1.1/24");
+            Console.WriteLine("  SharpScan.exe -t 192.168.1.107 -p 100-1024");
         }
 
         static async Task Main(string[] args)
@@ -68,18 +73,19 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
             var options = new OptionSet
             {
-                { "i|icmp", "Perform ICMP scan", i => icmpScan = i != null },
-                { "a|arp", "Perform ARP scan", a => arpScan = a != null },
+                { "i|icmp", "Perform icmp scan", i => icmpScan = i != null },
+                { "a|arp", "Perform arp scan", a => arpScan = a != null },
+                { "U|udp", "Perform udp scan", udp => isUDP = udp != null },
                 { "t|Target=", "Target segment to scan", t => targetSegment = t },
                 { "p|ports=", "Ports to scan (e.g. \"0-1024\" or \"80,443,8080\")", p => portRange = p },
-                { "d|delay=", "Scan Delay(ms),Defalt:1000", p => Delay = p },
-                { "m|maxconcurrency=", "Maximum number of concurrent scans,Defalt:600", m => MaxConcurrency = m },
-                { "u|username=", "Username for authentication", u => Username = u },
-                { "pw|password=", "Password for authentication", pw => Password = pw },
+                { "d|delay=", "Scan delay(ms),Defalt:1000", p => delay = p },
+                { "m|maxconcurrency=", "Maximum number of concurrent scans,Defalt:600", m => maxConcurrency = m },
+                { "u|username=", "Username for authentication", u => userName = u },
+                { "pw|password=", "Password for authentication", pw => passWord = pw },
                 { "h|help", "Show this usage and help", h => showHelp = h != null },
                 { "o|output=", "Output file to save console output", o => outputFile = o }
             };
-            
+
             try
             {
                 options.Parse(args);
@@ -96,25 +102,32 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 ShowHelp(options);
                 return;
             }
+
             if (!icmpScan && !arpScan)
             {
                 icmpScan = true;
             }
-            Console.WriteLine($"Delay:{Delay}   MaxConcurrency:{MaxConcurrency}");
-
+            Console.WriteLine($"Delay:{delay}   MaxConcurrency:{maxConcurrency}");
+           
             if (!string.IsNullOrEmpty(targetSegment))
             {
                 IPlist = SharpScan.GetIP.IPList(targetSegment);
             }
             if (!string.IsNullOrEmpty(portRange))
             {
-                await new Portscan().ScanPortRange(targetSegment, portRange, Convert.ToInt32(Delay), Convert.ToInt32(MaxConcurrency));
+                if (isUDP)
+                {
+                    await new UdpPortscan().ScanPortRange(targetSegment, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency));
+
+                }
+                else { await new TcpPortscan().ScanPortRange(targetSegment, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)); }
+
                 return;
             }
 
             if (string.IsNullOrEmpty(targetSegment))
             {
-                Console.WriteLine("Target segment must be specified using -s or --segment.");
+                //Console.WriteLine("Target segment must be specified using -s or --segment.");
                 ShowHelp(options);
                 return;
             }
@@ -133,8 +146,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
             if (icmpScan)
             {
-                await Task.Run(() => new ICMPScan().ICMPScanPC(Program.IPlist));
-
+                await Task.Run(() => new ICMPScan().ICMPScanPC(Program.IPlist, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)));
                 Console.WriteLine("===================================================================");
                 Console.WriteLine("[+] onlinePC: " + Program.onlinePC);
                 Console.WriteLine("===================================================================");
@@ -142,20 +154,23 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
             if (arpScan)
             {
-                var arpTask = Task.Run(() => new ARPScan().ARPScanPC(Program.IPlist));
+                var arpTask = Task.Run(() => new ARPScan().ARPScanPC(Program.IPlist, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)));
                 await Task.WhenAll(arpTask);
                 Console.WriteLine("===================================================================");
                 Console.WriteLine("[+] onlinePC: " + Program.onlinePC);
                 Console.WriteLine("===================================================================");
             }
 
-            await new Portscan().ScanPortAsync(Convert.ToInt32(Delay),Configuration.PortList, Convert.ToInt32(MaxConcurrency));
+            await new TcpPortscan().ScanPortAsync(Convert.ToInt32(delay), Configuration.PortList, Convert.ToInt32(maxConcurrency));
 
             Console.WriteLine("===================================================================");
             Console.WriteLine($"[+] alive ports len is: {alivePort}");
             Console.WriteLine("===================================================================");
             GC.Collect();
-            await new HandlePOC().HandlePacket();
+
+
+
+            await new HandlePOC().HandleDefault();
 
             if (fileWriter != null)
             {

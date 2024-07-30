@@ -72,7 +72,7 @@ Example:
 
 
 
-默认扫描C段，使用所有模块
+扫描C段/B段，默认使用所有模块
 
 ```powershell
 SharpScan.exe -s 192.168.1.1/24  (扫描C段)

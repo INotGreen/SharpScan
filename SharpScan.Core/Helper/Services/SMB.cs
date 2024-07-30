@@ -1,8 +1,8 @@
-﻿using SharpScan;
+﻿
 using System;
 using System.Text;
 
-namespace SharpHostInfo.Services
+namespace SharpScan
 {
     public class SMB
     {
@@ -32,8 +32,8 @@ namespace SharpHostInfo.Services
                     _SSPKey.NativeLanManager = veraw[1].Replace("\0", "");
                 }
             }
-            new ms17_010scanner().Run(ip);
-            Helpers.SSPKeyOutput.Print(ip, _SSPKey);
+           
+            SSPKeyOutput.Print(ip, _SSPKey);
             return true;
         }
     }
