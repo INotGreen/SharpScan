@@ -83,7 +83,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 { "t|Thread=", "Maximum number of concurrent scans(Thread number),Defalt:600", m => maxConcurrency = m },
                 { "u|username=", "Username for authentication", u => userName = u },
                 { "pw|password=", "Password for authentication", pw => passWord = pw },
-                { "m|mode", "Password for authentication", mode => Mode = mode },
+                { "m|mode=", "Password for authentication", mode => Mode = mode },
                 { "h|help", "Show this usage and help", h => showHelp = h != null },
                 { "o|output=", "Output file to save console output", o => outputFile = o }
             };
