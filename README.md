@@ -104,6 +104,9 @@ SharpScan.exe -t 192.168.244.141 -U -p 100-10000                   (udp端口扫
 SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a             (C段ssh服务账号密码爆破,账号root，密码a)
 SharpScan.exe -h 192.168.244.1/24 -m smb -u administrator -pw a    (C段smb服务账号密码爆破,账号administrator，密码a)
 SharpScan.exe -h 192.168.244.1/24 -m rdp -u administrator -pw a    (C段rdp服务账号密码爆破,账号administrator，密码a)
+SharpScan.exe -h 192.168.244.1/24 -m smb -uf user.txt -pwf pass.txt (用账号密码本爆破C段的smb服务)
+SharpScan.exe -h 192.168.244.1/24 -m rdp -uf user.txt -pwf pass.txt (用账号密码本爆破C段的rdp服务)
+SharpScan.exe -h 192.168.244.1/24 -m ssh -uf user.txt -pwf pass.txt (用账号密码本爆破C段的ssh服务()
 SharpScan.exe -h 192.168.244.1/24 -m ms17010                       (C段批量扫描是否存在ms17010)
 SharpScan.exe -socks5 8000 -u test -pw 1234                        (Socks5:8000.用户名:test，密码:1234)
 ```
