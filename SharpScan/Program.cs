@@ -89,13 +89,13 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 { "t|thread=", "Maximum num of concurrent scans,Defalt:600", t => maxConcurrency = t },
                 { "u|username=", "Username for authentication", u => userName = u },
                 { "c|command=", "Command Execution", c => command = c },
-               {"pw|password=", "Password for authentication", pwd => passWord = pwd },
-                {"uf|ufile=", "Username file for authentication", uf => userNameFile = uf },
-               {"pwf|pwdfile=", "Password file for authentication", pwdf => passWord = pwdf },
-                 {"m|mode=", "Scanning poc mode(e.g. ssh/smb/rdp/ms17010)", m => Program.mode = m },
-                 {"socks5=", "Open socks5 port", socks5 => Program.socks5 = socks5 },
-                 {"nopoc", "Not using proof of concept(POC)", nopoc => Program.nopoc =nopoc!= null },
-              {"help|show", "Show this usage and help", h => showHelp = h != null },
+                { "m|mode=", "Scanning poc mode(e.g. ssh/smb/rdp/ms17010)", m => Program.mode = m },
+                { "pw|password=", "Password for authentication", pwd => passWord = pwd },
+                { "uf|ufile=", "Username file for authentication", uf => userNameFile = uf },
+                { "pwf|pwdfile=", "Password file for authentication", pwdf => passWord = pwdf },
+                { "help|show", "Show this usage and help", h => showHelp = h != null },
+                { "socks5=", "Open socks5 port", socks5 => Program.socks5 = socks5 },
+                { "nopoc", "Not using proof of concept(POC)", nopoc => Program.nopoc =nopoc!= null },
                 { "o|output=", "Output file to save console output", o => outputFile = o }
             };
 
