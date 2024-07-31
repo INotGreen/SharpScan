@@ -12,7 +12,7 @@ namespace SharpScan
         {
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(passWord))
             {
-                var socks5Server = new Socks5Server(IPAddress.Any, 4444);
+                var socks5Server = new Socks5Server(IPAddress.Any, Port);
                 socks5Server.Start();
                 PluginLoader.ChangePluginStatus(true, typeof(Auth));
                 Console.WriteLine($"[+] Start socks5 port:4444 , User:{Program.userName}  Password:{Program.passWord}");

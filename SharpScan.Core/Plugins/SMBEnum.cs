@@ -24,43 +24,37 @@ namespace SharpScan
                 await Task.WhenAll(IcmpTasks);
             }
         }
-       public static void SMBLogin(string ip, string user, string pass)
+        public static void SMBLogin(string ip)
         {
-            if (!TestPort(ip, 445))
+            if (!Helper.TestPort(ip, 445))
             {
                 return;
-               // return $"{ip},445,Port unreachable";
+                // return $"{ip},445,Port unreachable";
+            }
+            Console.WriteLine($"[*] {ip}:{445}{Helper.GetServiceByPort(445)} is open");
+
+            if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
+            {
+                string output = $"[*] IP:{ip}  User:{Program.userName}  Password:{Program.passWord}, Result:{SMBLoginWorker(ip, Program.userName, Program.passWord)}";
+                Console.WriteLine(output);
+            }
+            if(Program.userList!=null && Program.passwordList != null)
+            {
+                foreach(var user in Program.userList)
+                {
+                    //Console.WriteLine(user);
+                    foreach (var pass in Program.passwordList)
+                    {
+                        string output = $"[*] IP:{ip}  User:{user}  Password:{pass}, Result:{SMBLoginWorker(ip, user, pass)}";
+                        Console.WriteLine(output);
+                    }
+                }
             }
 
-            string output = $"[*] IP:{ip}  User:{user}  Password:{pass}, Result:{SMBLoginWorker(ip, user, pass)}";
-
-            Console.WriteLine(output);
             //return output;
         }
 
-        static bool TestPort(string remoteHost, int remotePort)
-        {
-            int timeout = 3000; // 3 seconds
-            try
-            {
-                using (TcpClient client = new TcpClient())
-                {
-                    IAsyncResult result = client.BeginConnect(remoteHost, remotePort, null, null);
-                    bool success = result.AsyncWaitHandle.WaitOne(timeout, false);
-                    if (!success)
-                    {
-                        client.Close();
-                        return false;
-                    }
-                    client.EndConnect(result);
-                }
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+        
 
         static string SMBLoginWorker(string host, string user, string pass)
         {
