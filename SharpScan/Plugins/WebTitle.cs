@@ -53,6 +53,7 @@ namespace SharpScan
             }
         }
 
+
         public static string BuildUrl(string ip, string port)
         {
             int portNumber;

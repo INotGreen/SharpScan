@@ -33,7 +33,7 @@ namespace SharpScan
                             Options.Username = Program.userName;
                             Options.Password = Program.passWord;
                             Network.Connect(Options.Host, Port);
-                            MCS.sendConnectionRequest(null, false);
+                            MCS.sendConnectionRequest(null, true);
                         }
                     }
                 }

@@ -25,15 +25,18 @@ namespace SharpScan
         public static bool POC = false;
         public static string Mode = "";
         public static string hTarget = "";
-        public static string outputFile = "";
+
         public static List<string> IPlist;
         public static string portRange = "";
+        public static string Socks5 = "";
         public static string maxConcurrency = "600";
         public static string delay = "10";
         public static string userName = "";
         public static string userNameFile = "";
         public static string passWord = "";
         public static string passWordFile = "";
+        public static string outputFile = "";
+
 
         public class OnlinePC
         {
@@ -88,6 +91,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 {"uf|ufile=", "Username for authentication", uf => userNameFile = uf },
                {"pwf|pwdfile=", "Password for authentication", pwdf => passWord = pwdf },
                  {"m|mode=", "Password for authentication", m => Mode = m },
+                 {"socks5=", "Password for authentication", socks5 => Socks5 = socks5 },
               {"help|show", "Show this usage and help", h => showHelp = h != null },
                 { "o|output=", "Output file to save console output", o => outputFile = o }
             };
@@ -122,7 +126,12 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
 
 
+            if (!string.IsNullOrEmpty(Socks5))
+            {
 
+                new Socks5().Run(Convert.ToInt32(Socks5), Program.userName, Program.passWord);
+                return;
+            }
 
             if (string.IsNullOrEmpty(hTarget))
             {
@@ -137,7 +146,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 Console.SetOut(multiTextWriter);
                 Console.SetError(multiTextWriter);
             }
-
+          
             if (!string.IsNullOrEmpty(portRange))
             {
                 if (isUDP)

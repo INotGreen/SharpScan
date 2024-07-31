@@ -29,6 +29,7 @@
 - 探测当前主机.net版本、操作系统版本信息、杀毒软件/内网设备（AV/EDR/XDR）查询等
 - 导出本地RDP登录日志(rdp端口、mstsc缓存、cmdkey缓存、登录成功、失败日志)
 - 判断是否在域内、定位域控IP、信息收集域控的FQDN、域管理员组、域企业管理员组、LDAP查询等
+- 携带一个开启Socks5代理的服务，支持账号密码验证
 - 导出扫描结果
 
 ## 3.正在完成(TODO)
@@ -121,4 +122,14 @@ Delay:10   MaxConcurrency:600
 
 [+] Scanning completed in 21.07 seconds
 ```
+
+
+
+使用Socks5服务：在当前主机建立一个Socks5服务，端口为8000.用户名为test，密码是1234
+
+```powershell
+SharpScan.exe -socks5 8000 -u test -pw 1234
+```
+
+
 
