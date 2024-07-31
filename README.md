@@ -84,6 +84,21 @@ SharpScan.exe -s 192.168.1.1/16  (扫描B段)
 
 
 
+
+
+
+
+其它功能
+
+```powershell
+SharpScan.exe -s 192.168.244.169 -p 80-1024 -d 0 -m 600(端口范围80-1024，0延时，最大并发600，用时3秒)
+SharpScan.exe -t 192.168.244.141 -U -p 100-10000(100-10000，10ms延时，最大并发600)
+SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a(C段ssh服务账号密码爆破,账号root，密码a)
+SharpScan.exe -socks5 8000 -u test -pw 1234(Socks:8000.用户名:test，密码:1234)
+```
+
+
+
 扫描指定IP(默认使用TCP)，端口范围80-1024，0延时，最大并发600，用时3秒
 
 ```postgresql
@@ -122,6 +137,27 @@ Delay:10   MaxConcurrency:600
 
 [+] Scanning completed in 21.07 seconds
 ```
+
+
+
+C段ssh服务账号密码爆破
+
+```powershell
+SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a
+```
+
+```powershell
+Delay:10   MaxConcurrency:600
+[*] 192.168.244.164:22 (ssh) is open
+[+] (SSH) 192.168.244.164:22  User:root  Password:a   OS: CentOS Linux, Version: 7 (Core)
+[*] 192.168.244.255:22 (ssh) is open
+```
+
+
+
+
+
+
 
 
 

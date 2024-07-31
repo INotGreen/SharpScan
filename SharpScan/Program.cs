@@ -29,6 +29,7 @@ namespace SharpScan
         public static List<string> IPlist;
         public static string portRange = "";
         public static string Socks5 = "";
+        public static string command = "";
         public static string maxConcurrency = "600";
         public static string delay = "10";
         public static string userName = "";
@@ -85,13 +86,14 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 { "h|hTarget=", "Target segment to scan", h => hTarget = h },
                 { "p|ports=", "Ports to scan (e.g. \"0-1024\" or \"80,443,8080\")", p => portRange = p },
                 { "d|delay=", "Scan delay(ms),Defalt:1000", p => delay = p },
-                { "t|thread=", "Maximum number of concurrent scans(Thread number),Defalt:600", t => maxConcurrency = t },
+                { "t|thread=", "Maximum num of concurrent scans,Defalt:600", t => maxConcurrency = t },
                 { "u|username=", "Username for authentication", u => userName = u },
+                { "c|command=", "Command Execution", c => command = c },
                {"pw|password=", "Password for authentication", pwd => passWord = pwd },
-                {"uf|ufile=", "Username for authentication", uf => userNameFile = uf },
-               {"pwf|pwdfile=", "Password for authentication", pwdf => passWord = pwdf },
-                 {"m|mode=", "Password for authentication", m => Mode = m },
-                 {"socks5=", "Password for authentication", socks5 => Socks5 = socks5 },
+                {"uf|ufile=", "Username file for authentication", uf => userNameFile = uf },
+               {"pwf|pwdfile=", "Password file for authentication", pwdf => passWord = pwdf },
+                 {"m|mode=", "Scanning poc mode", m => Mode = m },
+                 {"socks5=", "Open socks5 port", socks5 => Socks5 = socks5 },
               {"help|show", "Show this usage and help", h => showHelp = h != null },
                 { "o|output=", "Output file to save console output", o => outputFile = o }
             };
@@ -128,7 +130,6 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
             if (!string.IsNullOrEmpty(Socks5))
             {
-
                 new Socks5().Run(Convert.ToInt32(Socks5), Program.userName, Program.passWord);
                 return;
             }
@@ -146,7 +147,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 Console.SetOut(multiTextWriter);
                 Console.SetError(multiTextWriter);
             }
-          
+
             if (!string.IsNullOrEmpty(portRange))
             {
                 if (isUDP)
