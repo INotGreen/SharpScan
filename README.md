@@ -147,7 +147,7 @@ SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a
 
 
 
-![image-20240731134334232](../../AppData/Roaming/Typora/typora-user-images/image-20240731134334232.png)
+![image-20240731134334232](Image/image-20240731134334232.png)
 
 使用Socks5服务：在当前主机建立一个Socks5服务，端口为8000.用户名为test，密码是1234
 
@@ -155,9 +155,9 @@ SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a
 SharpScan.exe -socks5 8000 -u test -pw 1234
 ```
 
-![image-20240731134357549](../../AppData/Roaming/Typora/typora-user-images/image-20240731134357549.png)
+![image-20240731134357549](Image/image-20240731134357549.png)
 
-![image-20240731134433626](../../AppData/Roaming/Typora/typora-user-images/image-20240731134433626.png)
+![image-20240731134433626](Image/image-20240731134433626.png)
 
 
 
