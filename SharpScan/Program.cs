@@ -22,13 +22,13 @@ namespace SharpScan
         public static bool icmpScan = false;
         public static bool arpScan = false;
         public static bool isUDP = false;
-        public static bool POC = false;
-        public static string Mode = "";
+        public static bool nopoc = false;
+        public static string mode = "";
         public static string hTarget = "";
 
         public static List<string> IPlist;
         public static string portRange = "";
-        public static string Socks5 = "";
+        public static string socks5 = "";
         public static string command = "";
         public static string maxConcurrency = "600";
         public static string delay = "10";
@@ -92,8 +92,9 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                {"pw|password=", "Password for authentication", pwd => passWord = pwd },
                 {"uf|ufile=", "Username file for authentication", uf => userNameFile = uf },
                {"pwf|pwdfile=", "Password file for authentication", pwdf => passWord = pwdf },
-                 {"m|mode=", "Scanning poc mode(e.g. ssh/smb/rdp/ms17010)", m => Mode = m },
-                 {"socks5=", "Open socks5 port", socks5 => Socks5 = socks5 },
+                 {"m|mode=", "Scanning poc mode(e.g. ssh/smb/rdp/ms17010)", m => Program.mode = m },
+                 {"socks5=", "Open socks5 port", socks5 => Program.socks5 = socks5 },
+                 {"nopoc", "Not using proof of concept(POC)", nopoc => Program.nopoc =nopoc!= null },
               {"help|show", "Show this usage and help", h => showHelp = h != null },
                 { "o|output=", "Output file to save console output", o => outputFile = o }
             };
@@ -128,9 +129,9 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
 
 
-            if (!string.IsNullOrEmpty(Socks5))
+            if (!string.IsNullOrEmpty(socks5))
             {
-                new Socks5().Run(Convert.ToInt32(Socks5), Program.userName, Program.passWord);
+                new Socks5().Run(Convert.ToInt32(socks5), Program.userName, Program.passWord);
                 return;
             }
 
@@ -159,10 +160,10 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
                 return;
             }
-            if (!string.IsNullOrEmpty(Mode))
+            if (!string.IsNullOrEmpty(mode))
             {
 
-                await new HandlePOC().ModPacket(Mode);
+                await new HandlePOC().ModPacket(mode);
 
                 return;
             }
@@ -196,9 +197,13 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             Console.WriteLine("===================================================================");
             GC.Collect();
 
-            new DomainCollect();
+            
 
-            await new HandlePOC().HandleDefault();
+            if (!nopoc) {
+                new DomainCollect();
+                await new HandlePOC().HandleDefault();
+            }
+           
 
             if (fileWriter != null)
             {

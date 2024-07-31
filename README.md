@@ -101,6 +101,7 @@ SharpScan.exe -s 192.168.244.169 -p 80-1024 -d 0 -m 600     (Tcp端口扫描:80-
 SharpScan.exe -t 192.168.244.141 -U -p 100-10000            (udp端口扫描:100-10000，10ms延时，最大并发600)
 SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a      (C段ssh服务账号密码爆破,账号root，密码a)
 SharpScan.exe -socks5 8000 -u test -pw 1234                 (Socks:8000.用户名:test，密码:1234)
+SharpScan.exe -h 192.168.244.1/24 -nopoc                    (不使用POC和内网信息收集，只做网段主机探测和端口扫描)
 ```
 
 
