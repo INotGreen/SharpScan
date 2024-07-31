@@ -43,14 +43,13 @@ namespace SharpScan
                 {
                     foreach (var pass in Program.passwordList)
                     {
-                        
                         TryLogin(host, port, user, pass, cts, token);
                     }
                 }
             }
             if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
             {
-                Console.WriteLine($"[*] {host}:{port}{Helper.GetServiceByPort(port)} is open");
+                
                 TryLogin(host, port, Program.userName, Program.passWord, cts, token);
             }
             else

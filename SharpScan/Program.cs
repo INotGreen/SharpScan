@@ -92,7 +92,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 { "u|username=", "Username for authentication", u => userName = u },
                 { "pw|password=", "Password for authentication", pwd => passWord = pwd },
                 { "uf|ufile=", "Username file for authentication", uf => userNameFile = uf },
-                { "pwf|pwdfile=", "Password file for authentication", pwdf => passWord = pwdf },
+                { "pwf|pwdfile=", "Password file for authentication", pwdf => passWordFile = pwdf },
                 { "m|mode=", "Scanning poc mode(e.g. ssh/smb/rdp/ms17010)", m => Program.mode = m },
                 { "c|command=", "Command Execution", c => command = c },
                 { "d|delay=", "Scan delay(ms),Defalt:1000", p => delay = p },
@@ -140,7 +140,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 IPlist = SharpScan.GetIP.IPList(hTarget);
             }
 
-            
+
 
             if (!string.IsNullOrEmpty(socks5))
             {
@@ -148,12 +148,11 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 return;
             }
 
-           
-
-            if (!string.IsNullOrEmpty(userNameFile)) {
+            if (!string.IsNullOrEmpty(userNameFile))
+            {
                 if (System.IO.File.Exists(userNameFile))
                 {
-                    string[] lines =System.IO. File.ReadAllLines(userNameFile);
+                    string[] lines = System.IO.File.ReadAllLines(userNameFile);
 
                     // 将 string[] 转换为 List<string>
                     userList = new List<string>(lines);
@@ -162,7 +161,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                     //    Console.WriteLine(line);
                     //}
                 }
-            
+
             }
             if (!string.IsNullOrEmpty(passWordFile))
             {
@@ -172,12 +171,14 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
                     // 将 string[] 转换为 List<string>
                     passwordList = new List<string>(lines);
-                    //foreach (string line in userList)
+                    //foreach (string line in passwordList)
                     //{
                     //    Console.WriteLine(line);
                     //}
                 }
             }
+
+
             if (!string.IsNullOrEmpty(outputFile))
             {
                 fileWriter = new StreamWriter(outputFile, false) { AutoFlush = true };
@@ -197,6 +198,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
                 return;
             }
+
             if (!string.IsNullOrEmpty(mode))
             {
 
@@ -247,7 +249,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             {
                 fileWriter.Close();
             }
-           
+
         }
     }
 }

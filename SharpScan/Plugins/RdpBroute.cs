@@ -27,10 +27,11 @@ namespace SharpScan
                         return;
                         // return $"{ip},445,Port unreachable";
                     }
+                    Console.WriteLine($"[*] {IP}:{Port}{Helper.GetServiceByPort(Port)} is open");
 
                     if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
                     {
-                        Console.WriteLine($"[*] {IP}:{Port}{Helper.GetServiceByPort(Port)} is open");
+                        
                         Options.Host = IP;
                         Options.Port = Port;
                         Options.Username = Program.userName;
@@ -44,7 +45,6 @@ namespace SharpScan
                         {
                             foreach (var pass in Program.passwordList)
                             {
-                                Console.WriteLine($"[*] {IP}:{Port}{Helper.GetServiceByPort(Port)} is open");
                                 Options.Host = IP;
                                 Options.Port = Port;
                                 Options.Username = user;

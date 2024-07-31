@@ -31,7 +31,7 @@ namespace SharpScan
                 return;
                 // return $"{ip},445,Port unreachable";
             }
-
+            Console.WriteLine($"[*] {ip}:{445}{Helper.GetServiceByPort(445)} is open");
 
             if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
             {
@@ -42,6 +42,7 @@ namespace SharpScan
             {
                 foreach(var user in Program.userList)
                 {
+                    //Console.WriteLine(user);
                     foreach (var pass in Program.passwordList)
                     {
                         string output = $"[*] IP:{ip}  User:{user}  Password:{pass}, Result:{SMBLoginWorker(ip, user, pass)}";
