@@ -91,13 +91,13 @@ SharpScan.exe -s 192.168.1.1/16  (扫描B段)
 
 
 
-### 视频演示
+### 4.1视频演示
 
 [demo](https://private-user-images.githubusercontent.com/89376703/352985272-6c4d2f2d-b21e-43b3-ad8b-578cd6163f05.mp4)
 
 
 
-### 其它功能
+### 4.2其它功能
 
 ```powershell
 SharpScan.exe -h 192.168.244.1/24 -nopoc                           (只做网段主机探测和端口扫描)
@@ -114,7 +114,7 @@ SharpScan.exe -socks5 8000 -u test -pw 1234                        (Socks5:8000.
 
 
 
-### 截图
+### 4.3截图
 
 扫描指定IP(默认使用TCP)，端口范围10-1024，0延时，最大并发600，用时3秒
 
@@ -154,9 +154,11 @@ SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a
 
 C段爆破SMB账号密码：
 
+```powershell
+SharpScan.exe -h 192.168.244.1/24 -m smb -u administrator -pw a
+```
+
 ![image-20240731162159957](Image/image-20240731162159957.png)
-
-
 
 
 
