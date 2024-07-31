@@ -189,7 +189,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 Console.WriteLine("===================================================================");
             }
 
-            await new TcpPortscan().ScanPortAsync(Convert.ToInt32(delay), Configuration.PortList, Convert.ToInt32(maxConcurrency));
+            await new TcpPortscan().ScanPortDefault(Convert.ToInt32(delay), Configuration.PortList, Convert.ToInt32(maxConcurrency));
 
             Console.WriteLine("===================================================================");
             Console.WriteLine($"[+] alive ports len is: {alivePort}");

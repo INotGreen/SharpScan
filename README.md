@@ -18,7 +18,7 @@
 - 使用异步和高并发、扫描速度快并且可控、内存自动回收
 - 用inline-assembly或者execute-assembly进行内存加载，实现无文件落地扫描
 
-- 体积较小(目前600kb)、传输快、一键自动化扫描+信息收集，一条龙服务
+- 体积较小(目前600kb)、传输快、一键自动化扫描+内网信息收集，一条龙服务
 
 - 尽量遵循OPSEC原则，不创建额外子进程、不读写注册表等操作
 
@@ -35,12 +35,12 @@
 - 探测当前主机.net版本、操作系统版本信息、杀毒软件/内网设备（AV/EDR/XDR）查询等
 - 导出本地RDP登录日志(rdp端口、mstsc缓存、cmdkey缓存、登录成功、失败日志)
 - 判断是否在域内、定位域控IP、信息收集域控的FQDN、域管理员组、域企业管理员组、LDAP查询等
-- 携带一个开启Socks5代理的服务，支持账号密码验证
+- 携带一个高性能的Socks5代理服务器，支持账号密码验证
 - 导出扫描结果
 
 
 
-## 3.兼容性：
+## 3.兼容性
 
 - Windows ：支持win7-win11，windows server2008-2022
 
@@ -117,15 +117,29 @@ SharpScan.exe -s 192.168.244.169 -p 80-1024 -d 0 -m 600
 
 
 
+
+
+
+
+
+
+
+
 使用UDP协议扫描端口，端口范围100-10000，10ms延时，最大并发600，用时21秒
 
 ```powershell
 SharpScan.exe -t 192.168.244.141 -U -p 100-10000
 ```
 
+C段RDP服务账号密码爆破
+
+```
+SharpScan.exe -h 192.168.244.1/24 -m rdp -u administrator -pw a
+```
 
 
-C段ssh服务账号密码爆破
+
+C段SSH服务账号密码爆破
 
 ```powershell
 SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a
@@ -133,13 +147,17 @@ SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a
 
 
 
-
+![image-20240731134334232](../../AppData/Roaming/Typora/typora-user-images/image-20240731134334232.png)
 
 使用Socks5服务：在当前主机建立一个Socks5服务，端口为8000.用户名为test，密码是1234
 
 ```powershell
 SharpScan.exe -socks5 8000 -u test -pw 1234
 ```
+
+![image-20240731134357549](../../AppData/Roaming/Typora/typora-user-images/image-20240731134357549.png)
+
+![image-20240731134433626](../../AppData/Roaming/Typora/typora-user-images/image-20240731134433626.png)
 
 
 
@@ -151,4 +169,22 @@ SharpScan.exe -socks5 8000 -u test -pw 1234
 - ftp服务爆破
 - redis写公钥或写计划任务
 - weblogic、st2、shiro的POC扫描检测
+
+
+
+6.参考链接：
+
+https://github.com/shadow1ng/fscan
+
+https://github.com/k8gege/LadonGo
+
+https://github.com/k8gege/Ladon
+
+https://github.com/lcvvvv/kscan
+
+https://github.com/shmilylty/SharpHostInfo
+
+https://github.com/Adminisme/SharpRDPLog
+
+
 

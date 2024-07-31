@@ -13,7 +13,7 @@ namespace SharpScan
     internal class TcpPortscan
     {
         
-        public async Task ScanPortAsync(int delay, Dictionary<string, int> PortList,int maxConcurrency)
+        public async Task ScanPortDefault(int delay, Dictionary<string, int> PortList,int maxConcurrency)
         {
             List<Task> portscanTasks = new List<Task>();
             Stopwatch stopwatch = new Stopwatch();
