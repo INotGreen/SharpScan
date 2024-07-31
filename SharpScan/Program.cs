@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Mono.Options;
 using SharpScan.Plugins;
 using Tamir.SharpSsh.Sharp.io;
+using static System.Net.WebRequestMethods;
 
 namespace SharpScan
 {
@@ -36,8 +37,8 @@ namespace SharpScan
         public static string userNameFile { get; set; }
         public static string passWord { get; set; }
         public static string passWordFile { get; set; }
-        public static string userList { get; set; }
-        public static string passwordList { get; set; }
+        public static List<string> userList { get; set; }
+        public static List<string> passwordList { get; set; }
         public static string outputFile { get; set; }
 
 
@@ -128,13 +129,18 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             new SetTls12UserRegistryKeys();
 
 
+            if (string.IsNullOrEmpty(hTarget))
+            {
+                ShowHelp(options);
+                return;
+            }
 
             if (!string.IsNullOrEmpty(hTarget))
             {
                 IPlist = SharpScan.GetIP.IPList(hTarget);
             }
 
-
+            
 
             if (!string.IsNullOrEmpty(socks5))
             {
@@ -142,12 +148,36 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 return;
             }
 
-            if (string.IsNullOrEmpty(hTarget))
-            {
-                ShowHelp(options);
-                return;
-            }
+           
 
+            if (!string.IsNullOrEmpty(userNameFile)) {
+                if (System.IO.File.Exists(userNameFile))
+                {
+                    string[] lines =System.IO. File.ReadAllLines(userNameFile);
+
+                    // 将 string[] 转换为 List<string>
+                    userList = new List<string>(lines);
+                    //foreach (string line in userList)
+                    //{
+                    //    Console.WriteLine(line);
+                    //}
+                }
+            
+            }
+            if (!string.IsNullOrEmpty(passWordFile))
+            {
+                if (System.IO.File.Exists(passWordFile))
+                {
+                    string[] lines = System.IO.File.ReadAllLines(passWordFile);
+
+                    // 将 string[] 转换为 List<string>
+                    passwordList = new List<string>(lines);
+                    //foreach (string line in userList)
+                    //{
+                    //    Console.WriteLine(line);
+                    //}
+                }
+            }
             if (!string.IsNullOrEmpty(outputFile))
             {
                 fileWriter = new StreamWriter(outputFile, false) { AutoFlush = true };

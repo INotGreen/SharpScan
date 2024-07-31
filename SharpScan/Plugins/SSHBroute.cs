@@ -31,20 +31,27 @@ namespace SharpScan
             int port = 22;
             var cts = new CancellationTokenSource();
             var token = cts.Token;
-
-
-            if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
+            if (!Helper.TestPort(host, port))
             {
-                using (var client = new TcpClient())
+                return;
+                // return $"{ip},445,Port unreachable";
+            }
+            Console.WriteLine($"[*] {host}:{port}{Helper.GetServiceByPort(port)} is open");
+            if (Program.userList != null && Program.passwordList != null)
+            {
+                foreach (var user in Program.userList)
                 {
-                    var result = client.BeginConnect(host, port, null, null);
-                    bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1.5));
-                    if (success)
+                    foreach (var pass in Program.passwordList)
                     {
-                        Console.WriteLine($"[*] {host}:{port}{Helper.GetServiceByPort(port)} is open");
-                        TryLogin(host, port, Program.userName, Program.passWord, cts, token);
+                        
+                        TryLogin(host, port, user, pass, cts, token);
                     }
                 }
+            }
+            if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
+            {
+                Console.WriteLine($"[*] {host}:{port}{Helper.GetServiceByPort(port)} is open");
+                TryLogin(host, port, Program.userName, Program.passWord, cts, token);
             }
             else
             {
@@ -180,7 +187,7 @@ namespace SharpScan
                 return "Unable to determine the operating system version.";
             }
         }
-        
+
         static void LogException(Exception ex)
         {
             // 这里可以将异常信息记录到日志文件中

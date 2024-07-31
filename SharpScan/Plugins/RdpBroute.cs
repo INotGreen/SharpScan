@@ -22,24 +22,41 @@ namespace SharpScan
                 try
                 {
                     int Port = 3389;
-                    using (var client = new TcpClient())
+                    if (!Helper.TestPort(IP, Port))
                     {
-                        var result = client.BeginConnect(IP, Port, null, null);
-                        bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1.5));
-                        if (success)
+                        return;
+                        // return $"{ip},445,Port unreachable";
+                    }
+
+                    if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
+                    {
+                        Console.WriteLine($"[*] {IP}:{Port}{Helper.GetServiceByPort(Port)} is open");
+                        Options.Host = IP;
+                        Options.Port = Port;
+                        Options.Username = Program.userName;
+                        Options.Password = Program.passWord;
+                        Network.Connect(Options.Host, Port);
+                        MCS.sendConnectionRequest(null, true);
+                    }
+                    if (Program.userList != null && Program.passwordList != null)
+                    {
+                        foreach (var user in Program.userList)
                         {
-                            
-                            
-                            Console.WriteLine($"[*] {IP}:{Port}{Helper.GetServiceByPort(Port)} is open");
-                            
-                            Options.Host = IP;
-                            Options.Port = Port;
-                            Options.Username = Program.userName;
-                            Options.Password = Program.passWord;
-                            Network.Connect(Options.Host, Port);
-                            MCS.sendConnectionRequest(null, true);
+                            foreach (var pass in Program.passwordList)
+                            {
+                                Console.WriteLine($"[*] {IP}:{Port}{Helper.GetServiceByPort(Port)} is open");
+                                Options.Host = IP;
+                                Options.Port = Port;
+                                Options.Username = user;
+                                Options.Password = pass;
+                                Network.Connect(Options.Host, Port);
+                                MCS.sendConnectionRequest(null, true);
+                            }
                         }
                     }
+                    
+
+
                 }
                 catch (Exception exception)
                 {

@@ -163,7 +163,7 @@ namespace SharpScan
                                     try
                                     {
                                         new ms17_010scanner().Run(ip);
-                                       // BrotePacket($"{ip}:{3389}");
+                                        // BrotePacket($"{ip}:{3389}");
                                     }
                                     finally
                                     {
@@ -187,9 +187,7 @@ namespace SharpScan
                                 {
                                     try
                                     {
-                                   SMBEnum.SMBLogin(ip,Program.userName,Program.passWord);
-                                    
-                                        //Console.WriteLine(result);
+                                        SMBEnum.SMBLogin(ip);
                                     }
                                     finally
                                     {
