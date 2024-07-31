@@ -153,13 +153,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 if (System.IO.File.Exists(userNameFile))
                 {
                     string[] lines = System.IO.File.ReadAllLines(userNameFile);
-
-                    // 将 string[] 转换为 List<string>
                     userList = new List<string>(lines);
-                    //foreach (string line in userList)
-                    //{
-                    //    Console.WriteLine(line);
-                    //}
                 }
 
             }
@@ -168,13 +162,8 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 if (System.IO.File.Exists(passWordFile))
                 {
                     string[] lines = System.IO.File.ReadAllLines(passWordFile);
-
-                    // 将 string[] 转换为 List<string>
                     passwordList = new List<string>(lines);
-                    //foreach (string line in passwordList)
-                    //{
-                    //    Console.WriteLine(line);
-                    //}
+
                 }
             }
 

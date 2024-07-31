@@ -13,7 +13,6 @@ namespace SharpScan
 {
     internal class ARPScan
     {
-
         public async Task ARPScanPC(List<string> IPlist, int Delay, int maxConcurrency)
         {
             List<Task> ArpTasks = new List<Task>();

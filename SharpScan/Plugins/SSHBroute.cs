@@ -133,13 +133,18 @@ namespace SharpScan
                             string loginInfo = $"[+] (SSH) {host}:{port}  User:{username}  Password:{password}   {ParseOsInfo(output)}";
                             string successKey = $"{username}@{host}:{port}";
                             Console.WriteLine(loginInfo);
+                            if (!string.IsNullOrEmpty(Program.command))
+                            {
+                                string res = exec.RunCommand(Program.command);
+                                Console.WriteLine(res);
+                            }
                             await semaphore.WaitAsync();
                             try
                             {
                                 if (SuccessfulCombinations.TryAdd(successKey, true))
                                 {
                                     SuccessfulLogins.Add(loginInfo);
-                                    cts.Cancel(); // 取消所有任务
+                                    cts.Cancel(); // Close all task
                                 }
                             }
                             finally
