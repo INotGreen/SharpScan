@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace SharpScan.Helper
+namespace SharpScan
 {
     internal class EDRCheck
     {

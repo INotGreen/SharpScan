@@ -22,15 +22,24 @@ namespace SharpScan
         public static bool icmpScan = false;
         public static bool arpScan = false;
         public static bool isUDP = false;
-        public static bool POC = false;
-        public static string targetSegment = "";
-        public static string outputFile = "";
+        public static bool nopoc = false;
+        public static string mode { get; set; }
+        public static string hTarget { get; set; }
+
         public static List<string> IPlist;
-        public static string portRange = "";
+        public static string portRange {  get; set; }
+        public static string socks5 { get; set; }
+        public static string command { get; set; }
         public static string maxConcurrency = "600";
         public static string delay = "10";
-        public static string userName = "";
-        public static string passWord = "";
+        public static string userName { get; set; }
+        public static string userNameFile { get; set; }
+        public static string passWord { get; set; }
+        public static string passWordFile { get; set; }
+        public static string userList { get; set; }
+        public static string passwordList { get; set; }
+        public static string outputFile { get; set; }
+
 
         public class OnlinePC
         {
@@ -69,6 +78,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
         static async Task Main(string[] args)
         {
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine(StringPating);
 
             var options = new OptionSet
@@ -76,13 +86,19 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 { "i|icmp", "Perform icmp scan", i => icmpScan = i != null },
                 { "a|arp", "Perform arp scan", a => arpScan = a != null },
                 { "U|udp", "Perform udp scan", udp => isUDP = udp != null },
-                { "t|Target=", "Target segment to scan", t => targetSegment = t },
+                { "h|hTarget=", "Target segment to scan", h => hTarget = h },
                 { "p|ports=", "Ports to scan (e.g. \"0-1024\" or \"80,443,8080\")", p => portRange = p },
                 { "d|delay=", "Scan delay(ms),Defalt:1000", p => delay = p },
-                { "m|maxconcurrency=", "Maximum number of concurrent scans,Defalt:600", m => maxConcurrency = m },
+                { "t|thread=", "Maximum num of concurrent scans,Defalt:600", t => maxConcurrency = t },
                 { "u|username=", "Username for authentication", u => userName = u },
-                { "pw|password=", "Password for authentication", pw => passWord = pw },
-                { "h|help", "Show this usage and help", h => showHelp = h != null },
+                { "c|command=", "Command Execution", c => command = c },
+                { "m|mode=", "Scanning poc mode(e.g. ssh/smb/rdp/ms17010)", m => Program.mode = m },
+                { "pw|password=", "Password for authentication", pwd => passWord = pwd },
+                { "uf|ufile=", "Username file for authentication", uf => userNameFile = uf },
+                { "pwf|pwdfile=", "Password file for authentication", pwdf => passWord = pwdf },
+                { "help|show", "Show this usage and help", h => showHelp = h != null },
+                { "socks5=", "Open socks5 port", socks5 => Program.socks5 = socks5 },
+                { "nopoc", "Not using proof of concept(POC)", nopoc => Program.nopoc =nopoc!= null },
                 { "o|output=", "Output file to save console output", o => outputFile = o }
             };
 
@@ -96,7 +112,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 Console.WriteLine("Try `SharpScan --help` for more information.");
                 return;
             }
-
+            
             if (showHelp)
             {
                 ShowHelp(options);
@@ -107,27 +123,27 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             {
                 icmpScan = true;
             }
+            
             Console.WriteLine($"Delay:{delay}   MaxConcurrency:{maxConcurrency}");
-           
-            if (!string.IsNullOrEmpty(targetSegment))
+         
+
+
+
+            if (!string.IsNullOrEmpty(hTarget))
             {
-                IPlist = SharpScan.GetIP.IPList(targetSegment);
+                IPlist = SharpScan.GetIP.IPList(hTarget);
             }
-            if (!string.IsNullOrEmpty(portRange))
+
+
+
+            if (!string.IsNullOrEmpty(socks5))
             {
-                if (isUDP)
-                {
-                    await new UdpPortscan().ScanPortRange(targetSegment, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency));
-
-                }
-                else { await new TcpPortscan().ScanPortRange(targetSegment, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)); }
-
+                new Socks5().Run(Convert.ToInt32(socks5), Program.userName, Program.passWord);
                 return;
             }
 
-            if (string.IsNullOrEmpty(targetSegment))
+            if (string.IsNullOrEmpty(hTarget))
             {
-                //Console.WriteLine("Target segment must be specified using -s or --segment.");
                 ShowHelp(options);
                 return;
             }
@@ -140,7 +156,27 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 Console.SetError(multiTextWriter);
             }
 
-            Console.WriteLine("\r\nC_Segment: " + targetSegment + ".");
+            if (!string.IsNullOrEmpty(portRange))
+            {
+                if (isUDP)
+                {
+                    await new UdpPortscan().ScanPortRange(hTarget, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency));
+
+                }
+                else { await new TcpPortscan().ScanPortRange(hTarget, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)); }
+
+                return;
+            }
+            if (!string.IsNullOrEmpty(mode))
+            {
+
+                await new HandlePOC().ModPacket(mode);
+
+                return;
+            }
+
+
+            Console.WriteLine("\r\nC_Segment: " + hTarget + ".");
             Console.WriteLine("===================================================================");
             Console.WriteLine($"{"IP",-28} {"HostName",-28} {"OsVersion",-40}");
 
@@ -161,7 +197,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 Console.WriteLine("===================================================================");
             }
 
-            await new TcpPortscan().ScanPortAsync(Convert.ToInt32(delay), Configuration.PortList, Convert.ToInt32(maxConcurrency));
+            await new TcpPortscan().ScanPortDefault(Convert.ToInt32(delay), Configuration.PortList, Convert.ToInt32(maxConcurrency));
 
             Console.WriteLine("===================================================================");
             Console.WriteLine($"[+] alive ports len is: {alivePort}");
@@ -170,7 +206,12 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
 
 
-            await new HandlePOC().HandleDefault();
+            if (!nopoc)
+            {
+  
+                await new HandlePOC().HandleDefault();
+            }
+
 
             if (fileWriter != null)
             {

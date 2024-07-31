@@ -84,6 +84,5 @@ namespace ZeroLogonCheck
             Console.WriteLine("[+] DC appear to not be vulnerable to Zerologon attack.\n");
             Console.ForegroundColor = currConsoleColor;
         }
-
     }
 }

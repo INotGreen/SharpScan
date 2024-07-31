@@ -80,11 +80,11 @@ namespace SharpScan.Plugins
             IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
             if (properties.DomainName.Length > 0)
             {
-                Console.WriteLine("\n[+] This host is in a domain! Domain name: {0}", properties.DomainName);
+                Console. WriteLine($"\n[+] This host is in a domain! Domain name: {properties.DomainName}",ConsoleColor.Red );
                 DoIt();
                 new Domain();
                 Console.WriteLine("\n");
-                // ZeroLogon.ZeroLogonCheck();
+               // ZeroLogon.ZeroLogonCheck();
             }
             else
             {

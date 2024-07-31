@@ -11,8 +11,6 @@
 
 
 
-
-
 ## 1.特点
 
 - C#开发的内网资产扫描器，方便内网横向移动和域内信息收集
@@ -93,9 +91,7 @@ SharpScan.exe -s 192.168.1.1/16  (扫描B段)
 
 ### 4.1视频演示
 
-[demo](https://private-user-images.githubusercontent.com/89376703/352985272-6c4d2f2d-b21e-43b3-ad8b-578cd6163f05.mp4)
-
-
+[demo](https://private-user-images.githubusercontent.com/89376703/353790871-5b7eb467-ea48-4bd9-9488-1e01e1b35393.mp4)
 
 ### 4.2其它功能
 
@@ -104,7 +100,7 @@ SharpScan.exe -h 192.168.244.1/24 -nopoc                           
 SharpScan.exe -s 192.168.244.169 -p 80-1024 -d 0 -m 600            (Tcp端口扫描:80-1024，0延时，最大并发600)
 SharpScan.exe -t 192.168.244.141 -U -p 100-10000                   (udp端口扫描:100-10000，10ms延时，最大并发600)
 SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a             (C段ssh服务账号密码爆破,账号root，密码a)
-SharpScan.exe -h 192.168.244.1/24 -m smb -u administrator -pw a    (C段smb服务账号密码爆破,账号root，密码a)
+SharpScan.exe -h 192.168.244.1/24 -m smb -u administrator -pw a    (C段smb服务账号密码爆破,账号administrator，密码a)
 SharpScan.exe -h 192.168.244.1/24 -m rdp -u administrator -pw a    (C段rdp服务账号密码爆破,账号administrator，密码a)
 SharpScan.exe -h 192.168.244.1/24 -m ms17010                       (C段批量扫描是否存在ms17010)
 SharpScan.exe -socks5 8000 -u test -pw 1234                        (Socks5:8000.用户名:test，密码:1234)
@@ -152,7 +148,7 @@ SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a
 
 
 
-C段爆破SMB账号密码：
+C段爆破SMB账号密码爆破：
 
 ```powershell
 SharpScan.exe -h 192.168.244.1/24 -m smb -u administrator -pw a

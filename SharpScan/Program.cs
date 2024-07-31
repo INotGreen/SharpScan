@@ -23,20 +23,22 @@ namespace SharpScan
         public static bool arpScan = false;
         public static bool isUDP = false;
         public static bool nopoc = false;
-        public static string mode = "";
-        public static string hTarget = "";
+        public static string mode { get; set; }
+        public static string hTarget { get; set; }
 
         public static List<string> IPlist;
-        public static string portRange = "";
-        public static string socks5 = "";
-        public static string command = "";
+        public static string portRange { get; set; }
+        public static string socks5 { get; set; }
+        public static string command { get; set; }
         public static string maxConcurrency = "600";
         public static string delay = "10";
-        public static string userName = "";
-        public static string userNameFile = "";
-        public static string passWord = "";
-        public static string passWordFile = "";
-        public static string outputFile = "";
+        public static string userName { get; set; }
+        public static string userNameFile { get; set; }
+        public static string passWord { get; set; }
+        public static string passWordFile { get; set; }
+        public static string userList { get; set; }
+        public static string passwordList { get; set; }
+        public static string outputFile { get; set; }
 
 
         public class OnlinePC
@@ -76,6 +78,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
         static async Task Main(string[] args)
         {
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine(StringPating);
 
             var options = new OptionSet
@@ -85,18 +88,18 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 { "U|udp", "Perform udp scan", udp => isUDP = udp != null },
                 { "h|hTarget=", "Target segment to scan", h => hTarget = h },
                 { "p|ports=", "Ports to scan (e.g. \"0-1024\" or \"80,443,8080\")", p => portRange = p },
-                { "d|delay=", "Scan delay(ms),Defalt:1000", p => delay = p },
-                { "t|thread=", "Maximum num of concurrent scans,Defalt:600", t => maxConcurrency = t },
                 { "u|username=", "Username for authentication", u => userName = u },
-                { "c|command=", "Command Execution", c => command = c },
-                { "m|mode=", "Scanning poc mode(e.g. ssh/smb/rdp/ms17010)", m => Program.mode = m },
                 { "pw|password=", "Password for authentication", pwd => passWord = pwd },
                 { "uf|ufile=", "Username file for authentication", uf => userNameFile = uf },
                 { "pwf|pwdfile=", "Password file for authentication", pwdf => passWord = pwdf },
-                { "help|show", "Show this usage and help", h => showHelp = h != null },
+                { "m|mode=", "Scanning poc mode(e.g. ssh/smb/rdp/ms17010)", m => Program.mode = m },
+                { "c|command=", "Command Execution", c => command = c },
+                { "d|delay=", "Scan delay(ms),Defalt:1000", p => delay = p },
+                { "t|thread=", "Maximum num of concurrent scans,Defalt:600", t => maxConcurrency = t },
                 { "socks5=", "Open socks5 port", socks5 => Program.socks5 = socks5 },
                 { "nopoc", "Not using proof of concept(POC)", nopoc => Program.nopoc =nopoc!= null },
-                { "o|output=", "Output file to save console output", o => outputFile = o }
+                { "o|output=", "Output file to save console output", o => outputFile = o },
+                 { "help|show", "Show this usage and help", h => showHelp = h != null },
             };
 
             try
@@ -120,8 +123,12 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             {
                 icmpScan = true;
             }
+
             Console.WriteLine($"Delay:{delay}   MaxConcurrency:{maxConcurrency}");
             new SetTls12UserRegistryKeys();
+
+
+
             if (!string.IsNullOrEmpty(hTarget))
             {
                 IPlist = SharpScan.GetIP.IPList(hTarget);
@@ -197,18 +204,20 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             Console.WriteLine("===================================================================");
             GC.Collect();
 
-            
 
-            if (!nopoc) {
+
+            if (!nopoc)
+            {
                 new DomainCollect();
                 await new HandlePOC().HandleDefault();
             }
-           
+            Console.ResetColor();
 
             if (fileWriter != null)
             {
                 fileWriter.Close();
             }
+           
         }
     }
 }
