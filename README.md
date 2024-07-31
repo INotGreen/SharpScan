@@ -10,6 +10,9 @@
 - [5.正在完成(TODO)](#5正在完成todo)
 
 
+
+
+
 ## 1.特点
 
 - C#开发的内网资产扫描器，方便内网横向移动和域内信息收集
@@ -97,14 +100,14 @@ SharpScan.exe -s 192.168.1.1/16  (扫描B段)
 ### 其它功能
 
 ```powershell
-SharpScan.exe -s 192.168.244.169 -p 80-1024 -d 0 -m 600     (Tcp端口扫描:80-1024，0延时，最大并发600)
-SharpScan.exe -t 192.168.244.141 -U -p 100-10000            (udp端口扫描:100-10000，10ms延时，最大并发600)
-SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a      (C段ssh服务账号密码爆破,账号root，密码a)
-SharpScan.exe -h 192.168.244.1/24 -m smb -u root -pw a      (C段smb服务账号密码爆破,账号root，密码a)
-SharpScan.exe -h 192.168.244.1/24 -m rdp -u root -pw a      (C段rdp服务账号密码爆破,账号root，密码a)
-SharpScan.exe -h 192.168.244.1/24 -m ms17010                (C段批量扫描是否存在ms17010)
-SharpScan.exe -socks5 8000 -u test -pw 1234                 (Socks5:8000.用户名:test，密码:1234)
-SharpScan.exe -h 192.168.244.1/24 -nopoc                    (不使用POC和内网信息收集，只做网段主机探测和端口扫描)
+SharpScan.exe -s 192.168.244.169 -p 80-1024 -d 0 -m 600            (Tcp端口扫描:80-1024，0延时，最大并发600)
+SharpScan.exe -t 192.168.244.141 -U -p 100-10000                   (udp端口扫描:100-10000，10ms延时，最大并发600)
+SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a             (C段ssh服务账号密码爆破,账号root，密码a)
+SharpScan.exe -h 192.168.244.1/24 -m smb -u root -pw a             (C段smb服务账号密码爆破,账号root，密码a)
+SharpScan.exe -h 192.168.244.1/24 -m rdp -u administrator -pw a    (C段rdp服务账号密码爆破,账号administrator，密码a)
+SharpScan.exe -h 192.168.244.1/24 -m ms17010                       (C段批量扫描是否存在ms17010)
+SharpScan.exe -socks5 8000 -u test -pw 1234                        (Socks5:8000.用户名:test，密码:1234)
+SharpScan.exe -h 192.168.244.1/24 -nopoc                           (不使用POC和内网信息收集，只做网段主机探测和端口扫描)
 ```
 
 
@@ -119,7 +122,7 @@ SharpScan.exe -h 192.168.244.1/24 -nopoc                    (不使用POC和内�
 SharpScan.exe -s 192.168.244.169 -p 10-1024 -d 0 -m 600
 ```
 
-![image-20240731144400465](../../AppData/Roaming/Typora/typora-user-images/image-20240731144400465.png)
+![image-20240731144400465](Image/image-20240731144400465.png)
 
 
 
@@ -135,7 +138,7 @@ C段RDP服务账号密码爆破
 SharpScan.exe -h 192.168.244.1/24 -m rdp -u administrator -pw a
 ```
 
-
+![image-20240731151455139](Image/image-20240731151455139.png)
 
 C段SSH服务账号密码爆破
 
@@ -170,7 +173,7 @@ SharpScan.exe -socks5 8000 -u test -pw 1234
 
 
 
-6.参考链接：
+## 6.参考链接：
 
 - https://github.com/shadow1ng/fscan
 
@@ -183,7 +186,7 @@ SharpScan.exe -socks5 8000 -u test -pw 1234
 - https://github.com/shmilylty/SharpHostInfo
 
 - https://github.com/Adminisme/SharpRDPLog
-
+- https://github.com/3gstudent/SharpRDPCheck
 
 
 

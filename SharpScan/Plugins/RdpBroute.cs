@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Security.Authentication;
 using System.Text;
+using System.Threading;
 
 namespace SharpScan
 {
@@ -27,7 +28,10 @@ namespace SharpScan
                         bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1.5));
                         if (success)
                         {
+                            
+                            
                             Console.WriteLine($"[*] {IP}:{Port}{Helper.GetServiceByPort(Port)} is open");
+                            
                             Options.Host = IP;
                             Options.Port = Port;
                             Options.Username = Program.userName;
