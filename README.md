@@ -2,6 +2,14 @@
 
 
 
+- [1.特点](#1特点)
+- [2. 主要功能](#2-主要功能)
+- [3.正在完成(TODO)](#3正在完成todo)
+- [4.兼容性：](#4兼容性)
+- [5.使用](#5使用)
+  - [视频演示](#视频演示)
+  - [其它功能](#其它功能)
+  - [截图](#截图)
 
 
 ## 1.特点
@@ -80,15 +88,15 @@ SharpScan.exe -s 192.168.1.1/24  (扫描C段)
 SharpScan.exe -s 192.168.1.1/16  (扫描B段)
 ```
 
+
+
+### 视频演示
+
 [demo](https://private-user-images.githubusercontent.com/89376703/352985272-6c4d2f2d-b21e-43b3-ad8b-578cd6163f05.mp4)
 
 
 
-
-
-
-
-其它功能
+### 其它功能
 
 ```powershell
 SharpScan.exe -s 192.168.244.169 -p 80-1024 -d 0 -m 600(端口范围80-1024，0延时，最大并发600，用时3秒)
@@ -99,43 +107,24 @@ SharpScan.exe -socks5 8000 -u test -pw 1234(Socks:8000.用户名:test，密码:1
 
 
 
+
+
+
+
+### 截图
+
 扫描指定IP(默认使用TCP)，端口范围80-1024，0延时，最大并发600，用时3秒
 
 ```postgresql
 SharpScan.exe -s 192.168.244.169 -p 80-1024 -d 0 -m 600
 ```
 
-```powershell
 
-Delay:10   MaxConcurrency:600
-[+] 192.168.244.169:135 (findnet) is open
-[+] 192.168.244.169:139 (netbios) is open
-[+] 192.168.244.169:445 (smb) is open
-
-[+] Scanning completed in 3.53 seconds
-```
 
 使用UDP协议扫描端口，端口范围100-10000，10ms延时，最大并发600，用时21秒
 
 ```powershell
 SharpScan.exe -t 192.168.244.141 -U -p 100-10000
-```
-
-```powershell
-Delay:10   MaxConcurrency:600
-[+] TLS 1.2 registry keys for current user have been set successfully.
-[+] 192.168.244.141:135 (msrpc) is open
-[+] 192.168.244.141:139 (netbios) is open
-[+] 192.168.244.141:389 (ldap) is open
-[+] 192.168.244.141:445 (smb) is open
-[+] 192.168.244.141:464 (kpasswd) is open
-[+] 192.168.244.141:636 (ldaps) is open
-[+] 192.168.244.141:593 is open
-[+] 192.168.244.141:3268 is open
-[+] 192.168.244.141:3269 is open
-[+] 192.168.244.141:9389 is open
-
-[+] Scanning completed in 21.07 seconds
 ```
 
 
@@ -145,17 +134,6 @@ C段ssh服务账号密码爆破
 ```powershell
 SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a
 ```
-
-```powershell
-Delay:10   MaxConcurrency:600
-[*] 192.168.244.164:22 (ssh) is open
-[+] (SSH) 192.168.244.164:22  User:root  Password:a   OS: CentOS Linux, Version: 7 (Core)
-[*] 192.168.244.255:22 (ssh) is open
-```
-
-
-
-
 
 
 
