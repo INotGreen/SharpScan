@@ -1,86 +1,138 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using System.Security;
 
-class Program
+namespace SMBLogin
 {
-    static void Main()
+    class Program
     {
-        string target = "192.168.244.139"; // 目标IP地址
-        int startPort = 80;
-        int endPort = 1024;
-
-        var openPorts = ScanUdpPorts(target, startPort, endPort).Result;
-
-        foreach (var port in openPorts)
+        static void Main(string[] args)
         {
-            Console.WriteLine($"Port {port} is open or filtered");
-        }
-    }
-
-    static async Task<List<int>> ScanUdpPorts(string targetIp, int startPort, int endPort)
-    {
-        List<int> openPorts = new List<int>();
-        List<Task> tasks = new List<Task>();
-
-        for (int port = startPort; port <= endPort; port++)
-        {
-            int currentPort = port; // Capture the current port in a local variable for closure
-            tasks.Add(Task.Run(() =>
+            if (args.Length != 3)
             {
-                if (IsUdpPortOpen(targetIp, currentPort))
-                {
-                    lock (openPorts)
-                    {
-                        openPorts.Add(currentPort);
-                    }
-                }
-            }));
+                Console.WriteLine("usage: smblogin <ip> <user> <password>");
+                Console.WriteLine(" e.g.: smblogin 192.168.1.1 .\\Administrator P@ssw0rd");
+                return;
+            }
+
+            string ip = args[0];
+            string user = args[1];
+            string pass = args[2];
+
+            string result = SMBLogin(ip, user, pass);
+            Console.WriteLine(result);
         }
 
-        await Task.WhenAll(tasks);
-        return openPorts;
-    }
-
-    static bool IsUdpPortOpen(string host, int port)
-    {
-        try
+        static string SMBLogin(string ip, string user, string pass)
         {
-            using (UdpClient udpClient = new UdpClient())
+            if (!TestPort(ip, 445))
             {
-                udpClient.Client.ReceiveTimeout = 1000; // 设置超时为1秒
-                IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Parse(host), port);
+                return $"{ip},445,Port unreachable";
+            }
 
-                byte[] sendBytes = new byte[] { 0x00 }; // 发送一个字节的数据
-                udpClient.Send(sendBytes, sendBytes.Length, remoteEndPoint);
+            string output = $"{ip},{user},{pass},";
+            output += SMBLoginWorker(ip, user, pass);
+            return output;
+        }
 
-                // 尝试接收响应
-                try
+        static bool TestPort(string remoteHost, int remotePort)
+        {
+            int timeout = 3000; // 3 seconds
+            try
+            {
+                using (TcpClient client = new TcpClient())
                 {
-                    byte[] receiveBytes = udpClient.Receive(ref remoteEndPoint);
-                    return true; // 如果接收到响应，表示端口开放
-                }
-                catch (SocketException ex)
-                {
-                    if (ex.SocketErrorCode == SocketError.TimedOut)
+                    IAsyncResult result = client.BeginConnect(remoteHost, remotePort, null, null);
+                    bool success = result.AsyncWaitHandle.WaitOne(timeout, false);
+                    if (!success)
                     {
-                        // 超时，可能端口开放或被防火墙过滤
-                        return true;
-                    }
-                    else if (ex.SocketErrorCode == SocketError.ConnectionReset)
-                    {
-                        // 目标端口不可达，端口关闭
+                        client.Close();
                         return false;
+                    }
+                    client.EndConnect(result);
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        static string SMBLoginWorker(string host, string user, string pass)
+        {
+            user = user.Replace("^\\.\\", $"{host}\\");
+            SecureString securePass = new SecureString();
+            foreach (char c in pass)
+            {
+                securePass.AppendChar(c);
+            }
+
+            // Convert SecureString to IntPtr
+            IntPtr unmanagedPassword = IntPtr.Zero;
+            try
+            {
+                unmanagedPassword = Marshal.SecureStringToGlobalAllocUnicode(securePass);
+
+                // Attempt to create a network connection
+                string networkPath = $"\\\\{host}\\Admin$";
+                int result = WNetAddConnection2(new NETRESOURCE
+                {
+                    lpRemoteName = networkPath,
+                    lpProvider = null
+                }, Marshal.PtrToStringUni(unmanagedPassword), user, 0);
+
+                if (result == 0)
+                {
+                    WNetCancelConnection2(networkPath, 0, true);
+                    return "True,admin";
+                }
+                else
+                {
+                    switch (result)
+                    {
+                        case 86: // ERROR_INVALID_PASSWORD
+                            return "False";
+                        case 5:  // ERROR_ACCESS_DENIED
+                            return "True";
+                        default:
+                            return "Error";
                     }
                 }
             }
+            catch
+            {
+                return "Error";
+            }
+            finally
+            {
+                if (unmanagedPassword != IntPtr.Zero)
+                {
+                    Marshal.ZeroFreeGlobalAllocUnicode(unmanagedPassword);
+                }
+            }
         }
-        catch
+
+        // P/Invoke for WNetAddConnection2
+        [DllImport("mpr.dll")]
+        private static extern int WNetAddConnection2(NETRESOURCE netResource, string password, string username, int flags);
+
+        [DllImport("mpr.dll")]
+        private static extern int WNetCancelConnection2(string name, int flags, bool force);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private class NETRESOURCE
         {
-            return false;
+            public int dwScope = 0;
+            public int dwType = 1; // RESOURCETYPE_DISK
+            public int dwDisplayType = 0;
+            public int dwUsage = 0;
+            public string lpLocalName = null;
+            public string lpRemoteName;
+            public string lpComment = null;
+            public string lpProvider = null;
         }
-        return false;
     }
 }

@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -98,73 +97,122 @@ namespace SharpScan
             }
         }
 
-        public async Task ModPacket(string mode)
+        public async Task ModPacket(string Mode)
         {
+
             using (SemaphoreSlim semaphore = new SemaphoreSlim(Convert.ToInt32(Program.maxConcurrency)))
             {
-                List<Task> tasks = new List<Task>();
-
-                foreach (var ip in Program.IPlist)
-                {
-                    await semaphore.WaitAsync();
-                    tasks.Add(Task.Run(()=>ProcessIpAsync(mode, ip, semaphore)));
-                    //await Task.Delay(Convert.ToInt32(Program.delay));
-                }
-                
-                await Task.WhenAll(tasks);
-            }
-        }
-
-        private static async Task ProcessIpAsync(string mode, string ip, SemaphoreSlim semaphore)
-        {
-            try
-            {
-                switch (mode.ToLower())
+                switch (Mode.ToLower())
                 {
                     case "ssh":
                         {
-                            SshBrute.Run(ip);
+                            List<Task> tasks = new List<Task>();
+
+                            foreach (var ip in Program.IPlist)
+                            {
+                                await semaphore.WaitAsync();
+                                tasks.Add(Task.Run(async () =>
+                                {
+                                    try
+                                    {
+
+                                        BrotePacket($"{ip}:{22}");
+                                    }
+                                    finally
+                                    {
+                                        semaphore.Release();
+                                    }
+                                }));
+                                await Task.Delay(Convert.ToInt32(Program.delay));
+                            }
+                            await Task.WhenAll(tasks);
                             break;
                         }
-                        
                     case "rdp":
                         {
-                            new RdpBroute(ip);
+                            List<Task> tasks = new List<Task>();
+
+                            foreach (var ip in Program.IPlist)
+                            {
+                                await semaphore.WaitAsync();
+                                tasks.Add(Task.Run(async () =>
+                                {
+                                    try
+                                    {
+                                        BrotePacket($"{ip}:{3389}");
+                                    }
+                                    finally
+                                    {
+                                        semaphore.Release();
+                                    }
+                                }));
+                                await Task.Delay(Convert.ToInt32(Program.delay));
+                            }
+                            await Task.WhenAll(tasks);
                             break;
                         }
-                        
                     case "ms17010":
                         {
-                            using (var client = new TcpClient())
-                            {
-                                var result = client.BeginConnect(ip, 22, null, null);
-                                bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1.5));
-                                if (success)
-                                {
-                                    Console.WriteLine(ip);
-                                    new ms17_010scanner().Run(ip);
-                                }
-                            }
-                            //
-                            break;
+                            List<Task> tasks = new List<Task>();
 
+                            foreach (var ip in Program.IPlist)
+                            {
+                                await semaphore.WaitAsync();
+                                tasks.Add(Task.Run(async () =>
+                                {
+                                    try
+                                    {
+                                        new ms17_010scanner().Run(ip);
+                                       // BrotePacket($"{ip}:{3389}");
+                                    }
+                                    finally
+                                    {
+                                        semaphore.Release();
+                                    }
+                                }));
+                                await Task.Delay(Convert.ToInt32(Program.delay));
+                            }
+                            await Task.WhenAll(tasks);
+                            break;
                         }
+
                     case "smb":
                         {
+                            List<Task> tasks = new List<Task>();
+
+                            foreach (var ip in Program.IPlist)
+                            {
+                                await semaphore.WaitAsync();
+                                tasks.Add(Task.Run(async () =>
+                                {
+                                    try
+                                    {
+                                   SMBEnum.SMBLogin(ip,Program.userName,Program.passWord);
+                                    
+                                        //Console.WriteLine(result);
+                                    }
+                                    finally
+                                    {
+                                        semaphore.Release();
+                                    }
+                                }));
+                                await Task.Delay(Convert.ToInt32(Program.delay));
+                            }
+                            await Task.WhenAll(tasks);
+                            break;
                             break;
                         }
                     case "ftp":
                         {
                             break;
                         }
-                        // 对于 "smb" 和 "ftp"，没有操作的示例，所以跳过
+
                 }
             }
-            finally
-            {
-                //semaphore.Release();
-            }
+
+
         }
+
 
 
         public static async Task PocPacket(string ipPort)
