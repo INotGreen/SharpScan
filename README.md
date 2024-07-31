@@ -1,15 +1,13 @@
 
 
-
-
 - [1.特点](#1特点)
 - [2. 主要功能](#2-主要功能)
-- [3.正在完成(TODO)](#3正在完成todo)
-- [4.兼容性：](#4兼容性)
-- [5.使用](#5使用)
+- [3.兼容性：](#3兼容性)
+- [4.使用](#4使用)
   - [视频演示](#视频演示)
   - [其它功能](#其它功能)
   - [截图](#截图)
+- [5.正在完成(TODO)](#5正在完成todo)
 
 
 ## 1.特点
@@ -20,7 +18,7 @@
 - 使用异步和高并发、扫描速度快并且可控、内存自动回收
 - 用inline-assembly或者execute-assembly进行内存加载，实现无文件落地扫描
 
-- 体积较小(目前500kb)、传输快、一键自动化扫描+信息收集，一条龙服务
+- 体积较小(目前600kb)、传输快、一键自动化扫描+信息收集，一条龙服务
 
 - 尽量遵循OPSEC原则，不创建额外子进程、不读写注册表等操作
 
@@ -40,14 +38,9 @@
 - 携带一个开启Socks5代理的服务，支持账号密码验证
 - 导出扫描结果
 
-## 3.正在完成(TODO)
 
-- 数据库密码爆破(mysql、mssql、redis、psql、oracle等)
-- ftp服务爆破
-- redis写公钥或写计划任务
-- weblogic、st2、shiro的POC扫描检测
 
-## 4.兼容性：
+## 3.兼容性：
 
 - Windows ：支持win7-win11，windows server2008-2022
 
@@ -55,7 +48,7 @@
 
 - MacOS： arm x64_x86，intel_x64_86(macOS 10.15以上)
 
-## 5.使用
+## 4.使用
 
 ```powershell
 Delay:10   MaxConcurrency:600
@@ -65,13 +58,18 @@ Options:
   -i, --icmp                 Perform icmp scan
   -a, --arp                  Perform arp scan
   -U, --udp                  Perform udp scan
-  -t, --Target=VALUE         Target segment to scan
+  -h, --hTarget=VALUE        Target segment to scan
   -p, --ports=VALUE          Ports to scan (e.g. "0-1024" or "80,443,8080")
   -d, --delay=VALUE          Scan delay(ms),Defalt:1000
-  -m, --maxconcurrency=VALUE Maximum number of concurrent scans,Defalt:600
+  -t, --thread=VALUE         Maximum num of concurrent scans,Defalt:600
   -u, --username=VALUE       Username for authentication
+  -c, --command=VALUE        Command Execution
       --pw, --password=VALUE Password for authentication
-  -h, --help                 Show this usage and help
+      --uf, --ufile=VALUE    Username file for authentication
+      --pwf, --pwdfile=VALUE Password file for authentication
+  -m, --mode=VALUE           Scanning poc mode(e.g. ssh/smb/rdp/ms17010)
+      --socks5=VALUE         Open socks5 port
+      --help, --show         Show this usage and help
   -o, --output=VALUE         Output file to save console output
 
 Example:
@@ -104,8 +102,6 @@ SharpScan.exe -t 192.168.244.141 -U -p 100-10000(100-10000，10ms延时，最大
 SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a(C段ssh服务账号密码爆破,账号root，密码a)
 SharpScan.exe -socks5 8000 -u test -pw 1234(Socks:8000.用户名:test，密码:1234)
 ```
-
-
 
 
 
@@ -146,4 +142,13 @@ SharpScan.exe -socks5 8000 -u test -pw 1234
 ```
 
 
+
+
+
+## 5.正在完成(TODO)
+
+- 数据库密码爆破(mysql、mssql、redis、psql、oracle等)
+- ftp服务爆破
+- redis写公钥或写计划任务
+- weblogic、st2、shiro的POC扫描检测
 

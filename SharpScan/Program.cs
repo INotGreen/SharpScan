@@ -92,7 +92,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                {"pw|password=", "Password for authentication", pwd => passWord = pwd },
                 {"uf|ufile=", "Username file for authentication", uf => userNameFile = uf },
                {"pwf|pwdfile=", "Password file for authentication", pwdf => passWord = pwdf },
-                 {"m|mode=", "Scanning poc mode", m => Mode = m },
+                 {"m|mode=", "Scanning poc mode(e.g. ssh/smb/rdp/ms17010)", m => Mode = m },
                  {"socks5=", "Open socks5 port", socks5 => Socks5 = socks5 },
               {"help|show", "Show this usage and help", h => showHelp = h != null },
                 { "o|output=", "Output file to save console output", o => outputFile = o }
