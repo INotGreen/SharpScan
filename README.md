@@ -154,7 +154,7 @@ SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a
 
 C段爆破SMB账号密码：
 
-![image-20240731162159957](../../AppData/Roaming/Typora/typora-user-images/image-20240731162159957.png)
+![image-20240731162159957](Image/image-20240731162159957.png)
 
 
 
