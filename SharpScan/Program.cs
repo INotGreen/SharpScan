@@ -146,8 +146,6 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
         static async Task Init(string[] args)
         {
-
-
             if (!string.IsNullOrEmpty(search))
             {
                 string[] drives = Environment.GetLogicalDrives();
