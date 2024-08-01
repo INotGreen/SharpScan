@@ -68,6 +68,7 @@
     <Compile Include="Common\Config.cs" />
     <Compile Include="Pkg\Domain.cs" />
     <Compile Include="Pkg\EDRCheck.cs" />
+    <Compile Include="Pkg\FindFile.cs" />
     <Compile Include="Pkg\Helper.cs" />
     <Compile Include="Pkg\SetTls12UserRegistryKeys.cs" />
     <Compile Include="Pkg\Services\Lib\Writer.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Pkg\Socks5\Plugin\LoginHandler.cs" />
     <Compile Include="Pkg\Socks5\Plugin\LoginStatus.cs" />
     <Compile Include="Pkg\Socks5\Plugin\PluginLoader.cs" />
+    <Compile Include="Plugins\FileSearch.cs" />
     <Compile Include="Plugins\Socks5.cs" />
     <Compile Include="Pkg\Socks5\Socks5Client\Events\Socks5ClientArgs.cs" />
     <Compile Include="Pkg\Socks5\Socks5Client\Events\Socks5ClientDataArgs.cs" />

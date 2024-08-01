@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Mono.Options;
+using SharpRDPCheck;
 using SharpScan.Plugins;
 using Tamir.SharpSsh.Sharp.io;
 using static System.Net.WebRequestMethods;
@@ -20,12 +21,13 @@ namespace SharpScan
         public static int alivePort = 0;
         private static StreamWriter fileWriter;
         public static bool showHelp = false;
-        public static bool icmpScan = false;
+        public static bool icmpScan = true;
         public static bool arpScan = false;
         public static bool isUDP = false;
         public static bool nopoc = false;
         public static string mode { get; set; }
         public static string hTarget { get; set; }
+        public static string search { get; set; }
 
         public static List<string> IPlist;
         public static string portRange { get; set; }
@@ -73,8 +75,9 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             p.WriteOptionDescriptions(Console.Out);
 
             Console.WriteLine("\nExample:");
-            Console.WriteLine("  SharpScan.exe -t 192.168.1.1/24");
-            Console.WriteLine("  SharpScan.exe -t 192.168.1.107 -p 100-1024");
+            Console.WriteLine("  SharpScan.exe -help");
+            Console.WriteLine("  SharpScan.exe -h 192.168.1.1/24");
+            Console.WriteLine("  SharpScan.exe -h 192.168.1.107 -p 100-1024");
         }
 
         static async Task Main(string[] args)
@@ -97,6 +100,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 { "c|command=", "Command Execution", c => command = c },
                 { "d|delay=", "Scan delay(ms),Defalt:1000", p => delay = p },
                 { "t|thread=", "Maximum num of concurrent scans,Defalt:600", t => maxConcurrency = t },
+                { "s|search=", "Search all files", s => search = s },
                 { "socks5=", "Open socks5 port", socks5 => Program.socks5 = socks5 },
                 { "nopoc", "Not using proof of concept(POC)", nopoc => Program.nopoc =nopoc!= null },
                 { "o|output=", "Output file to save console output", o => outputFile = o },
@@ -119,21 +123,41 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 ShowHelp(options);
                 return;
             }
-
-            if (!icmpScan && !arpScan)
+            if (!string.IsNullOrEmpty(outputFile))
             {
-                icmpScan = true;
+                fileWriter = new StreamWriter(outputFile, false) { AutoFlush = true };
+                var multiTextWriter = new MultiTextWriter(Console.Out, fileWriter);
+                Console.SetOut(multiTextWriter);
+                Console.SetError(multiTextWriter);
+            }
+
+
+            await Init(args);
+
+            if (fileWriter != null)
+            {
+                fileWriter.Close();
+            }
+            Console.ResetColor();
+        }
+
+
+
+
+        static async Task Init(string[] args)
+        {
+
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                string[] drives = Environment.GetLogicalDrives();
+                FileSearch.Start(drives);
+                return;
             }
 
             Console.WriteLine($"Delay:{delay}   MaxConcurrency:{maxConcurrency}");
             new SetTls12UserRegistryKeys();
 
-
-            if (string.IsNullOrEmpty(hTarget))
-            {
-                ShowHelp(options);
-                return;
-            }
 
             if (!string.IsNullOrEmpty(hTarget))
             {
@@ -148,95 +172,62 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 return;
             }
 
-            if (!string.IsNullOrEmpty(userNameFile))
+            if (!string.IsNullOrEmpty(userNameFile) && System.IO.File.Exists(userNameFile))
             {
-                if (System.IO.File.Exists(userNameFile))
-                {
-                    string[] lines = System.IO.File.ReadAllLines(userNameFile);
-                    userList = new List<string>(lines);
-                }
-
-            }
-            if (!string.IsNullOrEmpty(passWordFile))
-            {
-                if (System.IO.File.Exists(passWordFile))
-                {
-                    string[] lines = System.IO.File.ReadAllLines(passWordFile);
-                    passwordList = new List<string>(lines);
-
-                }
+                string[] lines = System.IO.File.ReadAllLines(userNameFile);
+                userList = new List<string>(lines);
             }
 
-
-            if (!string.IsNullOrEmpty(outputFile))
+            if (!string.IsNullOrEmpty(passWordFile) && System.IO.File.Exists(passWordFile))
             {
-                fileWriter = new StreamWriter(outputFile, false) { AutoFlush = true };
-                var multiTextWriter = new MultiTextWriter(Console.Out, fileWriter);
-                Console.SetOut(multiTextWriter);
-                Console.SetError(multiTextWriter);
+                string[] lines = System.IO.File.ReadAllLines(passWordFile);
+                passwordList = new List<string>(lines);
             }
+
 
             if (!string.IsNullOrEmpty(portRange))
             {
                 if (isUDP)
                 {
                     await new UdpPortscan().ScanPortRange(hTarget, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency));
-
                 }
-                else { await new TcpPortscan().ScanPortRange(hTarget, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)); }
-
+                else
+                {
+                    await new TcpPortscan().ScanPortRange(hTarget, portRange, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency));
+                }
                 return;
             }
+
 
             if (!string.IsNullOrEmpty(mode))
             {
-
                 await new HandlePOC().ModPacket(mode);
-
                 return;
             }
 
 
-            Console.WriteLine("\r\nC_Segment: " + hTarget + ".");
-            Console.WriteLine("===================================================================");
-            Console.WriteLine($"{"IP",-28} {"HostName",-28} {"OsVersion",-40}");
+            if (arpScan)
+            {
+                icmpScan=false;
+                var arpTask = Task.Run(() => new ARPScan().ARPScanPC(Program.IPlist, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)));
+                await Task.WhenAll(arpTask);
+
+            }
 
             if (icmpScan)
             {
                 await Task.Run(() => new ICMPScan().ICMPScanPC(Program.IPlist, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)));
-                Console.WriteLine("===================================================================");
-                Console.WriteLine("[+] onlinePC: " + Program.onlinePC);
-                Console.WriteLine("===================================================================");
             }
 
-            if (arpScan)
-            {
-                var arpTask = Task.Run(() => new ARPScan().ARPScanPC(Program.IPlist, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)));
-                await Task.WhenAll(arpTask);
-                Console.WriteLine("===================================================================");
-                Console.WriteLine("[+] onlinePC: " + Program.onlinePC);
-                Console.WriteLine("===================================================================");
-            }
+            
 
             await new TcpPortscan().ScanPortDefault(Convert.ToInt32(delay), Configuration.PortList, Convert.ToInt32(maxConcurrency));
-
-            Console.WriteLine("===================================================================");
-            Console.WriteLine($"[+] alive ports len is: {alivePort}");
-            Console.WriteLine("===================================================================");
-            GC.Collect();
-
 
 
             if (!nopoc)
             {
                 new DomainCollect();
                 await new HandlePOC().HandleDefault();
-            }
-            Console.ResetColor();
-
-            if (fileWriter != null)
-            {
-                fileWriter.Close();
             }
 
         }

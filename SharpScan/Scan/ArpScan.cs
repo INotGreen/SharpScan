@@ -15,6 +15,10 @@ namespace SharpScan
     {
         public async Task ARPScanPC(List<string> IPlist, int Delay, int maxConcurrency)
         {
+            Console.WriteLine("\r\nC_Segment: " + hTarget + ".");
+            Console.WriteLine("===================================================================");
+            Console.WriteLine($"{"IP",-28} {"HostName",-28} {"OsVersion",-40}");
+
             List<Task> ArpTasks = new List<Task>();
             using (SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency))
             {
@@ -37,6 +41,9 @@ namespace SharpScan
 
                 await Task.WhenAll(ArpTasks);
             }
+            Console.WriteLine("===================================================================");
+            Console.WriteLine("[+] onlinePC: " + Program.onlinePC);
+            Console.WriteLine("===================================================================");
         }
 
         public static void ArpCheck(string ip)

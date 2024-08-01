@@ -29,6 +29,11 @@ namespace SharpScan
             await ScanWebPorts(delay, maxConcurrency);
             stopwatch.Stop();
             Console.WriteLine($"\n[+] WebPort Scanning completed in {(stopwatch.ElapsedMilliseconds / 1000.0).ToString("F2")} seconds\n");
+
+            Console.WriteLine("===================================================================");
+            Console.WriteLine($"[+] alive ports len is: {Program.alivePort}");
+            Console.WriteLine("===================================================================");
+
         }
 
 

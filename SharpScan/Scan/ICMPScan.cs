@@ -16,6 +16,11 @@ namespace SharpScan
     {
         public async Task ICMPScanPC(List<string> IPlist, int Delay, int maxConcurrency)
         {
+
+            Console.WriteLine("\r\nC_Segment: " + hTarget + ".");
+            Console.WriteLine("===================================================================");
+            Console.WriteLine($"{"IP",-28} {"HostName",-28} {"OsVersion",-40}");
+
             List<Task> IcmpTasks = new List<Task>();
             using (SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency))
             {
@@ -38,6 +43,10 @@ namespace SharpScan
 
                 await Task.WhenAll(IcmpTasks);
             }
+
+            Console.WriteLine("===================================================================");
+            Console.WriteLine("[+] onlinePC: " + Program.onlinePC);
+            Console.WriteLine("===================================================================");
         }
 
         private static  void Ping(string ip)
