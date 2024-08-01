@@ -247,13 +247,43 @@ SharpScan.exe -socks5 8000 -u test -pw 1234
 
 1.为什么用NET Framework3.5编写程序
 
-.NET Framework是向下兼容的框架，也就是.NET Framework4、4.5、4.8的语法都是可以在3.5和2.0中使用的，但是2.0和3.5的语法无法向上兼容。我在代码中添加了对.NET Framework3.5高级异步和并发的支持，添加Linq查询相对于.NET Framework2.0更灵活和高效，因此用.NET Framework3.5编写程序，算代码移植性和兼容性比较强的版本。
+.NET 的语法是向上兼容的，.NET Framework4、4.5、4.8的语法都是可以在3.5和2.0中使用的，但是2.0和3.5的语法无法向上兼容。我在代码中添加了对.NET Framework3.5高级异步和并发的支持，再者3.5以后提供的Linq查询相对于.NET Framework2.0更灵活和高效，因此用.NET Framework3.5编写程序，算的上代码移植性和兼容性比较强的版本。
 
 2.NET Framework3.5不能直接在未安装.NET Framework3.5的windows10、11上运行吗？
 
-![image-20240801134555502](../../AppData/Roaming/Typora/typora-user-images/image-20240801134555502.png)
+![image-20240801134555502](Image/image-20240801134555502.png)
 
-很多人遇到这个问题 ，答案是可以的，通过Patch
+很多人遇到这个问题 ，答案是可以的，通过powershell去Patch .NET的版本标识符，将v2.0.50727替换成v4.0.30319，即可在win10上运行，还是上面说的.net Framework3.5可以直接转成.net Framework4.0以上，因此只需要Patch标识符就行了
+
+```powershell
+
+$filePath = "SharpScan.exe"
+$outputFilePath = "SharpScan_Patched.exe"
+$findBytes = [System.Text.Encoding]::ASCII.GetBytes("v2.0.50727")
+$replaceBytes = [System.Text.Encoding]::ASCII.GetBytes("v4.0.30319")
+$content = [System.IO.File]::ReadAllBytes($filePath)
+for ($i = 0; $i -le $content.Length - $findBytes.Length; $i++) {
+    $match = $true
+    for ($j = 0; $j -lt $findBytes.Length; $j++) {
+        if ($content[$i + $j] -ne $findBytes[$j]) {
+            $match = $false
+            break
+        }
+    }
+    if ($match) {
+        [Array]::Copy($replaceBytes, 0, $content, $i, $replaceBytes.Length)
+    }
+}
+
+[System.IO.File]::WriteAllBytes($outputFilePath, $content)
+
+Write-Host "new exe:$outputFilePath"
+
+```
+
+根据这个思路，你可以使用execute-assembly或者inline-assembly去加载.net程序，只需要做到根据判定不同的系统来Patch不同的版本就行了
+
+
 
 
 
