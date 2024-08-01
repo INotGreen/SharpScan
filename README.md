@@ -15,10 +15,13 @@
     - [账号密码本爆破](#账号密码本爆破)
     - [全盘搜索](#全盘搜索)
     - [Socks5代理](#socks5代理)
+    - [在Powershell中使用](#在powershell中使用)
 - [5.正在完成(TODO)](#5正在完成todo)
 - [6.可能会遇到的问题](#6可能会遇到的问题)
+- [7.更新](#7更新)
 - [免责声明](#免责声明)
 - [参考链接](#参考链接)
+
 
 
 
@@ -251,7 +254,11 @@ Invoke-SharpScan -Command "-h 192.168.244.1/24"
 
 ![image-20240801170821991](../../AppData/Roaming/Typora/typora-user-images/image-20240801170821991.png)
 
+远程加载powershell
 
+```powershell
+iex(iwr -UseBasicParsing https://raw.githubusercontent.com/INotGreen/SharpScan/main/Powershell/Invoke-SharpScan.ps1);Invoke-SharpScan -Command "-h 192.168.244.1/24"
+```
 
 
 
