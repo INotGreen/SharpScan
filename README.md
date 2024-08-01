@@ -24,7 +24,7 @@
 - 参考了Ladon，Fscan、Kscan等扫描器的原理
 - 为了兼容更古老的系统，所以采用.NET Framework3.5 和.NET Core6.0开发
 - 使用异步和高并发、扫描速度快并且可控、内存自动回收
-- 用inline-assembly或者execute-assembly进行内存加载，实现无文件落地扫描
+- 用Inline-assembly或者Execute-assembly进行内存加载，实现无文件落地扫描
 
 - 体积较小(目前600kb)、传输快、自动化扫描+内网信息收集一条龙
 
@@ -39,11 +39,11 @@
 - 主机信息探测、目标网卡探测
 - 高危漏洞扫描：ms17010、CVE-2020-0796(SMBGhost)、ZeroLogon（CVE-2020-1472）
 - Webtitle探测，指纹识别常见CMS、OA框架等
-- 各类服务弱口令爆破、账号密码枚举(SSH、SMB、RDP)，ssh命令执行
-- 探测当前主机.net版本、操作系统版本信息、杀毒软件/内网设备（AV/EDR/XDR）查询等
-- 导出本地RDP登录日志(rdp端口、mstsc缓存、cmdkey缓存、登录成功、失败日志)
+- 各类服务弱口令爆破、账号密码枚举(SSH、SMB、RDP)，SSH命令执行
+- 探测当前主机.NET版本、操作系统版本信息、杀毒软件/内网设备（AV/EDR/XDR）查询等
+- 导出本地RDP登录日志(Rdp端口、Mstsc缓存、Cmdkey缓存、登录成功、失败日志)
 - 判断是否在域内、定位域控IP、信息收集域控的FQDN、域管理员组、域企业管理员组、LDAP查询等
-- 全盘文件搜索，关键字匹配，类似Everything的功能，适合全盘检索密码本（静默检索、不消耗内存）
+- 全盘文件搜索，关键字匹配，与Everything的功能相似，适合全盘检索密码本（静默检索、不消耗内存）
 - 携带一个高性能的Socks5代理服务器，支持账号密码验证
 - 导出扫描结果
 
@@ -204,12 +204,6 @@ SharpScan.exe -h 192.168.244.1/24 -m ssh -uf user.txt -pwf pass.txt
 
 
 
-
-
-
-
-
-
 #### 全盘搜索
 
 搜索本地磁盘上的pass.txt
@@ -247,7 +241,35 @@ SharpScan.exe -socks5 8000 -u test -pw 1234
 
 
 
-## 6.参考链接：
+
+
+## 可能会遇到的问题
+
+1.为什么用NET Framework3.5编写程序
+
+.NET Framework是向下兼容的框架，也就是.NET Framework4、4.5、4.8的语法都是可以在3.5和2.0中使用的，但是2.0和3.5的语法无法向上兼容。我在代码中添加了对.NET Framework3.5高级异步和并发的支持，添加Linq查询相对于.NET Framework2.0更灵活和高效，因此用.NET Framework3.5编写程序，算代码移植性和兼容性比较强的版本。
+
+2.NET Framework3.5不能直接在未安装.NET Framework3.5的windows10、11上运行吗？
+
+![image-20240801134555502](../../AppData/Roaming/Typora/typora-user-images/image-20240801134555502.png)
+
+很多人遇到这个问题 ，答案是可以的，通过Patch
+
+
+
+
+
+
+
+## 免责声明：
+
+本项目仅用于渗透测试练习中的教育和研究目的，目前处于测试阶段。禁止将其用于任何非法活动（包括黑市交易、未经授权的渗透攻击或金融剥削）！如果您选择使用此工具，您必须遵守上述要求
+
+
+
+
+
+## 参考链接：
 
 - https://github.com/shadow1ng/fscan
 
