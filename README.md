@@ -111,7 +111,7 @@ SharpScan.exe -h 192.168.244.1/24 -m rdp -uf user.txt -pwf pass.txt (用账号�
 SharpScan.exe -h 192.168.244.1/24 -m ssh -uf user.txt -pwf pass.txt (用账号密码本爆破C段的ssh服务()
 SharpScan.exe -h 192.168.244.1/24 -m ms17010                       (C段批量扫描是否存在ms17010)
 SharpScan.exe -socks5 8000 -u test -pw 1234                        (Socks5:8000.用户名:test，密码:1234)
-SharpScan.exe -h 192.168.244.1/24 -o output.txt					   (将扫描结果导出到output.txt)
+SharpScan.exe -h 192.168.244.1/24 -o output.txt                    (将扫描结果导出到output.txt)
 ```
 
 
