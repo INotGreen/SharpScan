@@ -166,6 +166,16 @@ SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a
 
 ![image-20240731134334232](Image/image-20240731134334232.png)
 
+
+
+SSH 命令执行
+
+```
+SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a -c "uname -a"
+```
+
+![image-20240801125524783](Image/image-20240801125524783.png)
+
 #### SMB爆破
 
 C段爆破SMB账号密码爆破：
@@ -186,7 +196,7 @@ SharpScan.exe -h 192.168.244.1/24 -m smb -u administrator -pw a
 SharpScan.exe -s "pass.txt"
 ```
 
-![image-20240801112506349](Image/image-20240801112506349.png)
+![image-20240801125922524](../../AppData/Roaming/Typora/typora-user-images/image-20240801125922524.png)
 
 
 

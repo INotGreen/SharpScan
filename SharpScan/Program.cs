@@ -82,7 +82,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
         static async Task Main(string[] args)
         {
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(StringPating);
 
             var options = new OptionSet
