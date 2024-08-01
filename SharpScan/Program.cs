@@ -41,7 +41,7 @@ namespace SharpScan
         public static string passWordFile { get; set; }
         public static List<string> userList { get; set; }
         public static List<string> passwordList { get; set; }
-        public static string outputFile { get; set; }
+        public static string outputFile = "out.txt";
 
 
         public class OnlinePC
@@ -103,8 +103,8 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 { "s|search=", "Search all files", s => search = s },
                 { "socks5=", "Open socks5 port", socks5 => Program.socks5 = socks5 },
                 { "nopoc", "Not using proof of concept(POC)", nopoc => Program.nopoc =nopoc!= null },
-                { "o|output=", "Output file to save console output", o => outputFile = o },
-                 { "help|show", "Show this usage and help", h => showHelp = h != null },
+                { "o|output=", "Output file to save console output", o => Program.outputFile = o },
+                { "help|show", "Show this usage and help", h => showHelp = h != null },
             };
 
             try
@@ -161,7 +161,6 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             {
                 IPlist = SharpScan.GetIP.IPList(hTarget);
             }
-
 
 
             if (!string.IsNullOrEmpty(socks5))

@@ -136,7 +136,7 @@ namespace SharpScan
                             if (!string.IsNullOrEmpty(Program.command))
                             {
                                 string res = exec.RunCommand(Program.command);
-                                Console.WriteLine(res);
+                                Console.WriteLine($"Command results:{res}");
                             }
                             await semaphore.WaitAsync();
                             try

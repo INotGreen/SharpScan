@@ -188,6 +188,30 @@ SharpScan.exe -h 192.168.244.1/24 -m smb -u administrator -pw a
 
 
 
+#### 账号密码本爆破
+
+SSH、SMB、RDP都是同理
+
+```powershell
+SharpScan.exe -h 192.168.244.1/24 -m ssh -uf user.txt -pwf pass.txt
+```
+
+
+
+![image-20240801131225528](Image/image-20240801131225528.png)
+
+![image-20240801131239111](Image/image-20240801131239111.png)
+
+
+
+
+
+
+
+
+
+
+
 #### 全盘搜索
 
 搜索本地磁盘上的pass.txt
@@ -202,7 +226,7 @@ SharpScan.exe -s "pass.txt"
 
 #### Socks5代理
 
-使用Socks5服务：在当前主机建立一个Socks5服务，端口为8000.用户名为test，密码是1234
+使用Socks5服务：在当前主机建立一个Socks5服务，端口为8000，用户名为test，密码是1234
 
 ```powershell
 SharpScan.exe -socks5 8000 -u test -pw 1234
