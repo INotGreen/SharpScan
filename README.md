@@ -255,7 +255,7 @@ SharpScan.exe -socks5 8000 -u test -pw 1234
 
 1.为什么用NET Framework3.5编写程序
 
-.NET 的语法是向上兼容的，.NET Framework2.0/3.5的语法都是可以在.NET Framework4、4.5、4.8中使用的，但是.NET Framework4系列的语法无法向下兼容，而对于一些古老的设备、它们仅安装了.NET Framework2.0/3.5。并且我在代码中添加了对.NET Framework3.5高级异步和并发的支持，3.5以后提供的Linq查询相对于.NET Framework2.0更灵活和高效，因此用.NET Framework3.5编写程序，算的上代码移植性和兼容性比较强的版本。
+.NET 的语法是向上兼容的，.NET Framework2.0/3.5的语法是可以在.NET Framework4、4.5、4.8中使用的，但是.NET Framework4系列的语法却是无法向下兼容，而对于一些古老的设备、它们仅安装了.NET Framework2.0/3.5。并且我在代码中添加了对.NET Framework3.5高级异步和并发的支持，3.5以后提供的Linq查询相对于.NET Framework2.0更灵活和高效，因此用.NET Framework3.5编写程序，算是代码移植性和兼容性比较强的版本。
 
 2.NET Framework3.5不能直接在未安装.NET Framework3.5的windows10、11上运行吗？
 
@@ -293,7 +293,7 @@ Write-Host "new exe:$outputFilePath"
 
 3.用了内存加载，就可以不用做免杀了吗？
 
-答案是否定的，不管是execute-assembly还是inline-assembly，对于内核级监控的AV/EDR/XDR，C#代码在内存都是透明的，但也不完全是，它们对于.NET的监控更多地是在用户层，因此您需要考虑绕过AMSI，ETW、Ntdll hook，Kernel32 hook等用户层的hook，虽然这看起来有点麻烦，不过C#可以轻松地转成Powershell脚本，通过.NET丰富的混淆方法，可以在应用层和内存中轻松地规避AMSI等引擎的hook
+答案是否定的，不管是[ExecuteAssembly](https://github.com/med0x2e/ExecuteAssembly)还是[Inline-Assembly](https://github.com/anthemtotheego/InlineExecute-Assembly) ， 对于内核级监控的AV/EDR/XDR，C#代码在内存都是透明的，但也不完全是，它们对于.NET的监控更多地是在用户层，因此您需要考虑绕过AMSI，ETW、Ntdll hook，Kernel32 hook等用户层的hook，虽然这看起来有点麻烦，不过您也可以尝试将C#转成Powershell脚本，通过.NET丰富的混淆方法，可以在应用层和内存中轻松地规避AMSI等引擎的hook，而对于没有接入amsi或者对于.NET没有自定义的的EDR厂商，内存加载就可以轻松地绕过它们
 
 
 
