@@ -252,7 +252,7 @@ Invoke-SharpScan -Command "-h 192.168.244.1/24"
 
 
 
-![image-20240801170821991](../../AppData/Roaming/Typora/typora-user-images/image-20240801170821991.png)
+![image-20240801170821991](Image/image-20240801170821991.png)
 
 远程加载powershell
 
