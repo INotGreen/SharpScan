@@ -41,7 +41,7 @@ namespace SharpScan
         public static string passWordFile { get; set; }
         public static List<string> userList { get; set; }
         public static List<string> passwordList { get; set; }
-        public static string outputFile = "out.txt";
+        public static string outputFile = "";
 
 
         public class OnlinePC
