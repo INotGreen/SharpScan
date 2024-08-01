@@ -245,6 +245,8 @@ SharpScan.exe -socks5 8000 -u test -pw 1234
 
 #### 在Powershell中使用
 
+您可以将C#程序轻松地转为powershell脚本：[Invoke-SharpScan](https://github.com/INotGreen/SharpScan/blob/main/Powershell/Invoke-SharpScan.ps1)
+
 ```powershell
 Import-Module .\Invoke-SharpScan.ps1
 Invoke-SharpScan -Command "-h 192.168.244.1/24"
