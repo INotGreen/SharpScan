@@ -320,7 +320,7 @@ Write-Host "new exe:$outputFilePath"
 
 3.用了内存加载，就可以不用做免杀了吗？
 
-答案是否定的，不管是[ExecuteAssembly](https://github.com/med0x2e/ExecuteAssembly)还是[Inline-Assembly](https://github.com/anthemtotheego/InlineExecute-Assembly) ， 对于内核级监控的AV/EDR/XDR，C#代码在内存都是透明的，但也不完全是，它们对于.NET的监控更多地是在用户层，因此您需要考虑绕过AMSI，ETW、Ntdll hook，Kernel32 hook等用户层的hook，虽然这看起来有点麻烦，不过您也可以尝试将C#转成Powershell脚本，通过.NET丰富的混淆方法，可以在应用层和内存中轻松地规避AMSI等引擎的hook，而对于没有接入amsi或者对于.NET没有自定义的的EDR厂商，内存加载就可以轻松地绕过它们
+答案是否定的，不管是[ExecuteAssembly](https://github.com/med0x2e/ExecuteAssembly)还是[Inline-Assembly](https://github.com/anthemtotheego/InlineExecute-Assembly) ， 对于内核级监控的AV/EDR/XDR，C#代码在内存都是透明的，但也不完全是，它们对于.NET的监控更多地是在用户层，因此您需要考虑绕过AMSI，ETW、Ntdll hook，Kernel32 hook等用户层的hook，虽然这看起来有点麻烦，不过您也可以尝试将C#转成Powershell脚本，通过.NET丰富的混淆方法，可以在应用层和内存中轻松地规避AMSI等引擎的hook，而对于没有接入amsi或者对于.NET没有自定义检测规则的EDR厂商，内存加载就可以轻松地绕过它们
 
 
 
