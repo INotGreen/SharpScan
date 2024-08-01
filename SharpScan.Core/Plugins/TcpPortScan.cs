@@ -25,10 +25,15 @@ namespace SharpScan
 
             await Task.WhenAll(portscanTasks);
             Console.WriteLine($"\n[+] Port Scanning completed in {(stopwatch.ElapsedMilliseconds / 1000.0).ToString("F2")} seconds\n");
-            // 开始扫描Web端口
+            // Start scan web port
             await ScanWebPorts(delay, maxConcurrency);
             stopwatch.Stop();
             Console.WriteLine($"\n[+] WebPort Scanning completed in {(stopwatch.ElapsedMilliseconds / 1000.0).ToString("F2")} seconds\n");
+
+            Console.WriteLine("===================================================================");
+            Console.WriteLine($"[+] alive ports len is: {Program.alivePort}");
+            Console.WriteLine("===================================================================");
+
         }
 
 

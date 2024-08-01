@@ -14,10 +14,7 @@ namespace SharpScan
 {
     internal class SshBrute
     {
-        public static Dictionary<string, List<string>> UserDict = new Dictionary<string, List<string>>
-        {
-            { "ssh", new List<string> { "root", "admin", "kali" } },
-        };
+
 
         private static readonly ConcurrentBag<string> SuccessfulLogins = new ConcurrentBag<string>();
         private static readonly ConcurrentDictionary<string, bool> TriedCombinations = new ConcurrentDictionary<string, bool>();
@@ -49,25 +46,23 @@ namespace SharpScan
             }
             if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
             {
-                
+
                 TryLogin(host, port, Program.userName, Program.passWord, cts, token);
             }
             else
             {
-                foreach (var userPair in UserDict)
+
+                if (Configuration.UserDictionary.TryGetValue("ssh", out List<string> sshUsers))
                 {
-                    foreach (var user in userPair.Value)
+                    foreach (var user in sshUsers)
                     {
                         foreach (var pass in Configuration.Passwords)
                         {
                             if (token.IsCancellationRequested)
                             {
-                                // PrintResults();
                                 return;
                             }
-
                             string comboKey = $"{host}:{port}:{user}:{pass}";
-
                             if (TriedCombinations.ContainsKey(comboKey))
                             {
                                 continue;
@@ -88,8 +83,13 @@ namespace SharpScan
                             }
                         }
                     }
+
                 }
 
+                else
+                {
+                    Console.WriteLine("Username list for SSH service not found。");
+                }
             }
 
 

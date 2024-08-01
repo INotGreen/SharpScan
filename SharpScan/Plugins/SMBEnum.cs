@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpRDPCheck;
+using System;
 using System.Collections.Generic;
 using System.Management;
 using System.Net;
@@ -26,12 +27,15 @@ namespace SharpScan
         }
         public static void SMBLogin(string ip)
         {
-            if (!Helper.TestPort(ip, 445))
+
+            int Port = 445;
+
+            if (!Helper.TestPort(ip, Port))
             {
                 return;
                 // return $"{ip},445,Port unreachable";
             }
-            Console.WriteLine($"[*] {ip}:{445}{Helper.GetServiceByPort(445)} is open");
+            Console.WriteLine($"[*] {ip}:{Port}{Helper.GetServiceByPort(Port)} is open");
 
             if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
             {
@@ -50,7 +54,24 @@ namespace SharpScan
                     }
                 }
             }
-
+            else
+            {
+                if (Configuration.UserDictionary.TryGetValue("smb", out List<string> smbUsers))
+                {
+                    foreach (var user in smbUsers)
+                    {
+                        foreach (var pass in Configuration.Passwords)
+                        {
+                            string output = $"[*] IP:{ip}  User:{user}  Password:{pass}, Result:{SMBLoginWorker(ip, user, pass)}";
+                            Console.WriteLine(output);
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Username list for RDP service not found。");
+                }
+            }
             //return output;
         }
 

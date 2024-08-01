@@ -88,6 +88,11 @@ namespace SharpScan
                         SshBrute.Run(ip);
                         break;
                     }
+                case "445":
+                    {
+                        SMBEnum.SMBLogin(ip);
+                        break;
+                    }
                 case "3389":
                     {
                         new RdpBroute(ip);

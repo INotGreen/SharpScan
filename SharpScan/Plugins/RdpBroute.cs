@@ -53,7 +53,32 @@ namespace SharpScan
                             }
                         }
                     }
-                    
+
+
+                    else
+                    {
+                        if (Configuration.UserDictionary.TryGetValue("rdp", out List<string> rdpUsers))
+                        {
+                           // Console.WriteLine("RDP服务的用户名列表：");
+                            foreach (var user in rdpUsers)
+                            {
+                                foreach(var pass in Configuration.Passwords)
+                                {
+                                    Options.Host = IP;
+                                    Options.Port = Port;
+                                    Options.Username = user;
+                                    Options.Password = pass;
+                                    Network.Connect(Options.Host, Port);
+                                    MCS.sendConnectionRequest(null, true);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Username list for RDP service not found。");
+                        }
+
+                    }
 
 
                 }
