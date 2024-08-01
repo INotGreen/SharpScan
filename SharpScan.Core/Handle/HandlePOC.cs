@@ -29,12 +29,13 @@ namespace SharpScan
                 foreach (var ipPort in ipPortList)
                 {
                     await semaphore.WaitAsync();
-                    tasks.Add(Task.Run(async () =>
+                    tasks.Add(Task.Run(() =>
                     {
                         try
                         {
-                            await packetProcessor(ipPort);
+                            packetProcessor(ipPort);
                         }
+                        catch  { }
                         finally
                         {
                             semaphore.Release();
@@ -88,9 +89,15 @@ namespace SharpScan
                         SshBrute.Run(ip);
                         break;
                     }
+                case "445":
+                    {
+                        SMBEnum.SMBLogin(ip);
+                        break;
+                    }
                 case "3389":
                     {
-                        new RdpBroute(ip);
+                       // Console.WriteLine("aaaaaaaaaa");
+                        RdpBroute.Run(ip);
                         break;
 
                     }

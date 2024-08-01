@@ -59,9 +59,9 @@ namespace SharpRDPCheck
                 }
             }
             if(Options.hash.Length>0)
-                Console.WriteLine($"[+] {Options.Host}login successful, User:{Options.Username}  Ntmlhash:{Options.hash}");
+                Console.WriteLine($"[+] (RDP){Options.Host}login successful, User:{Options.Username}  Ntmlhash:{Options.hash}");
             else
-                Console.WriteLine($"[+] {Options.Host} login successful, User:{Options.Username}  password:{Options.Password}");
+                Console.WriteLine($"[+] (RDP){Options.Host} login successful, User:{Options.Username}  password:{Options.Password}");
 
         }
 

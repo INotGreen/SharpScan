@@ -43,6 +43,7 @@ namespace SharpScan
                         TryLogin(host, port, user, pass, cts, token);
                     }
                 }
+                return;
             }
             if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
             {

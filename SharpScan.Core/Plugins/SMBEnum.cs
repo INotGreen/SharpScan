@@ -25,32 +25,41 @@ namespace SharpScan
                 await Task.WhenAll(IcmpTasks);
             }
         }
+
         public static void SMBLogin(string ip)
         {
-
             int Port = 445;
 
             if (!Helper.TestPort(ip, Port))
             {
                 return;
-                // return $"{ip},445,Port unreachable";
             }
+
             Console.WriteLine($"[*] {ip}:{Port}{Helper.GetServiceByPort(Port)} is open");
 
             if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
             {
-                string output = $"[*] IP:{ip}  User:{Program.userName}  Password:{Program.passWord}, Result:{SMBLoginWorker(ip, Program.userName, Program.passWord)}";
-                Console.WriteLine(output);
-            }
-            if(Program.userList!=null && Program.passwordList != null)
-            {
-                foreach(var user in Program.userList)
+                string result = SMBLoginWorker(ip, Program.userName, Program.passWord);
+                if (result.StartsWith("True"))
                 {
-                    //Console.WriteLine(user);
+                    string output = $"[*] (SMB)IP:{ip}  User:{Program.userName}  Password:{Program.passWord}, Result:{result}";
+                    Console.WriteLine(output);
+                }
+                return;
+            }
+
+            if (Program.userList != null && Program.passwordList != null)
+            {
+                foreach (var user in Program.userList)
+                {
                     foreach (var pass in Program.passwordList)
                     {
-                        string output = $"[*] IP:{ip}  User:{user}  Password:{pass}, Result:{SMBLoginWorker(ip, user, pass)}";
-                        Console.WriteLine(output);
+                        string result = SMBLoginWorker(ip, user, pass);
+                        if (result.StartsWith("True"))
+                        {
+                            string output = $"[*] (SMB)IP:{ip}  User:{user}  Password:{pass}, Result:{result}";
+                            Console.WriteLine(output);
+                        }
                     }
                 }
             }
@@ -62,20 +71,21 @@ namespace SharpScan
                     {
                         foreach (var pass in Configuration.Passwords)
                         {
-                            string output = $"[*] IP:{ip}  User:{user}  Password:{pass}, Result:{SMBLoginWorker(ip, user, pass)}";
-                            Console.WriteLine(output);
+                            string result = SMBLoginWorker(ip, user, pass);
+                            if (result.StartsWith("True"))
+                            {
+                                string output = $"[*] (SMB)IP:{ip}  User:{user}  Password:{pass}, Result:{result}";
+                                Console.WriteLine(output);
+                            }
                         }
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Username list for RDP service not found。");
+                    Console.WriteLine("Username list for SMB service not found.");
                 }
             }
-            //return output;
         }
-
-        
 
         static string SMBLoginWorker(string host, string user, string pass)
         {
@@ -86,13 +96,11 @@ namespace SharpScan
                 securePass.AppendChar(c);
             }
 
-            // Convert SecureString to IntPtr
             IntPtr unmanagedPassword = IntPtr.Zero;
             try
             {
                 unmanagedPassword = Marshal.SecureStringToGlobalAllocUnicode(securePass);
 
-                // Attempt to create a network connection
                 string networkPath = $"\\\\{host}\\Admin$";
                 int result = WNetAddConnection2(new NETRESOURCE
                 {
@@ -131,7 +139,6 @@ namespace SharpScan
             }
         }
 
-        // P/Invoke for WNetAddConnection2
         [DllImport("mpr.dll")]
         private static extern int WNetAddConnection2(NETRESOURCE netResource, string password, string username, int flags);
 
@@ -151,5 +158,4 @@ namespace SharpScan
             public string lpProvider = null;
         }
     }
-
 }
