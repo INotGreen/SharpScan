@@ -117,12 +117,12 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 Console.WriteLine("Try `SharpScan --help` for more information.");
                 return;
             }
-
-            if (showHelp)
+            if (args.Length < 2|| showHelp)
             {
                 ShowHelp(options);
                 return;
             }
+            
             if (!string.IsNullOrEmpty(outputFile))
             {
                 fileWriter = new StreamWriter(outputFile, false) { AutoFlush = true };

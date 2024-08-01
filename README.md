@@ -60,7 +60,6 @@
 ## 4.使用
 
 ```powershell
-Delay:10   MaxConcurrency:600
 Usage: SharpScan [OPTIONS]
 
 Options:
@@ -69,21 +68,24 @@ Options:
   -U, --udp                  Perform udp scan
   -h, --hTarget=VALUE        Target segment to scan
   -p, --ports=VALUE          Ports to scan (e.g. "0-1024" or "80,443,8080")
-  -d, --delay=VALUE          Scan delay(ms),Defalt:1000
-  -t, --thread=VALUE         Maximum num of concurrent scans,Defalt:600
   -u, --username=VALUE       Username for authentication
-  -c, --command=VALUE        Command Execution
       --pw, --password=VALUE Password for authentication
       --uf, --ufile=VALUE    Username file for authentication
       --pwf, --pwdfile=VALUE Password file for authentication
   -m, --mode=VALUE           Scanning poc mode(e.g. ssh/smb/rdp/ms17010)
+  -c, --command=VALUE        Command Execution
+  -d, --delay=VALUE          Scan delay(ms),Defalt:1000
+  -t, --thread=VALUE         Maximum num of concurrent scans,Defalt:600
+  -s, --search=VALUE         Search all files
       --socks5=VALUE         Open socks5 port
-      --help, --show         Show this usage and help
+      --nopoc                Not using proof of concept(POC)
   -o, --output=VALUE         Output file to save console output
+      --help, --show         Show this usage and help
 
 Example:
-  SharpScan.exe -t 192.168.1.1/24
-  SharpScan.exe -t 192.168.1.107 -p 100-1024
+  SharpScan.exe -help
+  SharpScan.exe -h 192.168.1.1/24
+  SharpScan.exe -h 192.168.1.107 -p 100-1024
 ```
 
 
