@@ -295,7 +295,7 @@ Write-Host "new exe:$outputFilePath"
 
 
 
-## 免责声明：
+## 免责声明
 
 本项目仅用于渗透测试练习中的教育和研究目的，目前处于测试阶段。禁止将其用于任何非法活动！如果您选择使用此工具，您必须遵守上述要求
 
@@ -303,7 +303,7 @@ Write-Host "new exe:$outputFilePath"
 
 
 
-## 参考链接：
+## 参考链接
 
 - https://github.com/shadow1ng/fscan
 
