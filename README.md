@@ -91,8 +91,8 @@ Example:
 扫描C段/B段，默认使用所有模块
 
 ```powershell
-SharpScan.exe -s 192.168.1.1/24  (扫描C段)
-SharpScan.exe -s 192.168.1.1/16  (扫描B段)
+SharpScan.exe -h 192.168.1.1/24  (扫描C段)
+SharpScan.exe -h 192.168.1.1/16  (扫描B段)
 ```
 
 
@@ -115,6 +115,7 @@ SharpScan.exe -h 192.168.244.1/24 -m rdp -uf user.txt -pwf pass.txt (用账号�
 SharpScan.exe -h 192.168.244.1/24 -m ssh -uf user.txt -pwf pass.txt (用账号密码本爆破C段的ssh服务()
 SharpScan.exe -h 192.168.244.1/24 -m ms17010                       (C段批量扫描是否存在ms17010)
 SharpScan.exe -socks5 8000 -u test -pw 1234                        (Socks5:8000.用户名:test，密码:1234)
+SharpScan.exe -h 192.168.244.1/24 -o output.txt					   (将扫描结果导出到output.txt)
 ```
 
 
@@ -176,6 +177,12 @@ SharpScan.exe -h 192.168.244.1/24 -m smb -u administrator -pw a
 
 
 #### 全盘搜索
+
+搜索本地磁盘上的pass.txt
+
+```powershell
+SharpScan.exe -s "pass.txt"
+```
 
 ![image-20240801112506349](Image/image-20240801112506349.png)
 
