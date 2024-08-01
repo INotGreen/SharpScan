@@ -88,7 +88,7 @@ Example:
   SharpScan.exe -h 192.168.1.107 -p 100-1024
 ```
 
-
+### 4.1基本用法
 
 扫描C段/B段，默认使用所有模块
 
@@ -96,12 +96,6 @@ Example:
 SharpScan.exe -h 192.168.1.1/24  (扫描C段)
 SharpScan.exe -h 192.168.1.1/16  (扫描B段)
 ```
-
-
-
-### 4.1视频演示
-
-[demo](https://private-user-images.githubusercontent.com/89376703/353790871-5b7eb467-ea48-4bd9-9488-1e01e1b35393.mp4)
 
 ### 4.2其它功能
 
@@ -122,9 +116,13 @@ SharpScan.exe -h 192.168.244.1/24 -o output.txt					   (将扫描结果导出到
 
 
 
+### 4.3视频演示
+
+[demo](https://private-user-images.githubusercontent.com/89376703/353790871-5b7eb467-ea48-4bd9-9488-1e01e1b35393.mp4)
 
 
-### 4.3截图
+
+### 4.4截图
 
 #### 端口扫描
 
