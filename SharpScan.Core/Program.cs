@@ -80,7 +80,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             Console.WriteLine("  SharpScan.exe -h 192.168.1.107 -p 100-1024");
         }
 
-        static async Task Main(string[] args)
+       public static async Task Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(StringPating);

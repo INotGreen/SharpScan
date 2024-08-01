@@ -41,7 +41,7 @@ namespace SharpScan
         public static string passWordFile { get; set; }
         public static List<string> userList { get; set; }
         public static List<string> passwordList { get; set; }
-        public static string outputFile = "out.txt";
+        public static string outputFile = "";
 
 
         public class OnlinePC
@@ -80,7 +80,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             Console.WriteLine("  SharpScan.exe -h 192.168.1.107 -p 100-1024");
         }
 
-        static async Task Main(string[] args)
+       public static async Task Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(StringPating);

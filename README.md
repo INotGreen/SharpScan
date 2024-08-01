@@ -240,6 +240,21 @@ SharpScan.exe -socks5 8000 -u test -pw 1234
 
 
 
+#### 在Powershell中使用
+
+```powershell
+Import-Module .\Invoke-SharpScan.ps1
+Invoke-SharpScan -Command "-h 192.168.244.1/24"
+```
+
+
+
+![image-20240801170821991](../../AppData/Roaming/Typora/typora-user-images/image-20240801170821991.png)
+
+
+
+
+
 
 
 ## 5.正在完成(TODO)
