@@ -17,10 +17,14 @@
     - [Socks5代理](#socks5代理)
 - [5.正在完成(TODO)](#5正在完成todo)
 - [6.可能会遇到的问题](#6可能会遇到的问题)
-- [免责声明：](#免责声明)
-- [参考链接：](#参考链接)
+- [免责声明](#免责声明)
+- [参考链接](#参考链接)
 
 
+
+
+
+如果您觉得项目还不错的，记个给我一个免费的star，非常感谢！
 
 ## 1.特点
 
@@ -251,13 +255,13 @@ SharpScan.exe -socks5 8000 -u test -pw 1234
 
 1.为什么用NET Framework3.5编写程序
 
-.NET 的语法是向上兼容的，.NET Framework4、4.5、4.8的语法都是可以在3.5和2.0中使用的，但是2.0和3.5的语法无法向上兼容。我在代码中添加了对.NET Framework3.5高级异步和并发的支持，再者3.5以后提供的Linq查询相对于.NET Framework2.0更灵活和高效，因此用.NET Framework3.5编写程序，算的上代码移植性和兼容性比较强的版本。
+.NET 的语法是向上兼容的，.NET Framework2.0/3.5的语法都是可以在.NET Framework4、4.5、4.8中使用的，但是.NET Framework4系列的语法无法向下兼容，而对于一些古老的设备、它们仅安装了.NET Framework2.0/3.5。并且我在代码中添加了对.NET Framework3.5高级异步和并发的支持，3.5以后提供的Linq查询相对于.NET Framework2.0更灵活和高效，因此用.NET Framework3.5编写程序，算的上代码移植性和兼容性比较强的版本。
 
 2.NET Framework3.5不能直接在未安装.NET Framework3.5的windows10、11上运行吗？
 
 ![image-20240801134555502](Image/image-20240801134555502.png)
 
-很多人遇到这个问题 ，答案是可以的，通过powershell去Patch .NET的版本标识符，将v2.0.50727替换成v4.0.30319，即可在win10上运行，上面说的.net Framework3.5可以直接转成.net Framework4.0以上，因此只需要Patch标识符就行了
+很多人遇到这个问题 ，答案是可以的，通过powershell去Patch .NET的版本标识符，将v2.0.50727替换成v4.0.30319，即可在win10上运行，上面说的.NET Framework3.5可以直接转成NET Framework4.0以上，因此只需要Patch标识符就行了
 
 ```powershell
 
@@ -285,11 +289,15 @@ Write-Host "new exe:$outputFilePath"
 
 ```
 
-根据这个思路，您可以使用execute-assembly或者inline-assembly去加载.net程序，只需要做到根据判定不同的系统来Patch不同的版本，即可解决兼容性和移植性问题
+根据这个思路，您可以使用[ExecuteAssembly](https://github.com/med0x2e/ExecuteAssembly)或者[Inline-Assembly](https://github.com/anthemtotheego/InlineExecute-Assembly)去加载.NET程序，只需要做到根据判定不同的系统来Patch不同的版本，即可解决兼容性和移植性问题
 
 3.用了内存加载，就可以不用做免杀了吗？
 
 答案是否定的，不管是execute-assembly还是inline-assembly，对于内核级监控的AV/EDR/XDR，C#代码在内存都是透明的，但也不完全是，它们对于.NET的监控更多地是在用户层，因此您需要考虑绕过AMSI，ETW、Ntdll hook，Kernel32 hook等用户层的hook，虽然这看起来有点麻烦，不过C#可以轻松地转成Powershell脚本，通过.NET丰富的混淆方法，可以在应用层和内存中轻松地规避AMSI等引擎的hook
+
+
+
+## 7.更新
 
 
 
