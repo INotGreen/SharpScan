@@ -218,7 +218,7 @@ SharpScan.exe -h 192.168.244.1/24 -m ssh -uf user.txt -pwf pass.txt
 SharpScan.exe -s "pass.txt"
 ```
 
-![image-20240801125922524](../../AppData/Roaming/Typora/typora-user-images/image-20240801125922524.png)
+![image-20240801125922524](Image/image-20240801125922524.png)
 
 
 
@@ -230,7 +230,7 @@ SharpScan.exe -s "pass.txt"
 SharpScan.exe -socks5 8000 -u test -pw 1234
 ```
 
-![image-20240731134357549](Image/image-20240731134357549.png)
+![image-20240801131945885](Image/image-20240801131945885.png)
 
 ![image-20240731134433626](Image/image-20240731134433626.png)
 

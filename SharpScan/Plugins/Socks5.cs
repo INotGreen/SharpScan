@@ -15,7 +15,7 @@ namespace SharpScan
                 var socks5Server = new Socks5Server(IPAddress.Any, Port);
                 socks5Server.Start();
                 PluginLoader.ChangePluginStatus(true, typeof(Auth));
-                Console.WriteLine($"[+] Start socks5 port:4444 , User:{Program.userName}  Password:{Program.passWord}");
+                Console.WriteLine($"[+] Start socks5 port:{Port} , User:{Program.userName}  Password:{Program.passWord}");
                 while (true) { }
                 //while (true)
                 //{
