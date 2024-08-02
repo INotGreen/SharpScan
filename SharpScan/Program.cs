@@ -54,6 +54,7 @@ namespace SharpScan
             public string OS { get; set; }
             public string Infostr { get; set; }
         }
+
         public static string StringPating = @"
   ______   __                                       ______                                
  /      \ /  |                                     /      \                               
@@ -80,7 +81,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             Console.WriteLine("  SharpScan.exe -h 192.168.1.107 -p 100-1024");
         }
 
-       public static async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(StringPating);
@@ -117,12 +118,12 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 Console.WriteLine("Try `SharpScan --help` for more information.");
                 return;
             }
-            if (args.Length < 2|| showHelp)
+            if (args.Length < 2 || showHelp)
             {
                 ShowHelp(options);
                 return;
             }
-            
+
             if (!string.IsNullOrEmpty(outputFile))
             {
                 fileWriter = new StreamWriter(outputFile, false) { AutoFlush = true };
@@ -205,7 +206,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
             if (arpScan)
             {
-                icmpScan=false;
+                icmpScan = false;
                 var arpTask = Task.Run(() => new ARPScan().ARPScanPC(Program.IPlist, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)));
                 await Task.WhenAll(arpTask);
 
@@ -216,7 +217,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 await Task.Run(() => new ICMPScan().ICMPScanPC(Program.IPlist, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)));
             }
 
-            
+
 
             await new TcpPortscan().ScanPortDefault(Convert.ToInt32(delay), Configuration.PortList, Convert.ToInt32(maxConcurrency));
 
