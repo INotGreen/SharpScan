@@ -109,6 +109,9 @@ Example:
 ```powershell
 SharpScan.exe -h 192.168.1.1/24  (扫描C段)
 SharpScan.exe -h 192.168.1.1/16  (扫描B段)
+SharpScan.exe -h 192.168.1.107,192.168.1.3,192.168.1.4(扫描指定IP)
+SharpScan.exe -h C:\Windows\IP.txt(扫描指定IP.txt,格式和账号密码本的格式一样)
+SharpScan.exe -h 192.168.1.107 -p 100-1024
 ```
 
 
