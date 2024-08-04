@@ -113,7 +113,7 @@ SharpScan.exe -h 192.168.1.1/16  (扫描B段)
 
 
 
-![image-20240804172810364](../../AppData/Roaming/Typora/typora-user-images/image-20240804172810364.png)
+![image-20240804172810364](Image/image-20240804172810364.png)
 
 
 
