@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E9DF5ED1-4CBD-4226-B931-9A51610AC14D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MySql.Data.MySqlClient</RootNamespace>
+    <AssemblyName>MySql.Data</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug-4.0\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release-4.0\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\CharSetMap.cs" />
+    <Compile Include="Source\command.cs">
+    </Compile>
+    <Compile Include="Source\CommandBuilder.cs">
+    </Compile>
+    <Compile Include="Source\common\ContextString.cs" />
+    <Compile Include="Source\common\NamedPipeStream.cs" />
+    <Compile Include="Source\common\NativeMethods.cs" />
+    <Compile Include="Source\common\Platform.cs" />
+    <Compile Include="Source\common\SHA1.cs" />
+    <Compile Include="Source\common\SharedMemoryStream.cs" />
+    <Compile Include="Source\common\StreamCreator.cs" />
+    <Compile Include="Source\common\Version.cs" />
+    <Compile Include="Source\CompressedStream.cs" />
+    <Compile Include="Source\Connection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Source\Crypt.cs" />
+    <Compile Include="Source\dataadapter.cs">
+    </Compile>
+    <Compile Include="Source\datareader.cs" />
+    <Compile Include="Source\Driver.cs" />
+    <Compile Include="Source\Exception.cs" />
+    <Compile Include="Source\Field.cs" />
+    <Compile Include="Source\Installer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Source\ISSchemaProvider.cs" />
+    <Compile Include="Source\MySqlClientFactory.cs" />
+    <Compile Include="Source\MySqlConnectionStringBuilder.cs" />
+    <Compile Include="Source\MysqlDefs.cs" />
+    <Compile Include="Source\MySqlError.cs" />
+    <Compile Include="Source\MySqlHelper.cs" />
+    <Compile Include="Source\MySqlPool.cs" />
+    <Compile Include="Source\MySqlPoolManager.cs" />
+    <Compile Include="Source\MySqlPromotableTransaction.cs" />
+    <Compile Include="Source\MySqlStream.cs" />
+    <Compile Include="Source\NativeDriver.cs" />
+    <Compile Include="Source\parameter.cs" />
+    <Compile Include="Source\parameter_collection.cs" />
+    <Compile Include="Source\PerformanceMonitor.cs" />
+    <Compile Include="Source\PreparableStatement.cs" />
+    <Compile Include="Source\ProcedureCache.cs" />
+    <Compile Include="Source\SchemaProvider.cs" />
+    <Compile Include="Source\Statement.cs" />
+    <Compile Include="Source\StoredProcedure.cs" />
+    <Compile Include="Source\transaction.cs" />
+    <Compile Include="Source\Types\MetaData.cs" />
+    <Compile Include="Source\Types\MySqlBinary.cs" />
+    <Compile Include="Source\Types\MySqlBit.cs" />
+    <Compile Include="Source\Types\MySqlByte.cs" />
+    <Compile Include="Source\Types\MySqlConversionException.cs" />
+    <Compile Include="Source\Types\MySqlDateTime.cs" />
+    <Compile Include="Source\Types\MySqlDecimal.cs" />
+    <Compile Include="Source\Types\MySqlDouble.cs" />
+    <Compile Include="Source\Types\MySqlInt16.cs" />
+    <Compile Include="Source\Types\MySqlInt32.cs" />
+    <Compile Include="Source\Types\MySqlInt64.cs" />
+    <Compile Include="Source\Types\MySqlSingle.cs" />
+    <Compile Include="Source\Types\MySqlString.cs" />
+    <Compile Include="Source\Types\MySqlTime.cs" />
+    <Compile Include="Source\Types\MySqlUByte.cs" />
+    <Compile Include="Source\Types\MySqlUInt16.cs" />
+    <Compile Include="Source\Types\MySqlUInt32.cs" />
+    <Compile Include="Source\Types\MySqlUInt64.cs" />
+    <Compile Include="Source\Types\MySqlValue.cs" />
+    <Compile Include="Source\zlib\Adler32.cs" />
+    <Compile Include="Source\zlib\Deflate.cs" />
+    <Compile Include="Source\zlib\InfBlocks.cs" />
+    <Compile Include="Source\zlib\InfCodes.cs" />
+    <Compile Include="Source\zlib\Inflate.cs" />
+    <Compile Include="Source\zlib\InfTree.cs" />
+    <Compile Include="Source\zlib\StaticTree.cs" />
+    <Compile Include="Source\zlib\SupportClass.cs" />
+    <Compile Include="Source\zlib\Tree.cs" />
+    <Compile Include="Source\zlib\ZInputStream.cs" />
+    <Compile Include="Source\zlib\Zlib.cs" />
+    <Compile Include="Source\zlib\ZOutputStream.cs" />
+    <Compile Include="Source\zlib\ZStream.cs" />
+    <Compile Include="Source\zlib\ZStreamException.cs" />
+    <Compile Include="Properties\VersionInfo.cs" />
+    <Compile Include="Source\common\Cache.cs" />
+    <Compile Include="Source\common\MySqlTokenizer.cs" />
+    <Compile Include="Source\common\MyNetworkStream.cs" />
+    <Compile Include="Source\BulkLoader.cs" />
+    <Compile Include="Source\MySqlPacket.cs" />
+    <Compile Include="Source\MySqlScript.cs" />
+    <Compile Include="Source\Types\MySqlGuid.cs" />
+    <Compile Include="Source\ResultSet.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\ReservedWords.txt" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\keywords.txt" />
+    <Content Include="Source\docs\MySqlCommand.xml" />
+    <Content Include="Source\docs\MySqlCommandBuilder.xml" />
+    <Content Include="Source\docs\MySqlConnection.xml" />
+    <Content Include="Source\docs\MySqlConnectionStringBuilder.xml" />
+    <Content Include="Source\docs\MySqlDataAdapter.xml" />
+    <Content Include="Source\docs\MySqlDataReader.xml" />
+    <Content Include="Source\docs\MySqlException.xml" />
+    <Content Include="Source\docs\MySqlHelper.xml" />
+    <Content Include="Source\docs\MySqlParameter.xml" />
+    <Content Include="Source\docs\MySqlParameterCollection.xml" />
+    <Content Include="Source\docs\MySqlTransaction.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Source\common\LowResolutionStopwatch.cs" />
+    <Compile Include="Source\common\QueryNormalizer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\MySqlTrace.cs" />
+    <Compile Include="Source\TimedStream.cs" />
+    <Compile Include="Source\TracingDriver.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\CHANGES">
+      <Link>CHANGES</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

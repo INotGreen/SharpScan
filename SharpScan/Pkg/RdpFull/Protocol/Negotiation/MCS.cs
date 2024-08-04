@@ -43,7 +43,6 @@ namespace SharpRDPCheck
                         Network.ConnectionStage = Network.eConnectionStage.Authenticating;
                         CredSSP.Negotiate(Network.GetSSLPublicKey());
                     }
-                
             }
             else
             {
@@ -55,7 +54,7 @@ namespace SharpRDPCheck
 
                 if (num != 0)
                 {
-                    throw new RDFatalException("Security negotiation failed!");
+                    //throw new RDFatalException("Security negotiation failed!");
                 }
             }
             if(Options.hash.Length>0)

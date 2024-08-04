@@ -35,7 +35,7 @@ namespace Tamir.SharpSsh.jsch
 
     public interface Proxy
     {
-        void connect(SocketFactory socket_factory, String host, int port, int timeout);
+        void connect(SocketFactory socket_factory, Sharp.String host, int port, int timeout);
         Stream getInputStream();
         Stream getOutputStream();
         Socket getSocket();

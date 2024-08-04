@@ -1,10 +1,6 @@
-﻿
-
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,13 +8,11 @@ namespace SharpScan
 {
     internal class HandlePOC
     {
-
-
         public async Task HandleDefault()
         {
             await ProcessPackets(Program.IpPortList, ServicePacket);
             await ProcessPackets(Program.IpPortList, PocPacket);
-            await ProcessPackets(Program.IpPortList, BrotePacket);
+            await ProcessBrotePackets(Program.IpPortList);
         }
 
         private async Task ProcessPackets(List<string> ipPortList, Func<string, Task> packetProcessor)
@@ -29,13 +23,54 @@ namespace SharpScan
                 foreach (var ipPort in ipPortList)
                 {
                     await semaphore.WaitAsync();
-                    tasks.Add(Task.Run(() =>
+                    tasks.Add(Task.Run(async () =>
                     {
                         try
                         {
-                            packetProcessor(ipPort);
+                            await packetProcessor(ipPort);
                         }
-                        catch  { }
+                        catch (Exception ex)
+                        {
+                            // Console.WriteLine($"[!] Error processing {ipPort}: {ex.Message}");
+                        }
+                        finally
+                        {
+                            semaphore.Release();
+                        }
+                    }));
+                    await Task.Delay(Convert.ToInt32(Program.delay));
+                }
+
+                await Task.WhenAll(tasks);
+            }
+        }
+
+        private async Task ProcessBrotePackets(List<string> ipPortList)
+        {
+            await ProcessSpecificBrotePackets(ipPortList, "22"); // SSH
+            await ProcessSpecificBrotePackets(ipPortList, "445"); // SMB
+            //await ProcessSpecificBrotePackets(ipPortList, "3389"); // RDP
+            await ProcessSpecificBrotePackets(ipPortList, "21"); // FTP
+        }
+
+        private async Task ProcessSpecificBrotePackets(List<string> ipPortList, string port)
+        {
+            List<Task> tasks = new List<Task>();
+            using (SemaphoreSlim semaphore = new SemaphoreSlim(Convert.ToInt32(Program.maxConcurrency)))
+            {
+                foreach (var ipPort in ipPortList.Where(ipPort => ipPort.EndsWith($":{port}")))
+                {
+                    await semaphore.WaitAsync();
+                    tasks.Add(Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await BrotePacket(ipPort);
+                        }
+                        catch (Exception ex)
+                        {
+                            // Console.WriteLine($"[!] Error processing {ipPort}: {ex.Message}");
+                        }
                         finally
                         {
                             semaphore.Release();
@@ -83,142 +118,74 @@ namespace SharpScan
             string port = ipPort.Split(':')[1];
             switch (port)
             {
+                case "21":
+                    {
+                        await Task.Run(() => Ftp.Run(ip)); // 使用 Task.Run 包装同步方法
+                        break;
+                    }
                 case "22":
                     {
-                        // SSH 弱口令
-                        SshBrute.Run(ip);
+                        //SSH 弱口令
+                        await Task.Run(() => SshBrute.Run(ip)); // 使用 Task.Run 包装同步方法
                         break;
                     }
                 case "445":
                     {
-                        SMBEnum.SMBLogin(ip);
+                        await Task.Run(() => SMBEnum.SMBLogin(ip)); // 使用 Task.Run 包装同步方法
                         break;
                     }
                 case "3389":
                     {
-                       // Console.WriteLine("aaaaaaaaaa");
-                        RdpBroute.Run(ip);
+                        await Task.Run(() => Rdp.Run(ip)); // 使用 Task.Run 包装同步方法
                         break;
-
                     }
             }
         }
 
-        public async Task ModPacket(string Mode)
+        public static async Task ModPacket(string mode)
         {
-
             using (SemaphoreSlim semaphore = new SemaphoreSlim(Convert.ToInt32(Program.maxConcurrency)))
             {
-                switch (Mode.ToLower())
+                List<Task> tasks = new List<Task>();
+
+                foreach (var ip in Program.IPlist)
                 {
-                    case "ssh":
+                    await semaphore.WaitAsync();
+                    tasks.Add(Task.Run(async () =>
+                    {
+                        try
                         {
-                            List<Task> tasks = new List<Task>();
-
-                            foreach (var ip in Program.IPlist)
+                            switch (mode.ToLower())
                             {
-                                await semaphore.WaitAsync();
-                                tasks.Add(Task.Run(async () =>
-                                {
-                                    try
-                                    {
-
-                                        BrotePacket($"{ip}:{22}");
-                                    }
-                                    finally
-                                    {
-                                        semaphore.Release();
-                                    }
-                                }));
-                                await Task.Delay(Convert.ToInt32(Program.delay));
+                                case "ssh":
+                                     SshBrute.Run(ip);
+                                    break;
+                                case "rdp":
+                                    Rdp.Run(ip);
+                                    // while (true) { }
+                                    break;
+                                case "ms17010":
+                                    await Task.Run(() => new ms17_010scanner().Run(ip));
+                                    break;
+                                case "smb":
+                                    await Task.Run(() => SMBEnum.SMBLogin(ip));
+                                    break;
+                                case "ftp":
+                                    await Ftp.Run(ip);
+                                    break;
                             }
-                            await Task.WhenAll(tasks);
-                            break;
                         }
-                    case "rdp":
+                        finally
                         {
-                            List<Task> tasks = new List<Task>();
-
-                            foreach (var ip in Program.IPlist)
-                            {
-                                await semaphore.WaitAsync();
-                                tasks.Add(Task.Run(async () =>
-                                {
-                                    try
-                                    {
-                                        BrotePacket($"{ip}:{3389}");
-                                    }
-                                    finally
-                                    {
-                                        semaphore.Release();
-                                    }
-                                }));
-                                await Task.Delay(Convert.ToInt32(Program.delay));
-                            }
-                            await Task.WhenAll(tasks);
-                            break;
+                            semaphore.Release();
                         }
-                    case "ms17010":
-                        {
-                            List<Task> tasks = new List<Task>();
-
-                            foreach (var ip in Program.IPlist)
-                            {
-                                await semaphore.WaitAsync();
-                                tasks.Add(Task.Run(async () =>
-                                {
-                                    try
-                                    {
-                                        new ms17_010scanner().Run(ip);
-                                        // BrotePacket($"{ip}:{3389}");
-                                    }
-                                    finally
-                                    {
-                                        semaphore.Release();
-                                    }
-                                }));
-                                await Task.Delay(Convert.ToInt32(Program.delay));
-                            }
-                            await Task.WhenAll(tasks);
-                            break;
-                        }
-
-                    case "smb":
-                        {
-                            List<Task> tasks = new List<Task>();
-
-                            foreach (var ip in Program.IPlist)
-                            {
-                                await semaphore.WaitAsync();
-                                tasks.Add(Task.Run(async () =>
-                                {
-                                    try
-                                    {
-                                        SMBEnum.SMBLogin(ip);
-                                    }
-                                    finally
-                                    {
-                                        semaphore.Release();
-                                    }
-                                }));
-                                await Task.Delay(Convert.ToInt32(Program.delay));
-                            }
-                            await Task.WhenAll(tasks);
-                            break;
-                            break;
-                        }
-                    case "ftp":
-                        {
-                            break;
-                        }
-
+                    }));
+                    await Task.Delay(Convert.ToInt32(Program.delay));
                 }
+
+                await Task.WhenAll(tasks);
             }
-
-
         }
-
-
 
         public static async Task PocPacket(string ipPort)
         {
@@ -228,11 +195,17 @@ namespace SharpScan
             {
                 case "445":
                     {
-                        new ms17_010scanner().Run(ip);
-                        new SMBGhost().SMBGhostScan(ip);
+                        if (Program.onlineHostList.Exists(onlinepc => onlinepc.IP == ip && onlinepc.buildNumber >= 18362))
+                        {
+                            await Task.Run(() => new SmbGhost().Run(ip));
+                        }
+                        else
+                        {
+                            await Task.Run(() => new ms17_010scanner().Run(ip));
+                        }
+
                         break;
                     }
-
                 default:
                     {
                         // 获取 web 标签
@@ -240,7 +213,7 @@ namespace SharpScan
                         if (webPorts.Contains(port))
                         {
                             string url = WebTitle.BuildUrl(ip, port);
-                            WebTitle.Run(url);
+                            await Task.Run(() => WebTitle.Run(url));
                         }
                         break;
                     }

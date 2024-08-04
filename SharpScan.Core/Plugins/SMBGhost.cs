@@ -1,99 +1,148 @@
 ﻿using System;
-using System.Linq;
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
+
 namespace SharpScan
 {
-    public class SMBGhost
+    internal class SmbGhost
     {
-        public void SMBGhostScan(string ipAddress)
+        const string pkt = "\x00" + // session
+            "\x00\x00\xc0" + // length
+
+            "\xfeSMB@\x00" + // protocol
+
+            // [MS-SMB2]: SMB2 NEGOTIATE Request
+            "\x00\x00" +
+            "\x00\x00" +
+            "\x00\x00" +
+            "\x00\x00" +
+            "\x1f\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+
+            // [MS-SMB2]: SMB2 NEGOTIATE_CONTEXT
+            "$\x00" +
+            "\x08\x00" +
+            "\x01\x00" +
+            "\x00\x00" +
+            "\x7f\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "x\x00" +
+            "\x00\x00" +
+            "\x02\x00" +
+            "\x00\x00" +
+            "\x02\x02" +
+            "\x10\x02" +
+            "\x22\x02" +
+            "$\x02" +
+            "\x00\x03" +
+            "\x02\x03" +
+            "\x10\x03" +
+            "\x11\x03" +
+            "\x00\x00\x00\x00" +
+
+            // [MS-SMB2]: SMB2_PREAUTH_INTEGRITY_CAPABILITIES
+            "\x01\x00" +
+            "&\x00" +
+            "\x00\x00\x00\x00" +
+            "\x01\x00" +
+            "\x20\x00" +
+            "\x01\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00\x00\x00" +
+            "\x00\x00" +
+
+            // [MS-SMB2]: SMB2_COMPRESSION_CAPABILITIES
+            "\x03\x00" +
+            "\x0e\x00" +
+            "\x00\x00\x00\x00" +
+            "\x01\x00" + // CompressionAlgorithmCount
+            "\x00\x00" +
+            "\x01\x00\x00\x00" +
+            "\x01\x00" + // LZNT1
+            "\x00\x00" +
+            "\x00\x00\x00\x00";
+
+        public  void Run(string IP)
+        {
+            try
+            {
+                SmbGhostScan(IP);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[!] Error: {ex.Message}");
+            }
+        }
+
+        private static void SmbGhostScan(string IP)
         {
             int port = 445;
-            int timeout = 10000; // 10 seconds
-            int retryCount = 3;
+            int timeout = 5000; // Timeout in milliseconds
+            string address = $"{IP}:{port}";
+            byte[] packet = Encoding.ASCII.GetBytes(pkt);
 
-            byte[] packet = BuildPacket();
-
-            for (int i = 0; i < retryCount; i++)
+            using (TcpClient client = new TcpClient())
             {
                 try
                 {
-                    using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+                    IAsyncResult result = client.BeginConnect(IP, port, null, null);
+                    bool success = result.AsyncWaitHandle.WaitOne(timeout, true);
+
+                    if (!success)
                     {
-                        socket.Connect(new IPEndPoint(IPAddress.Parse(ipAddress), port));
-                        socket.SendTimeout = timeout;
-                        socket.ReceiveTimeout = timeout;
-                        if (socket.Connected)
-                        {
-                            //Console.WriteLine("calc");
-                            socket.Send(packet);
-                            byte[] buffer = new byte[1024];
-                            int received = socket.Receive(buffer);
-
-                            if (received == 0)
-                            {
-                                Console.WriteLine("No response received from the server.");
-                                return;
-                            }
-
-                            if (IsVulnerable(buffer, received))
-                            {
-                                Console.WriteLine($"[+] {ipAddress} CVE-2020-0796 SmbGhost Vulnerable");
-                            }
-                            else
-                            {
-                                Console.WriteLine($"[-] {ipAddress} Not Vulnerable");
-                            }
-
-
-                        }
-
-
-                        break;
+                        throw new TimeoutException("Connection timed out.");
                     }
-                }
-                catch (SocketException ex)
-                {
-                    //Console.WriteLine($"Socket error: {ex.Message}");
-                    //if (i == retryCount - 1)
-                    //{
-                    //    Console.WriteLine("Maximum retry attempts reached. Exiting.");
-                    //}
-                    //else
-                    //{
-                    //    Console.WriteLine("Retrying...");
-                    //}
+
+                    NetworkStream stream = client.GetStream();
+                    stream.Write(packet, 0, packet.Length);
+                    stream.ReadTimeout = timeout;
+
+                    byte[] buffer = new byte[1024];
+                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
+
+                    if (bytesRead > 0 && Encoding.ASCII.GetString(buffer).Contains("Public") &&
+                        buffer.Length >= 76 && buffer[72] == 0x11 && buffer[73] == 0x03 &&
+                        buffer[74] == 0x02 && buffer[75] == 0x00)
+                    {
+                        string resultMsg = $"[+] {IP} CVE-2020-0796 SmbGhost Vulnerable";
+                        LogSuccess(resultMsg);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    //Console.WriteLine($"Unexpected error: {ex.Message}");
-                    break;
+                    //Console.WriteLine($"[!] Error: {ex.Message}");
+                }
+                finally
+                {
+                    client.Close();
                 }
             }
         }
 
-        static byte[] BuildPacket()
+        private static void LogSuccess(string message)
         {
-            return new byte[]
-            {
-            0x00, 0x00, 0x00, 0xc0,
-            0xfe, 0x53, 0x4d, 0x42, 0x40, 0x00,
-            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x24, 0x00, 0x08, 0x00, 0x01, 0x00, 0x00, 0x00, 0x7f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x78, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x02, 0x02, 0x10, 0x02, 0x22, 0x02, 0x24, 0x02, 0x00, 0x03, 0x02, 0x03, 0x10, 0x03, 0x11, 0x03, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x26, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x20, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00
-            };
-        }
-
-        static bool IsVulnerable(byte[] response, int length)
-        {
-            if (length < 76)
-            {
-                return false;
-            }
-
-            return response.Length >= 76 &&
-                   response[72] == 0x11 && response[73] == 0x03 &&
-                   response[74] == 0x02 && response[75] == 0x00;
+            // Implement your logging mechanism here
+            Console.WriteLine(message);
         }
     }
 }
-

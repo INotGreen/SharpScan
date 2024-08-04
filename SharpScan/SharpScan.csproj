@@ -27,6 +27,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,7 +38,7 @@
     <OutputPath>..\Bin\</OutputPath>
     <DefineConstants>TRACE;DEBUG;NET_4_5;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -52,7 +54,14 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Costura, Version=1.6.2.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
+      <HintPath>packages\Costura.Fody.1.6.2\lib\portable-net+sl+win+wpa+wp\Costura.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="MySql.Data">
+      <HintPath>..\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
@@ -70,16 +79,8 @@
     <Compile Include="Pkg\EDRCheck.cs" />
     <Compile Include="Pkg\FindFile.cs" />
     <Compile Include="Pkg\Helper.cs" />
-    <Compile Include="Pkg\SetTls12UserRegistryKeys.cs" />
-    <Compile Include="Pkg\Services\Lib\Writer.cs" />
     <Compile Include="Pkg\HookConhost.cs" />
-    <Compile Include="Pkg\Services\Lib\NBNSResolver.cs" />
-    <Compile Include="Pkg\Services\Lib\NTLMSSPBuffer.cs" />
-    <Compile Include="Pkg\Services\Lib\NTLMSSPExtract.cs" />
-    <Compile Include="Pkg\Services\Lib\SSPKey.cs" />
-    <Compile Include="Pkg\Services\Lib\SSPKeyOutput.cs" />
-    <Compile Include="Pkg\Services\Lib\TargetParser.cs" />
-    <Compile Include="Pkg\Services\Lib\TimeoutSocket.cs" />
+    <Compile Include="Pkg\Netapi32.cs" />
     <Compile Include="Pkg\RdpFull\Cryptography\ABCDStruct.cs" />
     <Compile Include="Pkg\RdpFull\Cryptography\HMACT64.cs" />
     <Compile Include="Pkg\RdpFull\Cryptography\MD4.cs" />
@@ -99,9 +100,19 @@
     <Compile Include="Pkg\RdpFull\Protocol\Processing\ISO.cs" />
     <Compile Include="Pkg\RdpFull\Protocol\Processing\IsoLayer.cs" />
     <Compile Include="Pkg\RdpFull\Settings\Options.cs" />
+    <Compile Include="Pkg\RdpLogs.cs" />
+    <Compile Include="Pkg\Services\Lib\NBNSResolver.cs" />
+    <Compile Include="Pkg\Services\Lib\NTLMSSPBuffer.cs" />
+    <Compile Include="Pkg\Services\Lib\NTLMSSPExtract.cs" />
+    <Compile Include="Pkg\Services\Lib\SSPKey.cs" />
+    <Compile Include="Pkg\Services\Lib\SSPKeyOutput.cs" />
+    <Compile Include="Pkg\Services\Lib\TargetParser.cs" />
+    <Compile Include="Pkg\Services\Lib\TimeoutSocket.cs" />
+    <Compile Include="Pkg\Services\Lib\Writer.cs" />
     <Compile Include="Pkg\Services\NBNS.cs" />
     <Compile Include="Pkg\Services\SMB.cs" />
     <Compile Include="Pkg\Services\WMI.cs" />
+    <Compile Include="Pkg\SetTls12UserRegistryKeys.cs" />
     <Compile Include="Pkg\Socks5\Chunked.cs" />
     <Compile Include="Pkg\Socks5\Encryption\DarthEncrypt.cs" />
     <Compile Include="Pkg\Socks5\Encryption\SocksEncryption.cs" />
@@ -120,8 +131,6 @@
     <Compile Include="Pkg\Socks5\Plugin\LoginHandler.cs" />
     <Compile Include="Pkg\Socks5\Plugin\LoginStatus.cs" />
     <Compile Include="Pkg\Socks5\Plugin\PluginLoader.cs" />
-    <Compile Include="Plugins\FileSearch.cs" />
-    <Compile Include="Plugins\Socks5.cs" />
     <Compile Include="Pkg\Socks5\Socks5Client\Events\Socks5ClientArgs.cs" />
     <Compile Include="Pkg\Socks5\Socks5Client\Events\Socks5ClientDataArgs.cs" />
     <Compile Include="Pkg\Socks5\Socks5Client\Socks.cs" />
@@ -147,36 +156,21 @@
     <Compile Include="Pkg\Socks5\TCP\Stats.cs" />
     <Compile Include="Pkg\Socks5\TCP\TcpServer.cs" />
     <Compile Include="Pkg\Socks5\Utils.cs" />
-    <Compile Include="Pkg\SSH\DHKeyGeneration.cs" />
-    <Compile Include="Pkg\SSH\DHParameters.cs" />
-    <Compile Include="Pkg\SSH\DiffieHellman.cs" />
-    <Compile Include="Pkg\SSH\DiffieHellmanManaged.cs" />
-    <Compile Include="Pkg\SSH\ITransferProtocol.cs" />
-    <Compile Include="Pkg\SSH\System\Exception.cs" />
-    <Compile Include="Pkg\SSH\System\io\File.cs" />
-    <Compile Include="Pkg\SSH\System\io\FileInputStream.cs" />
-    <Compile Include="Pkg\SSH\System\io\FileOutputStream.cs" />
-    <Compile Include="Pkg\SSH\System\io\InputStream.cs" />
-    <Compile Include="Pkg\SSH\System\io\InputStreamWrapper.cs" />
-    <Compile Include="Pkg\SSH\System\io\JStream.cs" />
-    <Compile Include="Pkg\SSH\System\io\OutputStream.cs" />
-    <Compile Include="Pkg\SSH\System\lang\Class.cs" />
-    <Compile Include="Pkg\SSH\System\lang\Integer.cs" />
-    <Compile Include="Pkg\SSH\System\lang\Runnable.cs" />
-    <Compile Include="Pkg\SSH\System\lang\StringBuffer.cs" />
-    <Compile Include="Pkg\SSH\System\lang\Thread.cs" />
-    <Compile Include="Pkg\SSH\System\net\InetAddress.cs" />
-    <Compile Include="Pkg\SSH\System\net\ServerSocket.cs" />
-    <Compile Include="Pkg\SSH\System\net\Socket.cs" />
-    <Compile Include="Pkg\SSH\System\Platform.cs" />
-    <Compile Include="Pkg\SSH\System\RuntimeException.cs" />
-    <Compile Include="Pkg\SSH\System\String.cs" />
-    <Compile Include="Pkg\SSH\System\System.cs" />
-    <Compile Include="Pkg\SSH\System\util\Arrays.cs" />
-    <Compile Include="Pkg\SSH\System\util\Enumeration.cs" />
-    <Compile Include="Pkg\SSH\System\util\Hashtable.cs" />
-    <Compile Include="Pkg\SSH\System\util\JavaString.cs" />
-    <Compile Include="Pkg\SSH\System\util\Vector.cs" />
+    <Compile Include="Pkg\SSH\Cipher\AES\AES128CBC.cs" />
+    <Compile Include="Pkg\SSH\Cipher\AES\BlowfishCBC.cs" />
+    <Compile Include="Pkg\SSH\Cipher\AES\DH.cs" />
+    <Compile Include="Pkg\SSH\Cipher\AES\HMACMD5.cs" />
+    <Compile Include="Pkg\SSH\Cipher\AES\HMACMD596.cs" />
+    <Compile Include="Pkg\SSH\Cipher\AES\HMACSHA1.cs" />
+    <Compile Include="Pkg\SSH\Cipher\AES\HMACSHA196.cs" />
+    <Compile Include="Pkg\SSH\Cipher\AES\KeyPairGenDSA.cs" />
+    <Compile Include="Pkg\SSH\Cipher\AES\KeyPairGenRSA.cs" />
+    <Compile Include="Pkg\SSH\Cipher\AES\MD5.cs" />
+    <Compile Include="Pkg\SSH\Cipher\AES\Random.cs" />
+    <Compile Include="Pkg\SSH\Cipher\AES\SHA1.cs" />
+    <Compile Include="Pkg\SSH\Cipher\AES\SignatureDSA.cs" />
+    <Compile Include="Pkg\SSH\Cipher\AES\SignatureRSA.cs" />
+    <Compile Include="Pkg\SSH\Cipher\AES\TripleDESCBC.cs" />
     <Compile Include="Pkg\SSH\Cipher\Buffer.cs" />
     <Compile Include="Pkg\SSH\Cipher\Channel.cs" />
     <Compile Include="Pkg\SSH\Cipher\Channel.old.cs" />
@@ -202,21 +196,6 @@
     <Compile Include="Pkg\SSH\Cipher\Identity.cs" />
     <Compile Include="Pkg\SSH\Cipher\IdentityFile.cs" />
     <Compile Include="Pkg\SSH\Cipher\IO.cs" />
-    <Compile Include="Pkg\SSH\Cipher\AES\AES128CBC.cs" />
-    <Compile Include="Pkg\SSH\Cipher\AES\BlowfishCBC.cs" />
-    <Compile Include="Pkg\SSH\Cipher\AES\DH.cs" />
-    <Compile Include="Pkg\SSH\Cipher\AES\HMACMD5.cs" />
-    <Compile Include="Pkg\SSH\Cipher\AES\HMACMD596.cs" />
-    <Compile Include="Pkg\SSH\Cipher\AES\HMACSHA1.cs" />
-    <Compile Include="Pkg\SSH\Cipher\AES\HMACSHA196.cs" />
-    <Compile Include="Pkg\SSH\Cipher\AES\KeyPairGenDSA.cs" />
-    <Compile Include="Pkg\SSH\Cipher\AES\KeyPairGenRSA.cs" />
-    <Compile Include="Pkg\SSH\Cipher\AES\MD5.cs" />
-    <Compile Include="Pkg\SSH\Cipher\AES\Random.cs" />
-    <Compile Include="Pkg\SSH\Cipher\AES\SHA1.cs" />
-    <Compile Include="Pkg\SSH\Cipher\AES\SignatureDSA.cs" />
-    <Compile Include="Pkg\SSH\Cipher\AES\SignatureRSA.cs" />
-    <Compile Include="Pkg\SSH\Cipher\AES\TripleDESCBC.cs" />
     <Compile Include="Pkg\SSH\Cipher\JSch.cs" />
     <Compile Include="Pkg\SSH\Cipher\JSchAuthCancelException.cs" />
     <Compile Include="Pkg\SSH\Cipher\JSchException.cs" />
@@ -258,6 +237,11 @@
     <Compile Include="Pkg\SSH\Cipher\UserAuthPublicKey.cs" />
     <Compile Include="Pkg\SSH\Cipher\UserInfo.cs" />
     <Compile Include="Pkg\SSH\Cipher\Util.cs" />
+    <Compile Include="Pkg\SSH\DHKeyGeneration.cs" />
+    <Compile Include="Pkg\SSH\DHParameters.cs" />
+    <Compile Include="Pkg\SSH\DiffieHellman.cs" />
+    <Compile Include="Pkg\SSH\DiffieHellmanManaged.cs" />
+    <Compile Include="Pkg\SSH\ITransferProtocol.cs" />
     <Compile Include="Pkg\SSH\mono\BigInteger.cs" />
     <Compile Include="Pkg\SSH\mono\ConfidenceFactor.cs" />
     <Compile Include="Pkg\SSH\mono\MiniParser.cs" />
@@ -281,9 +265,59 @@
     <Compile Include="Pkg\SSH\Streams\PipedInputStream.cs" />
     <Compile Include="Pkg\SSH\Streams\PipedOutputStream.cs" />
     <Compile Include="Pkg\SSH\Streams\ProtectedConsoleStream.cs" />
+    <Compile Include="Pkg\SSH\System\Exception.cs" />
+    <Compile Include="Pkg\SSH\System\io\File.cs" />
+    <Compile Include="Pkg\SSH\System\io\FileInputStream.cs" />
+    <Compile Include="Pkg\SSH\System\io\FileOutputStream.cs" />
+    <Compile Include="Pkg\SSH\System\io\InputStream.cs" />
+    <Compile Include="Pkg\SSH\System\io\InputStreamWrapper.cs" />
+    <Compile Include="Pkg\SSH\System\io\JStream.cs" />
+    <Compile Include="Pkg\SSH\System\io\OutputStream.cs" />
+    <Compile Include="Pkg\SSH\System\lang\Class.cs" />
+    <Compile Include="Pkg\SSH\System\lang\Integer.cs" />
+    <Compile Include="Pkg\SSH\System\lang\Runnable.cs" />
+    <Compile Include="Pkg\SSH\System\lang\StringBuffer.cs" />
+    <Compile Include="Pkg\SSH\System\lang\Thread.cs" />
+    <Compile Include="Pkg\SSH\System\net\InetAddress.cs" />
+    <Compile Include="Pkg\SSH\System\net\ServerSocket.cs" />
+    <Compile Include="Pkg\SSH\System\net\Socket.cs" />
+    <Compile Include="Pkg\SSH\System\Platform.cs" />
+    <Compile Include="Pkg\SSH\System\RuntimeException.cs" />
+    <Compile Include="Pkg\SSH\System\String.cs" />
+    <Compile Include="Pkg\SSH\System\System.cs" />
+    <Compile Include="Pkg\SSH\System\util\Arrays.cs" />
+    <Compile Include="Pkg\SSH\System\util\Enumeration.cs" />
+    <Compile Include="Pkg\SSH\System\util\Hashtable.cs" />
+    <Compile Include="Pkg\SSH\System\util\JavaString.cs" />
+    <Compile Include="Pkg\SSH\System\util\Vector.cs" />
+    <Compile Include="Plugins\FileSearch.cs" />
+    <Compile Include="Plugins\Ftp.cs" />
+    <Compile Include="Plugins\MsSql.cs" />
+    <Compile Include="Plugins\Mysql.cs" />
+    <Compile Include="Plugins\Socks5.cs" />
     <Compile Include="Mono.Options\Options.cs" />
     <Compile Include="Common\CheckIP.cs" />
     <Compile Include="Common\GetOSInfo.cs" />
+    <Compile Include="Plugins\Domain.cs" />
+    <Compile Include="Plugins\MS17-010.cs" />
+    <Compile Include="Plugins\SMBGhost.cs" />
+    <Compile Include="Scan\UdpPortScan.cs" />
+    <Compile Include="Plugins\ZeroLogon.cs" />
+    <Compile Include="Plugins\Rdp.cs" />
+    <Compile Include="Plugins\SMBEnum.cs" />
+    <Compile Include="Plugins\SSH.cs" />
+    <Compile Include="Scan\TcpPortScan.cs" />
+    <Compile Include="Plugins\WebTitle.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Handle\HandlePOC.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Scan\ArpScan.cs" />
+    <Compile Include="Scan\ICMPScan.cs" />
     <Compile Include="Pkg\System.Threading.Tasks35\StreamExtensions.cs" />
     <Compile Include="Pkg\System.Threading.Tasks35\System.Collections.Concurrent.Partitioners\EnumerablePartitioner.cs" />
     <Compile Include="Pkg\System.Threading.Tasks35\System.Collections.Concurrent.Partitioners\ListPartitioner.cs" />
@@ -366,31 +400,10 @@
     <Compile Include="Pkg\System.Threading.Tasks35\System\OperationCanceledException.cs" />
     <Compile Include="Pkg\System.Threading.Tasks35\System\Tuple.cs" />
     <Compile Include="Pkg\System.Threading.Tasks35\System\Tuples.cs" />
-    <Compile Include="Plugins\DomainCollect.cs" />
-    <Compile Include="Plugins\MS17-010.cs" />
-    <Compile Include="Plugins\SMBGhost.cs" />
-    <Compile Include="Pkg\Netapi32.cs" />
-    <Compile Include="Plugins\UdpPortScan.cs" />
-    <Compile Include="Plugins\ZeroLogon.cs" />
-    <Compile Include="Plugins\RdpBroute.cs" />
-    <Compile Include="Pkg\RdpLogs.cs" />
-    <Compile Include="Plugins\SMBEnum.cs" />
-    <Compile Include="Plugins\SSHBroute.cs" />
-    <Compile Include="Plugins\TcpPortScan.cs" />
-    <Compile Include="Plugins\WebTitle.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Handle\HandlePOC.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Scan\ArpScan.cs" />
-    <Compile Include="Scan\ICMPScan.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -405,5 +418,17 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="FodyWeavers.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\Fody.2.0.0\build\portable-net+sl+win+wpa+wp\Fody.targets" Condition="Exists('packages\Fody.2.0.0\build\portable-net+sl+win+wpa+wp\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Fody.2.0.0\build\portable-net+sl+win+wpa+wp\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Fody.2.0.0\build\portable-net+sl+win+wpa+wp\Fody.targets'))" />
+    <Error Condition="!Exists('packages\Costura.Fody.1.6.2\build\portable-net+sl+win+wpa+wp\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Costura.Fody.1.6.2\build\portable-net+sl+win+wpa+wp\Costura.Fody.targets'))" />
+  </Target>
+  <Import Project="packages\Costura.Fody.1.6.2\build\portable-net+sl+win+wpa+wp\Costura.Fody.targets" Condition="Exists('packages\Costura.Fody.1.6.2\build\portable-net+sl+win+wpa+wp\Costura.Fody.targets')" />
 </Project>

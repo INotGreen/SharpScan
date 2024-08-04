@@ -1,7 +1,7 @@
 ﻿using System;
 using static ZeroLogonCheck.Netapi32;
 
-namespace ZeroLogonCheck
+namespace SharpScan
 {
     public class ZeroLogon
     {

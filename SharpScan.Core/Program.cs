@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Mono.Options;
 using SharpRDPCheck;
-using SharpScan.Plugins;
 using Tamir.SharpSsh.Sharp.io;
 using static System.Net.WebRequestMethods;
 
@@ -49,11 +48,13 @@ namespace SharpScan
             public string IP { get; set; }
             public List<int> Port = new List<int>();
             public string Url { get; set; }
-            public List<string> Service { get; set; }
+            public int buildNumber { get; set; }
+
             public string HostName { get; set; }
             public string OS { get; set; }
             public string Infostr { get; set; }
         }
+
         public static string StringPating = @"
   ______   __                                       ______                                
  /      \ /  |                                     /      \                               
@@ -80,7 +81,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             Console.WriteLine("  SharpScan.exe -h 192.168.1.107 -p 100-1024");
         }
 
-       public static async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(StringPating);
@@ -96,7 +97,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 { "pw|password=", "Password for authentication", pwd => passWord = pwd },
                 { "uf|ufile=", "Username file for authentication", uf => userNameFile = uf },
                 { "pwf|pwdfile=", "Password file for authentication", pwdf => passWordFile = pwdf },
-                { "m|mode=", "Scanning poc mode(e.g. ssh/smb/rdp/ms17010)", m => Program.mode = m },
+                { "m|mode=", "Scanning poc mode(e.g. ssh/smb/rdp/ftp)", m => Program.mode = m },
                 { "c|command=", "Command Execution", c => command = c },
                 { "d|delay=", "Scan delay(ms),Defalt:1000", p => delay = p },
                 { "t|thread=", "Maximum num of concurrent scans,Defalt:600", t => maxConcurrency = t },
@@ -117,12 +118,12 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 Console.WriteLine("Try `SharpScan --help` for more information.");
                 return;
             }
-            if (args.Length < 2|| showHelp)
+            if (args.Length < 2 || showHelp)
             {
                 ShowHelp(options);
                 return;
             }
-            
+
             if (!string.IsNullOrEmpty(outputFile))
             {
                 fileWriter = new StreamWriter(outputFile, false) { AutoFlush = true };
@@ -131,6 +132,8 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 Console.SetError(multiTextWriter);
             }
 
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
             await Init(args);
 
@@ -138,7 +141,9 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             {
                 fileWriter.Close();
             }
+            stopwatch.Stop();
             Console.ResetColor();
+            Console.WriteLine($"\n[+] Scanning completed in {(stopwatch.ElapsedMilliseconds / 1000.0).ToString("F2")} seconds\n");
         }
 
 
@@ -154,12 +159,21 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             }
 
             Console.WriteLine($"Delay:{delay}   MaxConcurrency:{maxConcurrency}");
-           
+            
 
 
             if (!string.IsNullOrEmpty(hTarget))
             {
-                IPlist = SharpScan.GetIP.IPList(hTarget);
+                if (System.IO.File.Exists(hTarget))
+                {
+                    // If hTarget is a file, read all lines as IPs
+                    IPlist = new List<string>(System.IO.File.ReadAllLines(hTarget));
+                }
+                else
+                {
+                    // Otherwise, treat it as a single IP or network segment
+                    IPlist = SharpScan.GetIP.IPList(hTarget);
+                }
             }
 
 
@@ -173,6 +187,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             {
                 string[] lines = System.IO.File.ReadAllLines(userNameFile);
                 userList = new List<string>(lines);
+
             }
 
             if (!string.IsNullOrEmpty(passWordFile) && System.IO.File.Exists(passWordFile))
@@ -198,14 +213,14 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
             if (!string.IsNullOrEmpty(mode))
             {
-                await new HandlePOC().ModPacket(mode);
+                await HandlePOC.ModPacket(mode);
                 return;
             }
 
 
             if (arpScan)
             {
-                icmpScan=false;
+                icmpScan = false;
                 var arpTask = Task.Run(() => new ARPScan().ARPScanPC(Program.IPlist, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)));
                 await Task.WhenAll(arpTask);
 
@@ -216,13 +231,14 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 await Task.Run(() => new ICMPScan().ICMPScanPC(Program.IPlist, Convert.ToInt32(delay), Convert.ToInt32(maxConcurrency)));
             }
 
-            
+
 
             await new TcpPortscan().ScanPortDefault(Convert.ToInt32(delay), Configuration.PortList, Convert.ToInt32(maxConcurrency));
 
 
             if (!nopoc)
             {
+              
                 await new HandlePOC().HandleDefault();
             }
 

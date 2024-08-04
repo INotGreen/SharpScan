@@ -14,14 +14,23 @@ namespace SharpScan
         public static List<string> IPList(string IPRange)
         {
             List<string> strings = new List<string>();
-            List<string> ipList = GetIPRange(IPRange);
 
-            // 输出IP地址列表
-            foreach (var ip in ipList)
+            // 检查是否包含逗号分隔的多个IP地址
+            if (IPRange.Contains(","))
             {
-                //Console.WriteLine(ip);
-                strings.Add(ip);
+                var ipParts = IPRange.Split(',');
+                foreach (var part in ipParts)
+                {
+                    var ipList = GetIPRange(part.Trim());
+                    strings.AddRange(ipList);
+                }
             }
+            else
+            {
+                var ipList = GetIPRange(IPRange);
+                strings.AddRange(ipList);
+            }
+
             return strings;
         }
 
@@ -34,15 +43,19 @@ namespace SharpScan
                 throw new ArgumentException("Invalid IP address format");
             }
 
+            if (!ipRange.Contains("/"))
+            {
+                // 如果没有CIDR前缀，直接返回单个IP
+                ipList.Add(baseAddress.ToString());
+                return ipList;
+            }
+
             int prefixLength = GetPrefixLength(baseAddress);
 
-            if (ipRange.Contains("/"))
+            string[] parts = ipRange.Split('/');
+            if (parts.Length != 2 || !int.TryParse(parts[1], out prefixLength))
             {
-                string[] parts = ipRange.Split('/');
-                if (parts.Length != 2 || !int.TryParse(parts[1], out prefixLength))
-                {
-                    throw new ArgumentException("Invalid CIDR format");
-                }
+                throw new ArgumentException("Invalid CIDR format");
             }
 
             uint mask = ~(uint.MaxValue >> prefixLength);
@@ -89,6 +102,9 @@ namespace SharpScan
                 throw new ArgumentException("IP address is not in the A, B, or C class ranges");
             }
         }
+
+
+
         public static Dictionary<string, string> GetMACDict()
         {
             Dictionary<string, string> MACDict = new Dictionary<string, string>()
@@ -130,7 +146,7 @@ namespace SharpScan
             try
             {
                 string jsonData = File.ReadAllText(path);
-               // MACDict = jss.Deserialize<Dictionary<string, string>>(jsonData);
+                //MACDict = jss.Deserialize<Dictionary<string, string>>(jsonData);
             }
             catch
             {

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using Tamir.SharpSsh.Sharp.lang;
+using Thread = Tamir.SharpSsh.Sharp.lang.Thread;
 
 namespace Tamir.SharpSsh.jsch
 {

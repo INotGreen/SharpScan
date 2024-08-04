@@ -68,7 +68,7 @@ namespace SharpScan
                         OnlinePC onlinePC = new OnlinePC();
                         onlinePC.IP = ip;
                         onlinePC.HostName = new GetOsInfos().GetHostName(ip);
-                        onlinePC.OS = new GetOsInfos().GetOsVersion(ip);
+                        onlinePC.OS = new GetOsInfos().GetOsVersion(onlinePC);
                         string result = $"{ip + "(ICMP)",-28} {onlinePC.HostName,-28} {onlinePC.OS,-40}";
 
                         Console.WriteLine(result);

@@ -269,7 +269,7 @@ namespace Tamir.SharpSsh.jsch
                 catch (Exception e)
                 {
                     message = e.ToString();
-                    throw new JSchException(message);
+                    throw new Tamir.SharpSsh.jsch.JSchException(message);
                 }
             }
             String _host = host;

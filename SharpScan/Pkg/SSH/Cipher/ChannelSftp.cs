@@ -10,6 +10,7 @@ using Tamir.Streams;
 using Exception = Tamir.SharpSsh.Sharp.Exception;
 using File = Tamir.SharpSsh.Sharp.io.File;
 using String = Tamir.SharpSsh.Sharp.String;
+using Thread = Tamir.SharpSsh.Sharp.lang.Thread;
 
 namespace Tamir.SharpSsh.jsch
 {

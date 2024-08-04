@@ -1,4 +1,5 @@
 using Tamir.SharpSsh.Sharp;
+using String = Tamir.SharpSsh.Sharp.String;
 
 namespace Tamir.SharpSsh.jsch
 {
@@ -132,7 +133,7 @@ namespace Tamir.SharpSsh.jsch
             return false;
         }
 
-        internal String getMethods()
+        internal Sharp.String getMethods()
         {
             return methods;
         }

@@ -14,13 +14,23 @@ namespace SharpScan
         public static List<string> IPList(string IPRange)
         {
             List<string> strings = new List<string>();
-            List<string> ipList = GetIPRange(IPRange);
 
-            // 输出IP地址列表
-            foreach (var ip in ipList)
+            // 检查是否包含逗号分隔的多个IP地址
+            if (IPRange.Contains(","))
             {
-                strings.Add(ip);
+                var ipParts = IPRange.Split(',');
+                foreach (var part in ipParts)
+                {
+                    var ipList = GetIPRange(part.Trim());
+                    strings.AddRange(ipList);
+                }
             }
+            else
+            {
+                var ipList = GetIPRange(IPRange);
+                strings.AddRange(ipList);
+            }
+
             return strings;
         }
 
@@ -71,6 +81,7 @@ namespace SharpScan
 
             return ipList;
         }
+
         public static int GetPrefixLength(IPAddress ipAddress)
         {
             byte[] addressBytes = ipAddress.GetAddressBytes();
@@ -91,6 +102,9 @@ namespace SharpScan
                 throw new ArgumentException("IP address is not in the A, B, or C class ranges");
             }
         }
+
+
+
         public static Dictionary<string, string> GetMACDict()
         {
             Dictionary<string, string> MACDict = new Dictionary<string, string>()

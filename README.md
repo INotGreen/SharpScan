@@ -26,9 +26,11 @@
 
 
 
-如果您觉得项目还不错的，记个给我一个免费的star，非常感谢！
 
-欢迎提交Issues和建议
+
+项目还是半成品，欢迎提交Issues和建议
+
+如果您觉得项目还不错的，记个给我一个免费的star，非常感谢！
 
 ## 1.特点
 
@@ -38,7 +40,7 @@
 - 使用异步和高并发、扫描速度快并且可控、内存自动回收
 - 用Inline-assembly或者Execute-assembly进行内存加载，实现无文件落地扫描
 
-- 体积较小(目前600kb)、传输快、自动化扫描+内网信息收集一条龙
+- 体积较小(目前800kb)、传输快、自动化扫描+内网信息收集一条龙
 
 - 尽量遵循OPSEC原则，不创建额外子进程、不读写注册表等操作
 
@@ -51,7 +53,7 @@
 - 主机信息探测、目标网卡探测
 - 高危漏洞扫描：ms17010、CVE-2020-0796(SMBGhost)、ZeroLogon（CVE-2020-1472）
 - Webtitle探测，指纹识别常见CMS、OA框架等
-- 各类服务弱口令爆破、账号密码枚举(SSH、SMB、RDP)，SSH命令执行
+- 各类服务弱口令爆破、账号密码枚举(SSH、SMB、RDP、FTP)，SSH命令执行
 - 探测当前主机.NET版本、操作系统版本信息、杀毒软件/内网设备（AV/EDR/XDR）查询等
 - 导出本地RDP登录日志(Rdp端口、Mstsc缓存、Cmdkey缓存、登录成功、失败日志)
 - 判断是否在域内、定位域控IP、信息收集域控的FQDN、域管理员组、域企业管理员组、LDAP查询等
@@ -108,6 +110,14 @@ Example:
 SharpScan.exe -h 192.168.1.1/24  (扫描C段)
 SharpScan.exe -h 192.168.1.1/16  (扫描B段)
 ```
+
+
+
+![image-20240804172810364](../../AppData/Roaming/Typora/typora-user-images/image-20240804172810364.png)
+
+
+
+
 
 ### 4.2其它功能
 
@@ -218,6 +228,16 @@ SharpScan.exe -h 192.168.244.1/24 -m ssh -uf user.txt -pwf pass.txt
 
 
 
+
+
+
+
+
+
+
+
+
+
 #### 全盘搜索
 
 搜索本地磁盘上的pass.txt
@@ -320,7 +340,7 @@ Write-Host "new exe:$outputFilePath"
 
 3.用了内存加载，就可以不用做免杀了吗？
 
-答案是否定的，不管是[ExecuteAssembly](https://github.com/med0x2e/ExecuteAssembly)还是[Inline-Assembly](https://github.com/anthemtotheego/InlineExecute-Assembly) ， 对于内核级监控的AV/EDR/XDR，C#代码在内存都是透明的，不过，它们对于.NET的监控更多地是在用户层，因此您需要考虑绕过AMSI，ETW、Ntdll hook，Kernel32 hook等用户层的hook，即使这看起来有些麻烦，此外您也可以尝试将C#转成Powershell脚本，通过.NET丰富的混淆方法，在应用层和内存中轻松地规避AMSI等引擎的hook，而对于没有接入amsi或者对于.NET没有自定义检测规则的EDR厂商，内存加载就可以轻松地绕过它们
+答案是否定的，不管是[ExecuteAssembly](https://github.com/med0x2e/ExecuteAssembly)还是[Inline-Assembly](https://github.com/anthemtotheego/InlineExecute-Assembly) ， 对于内核级监控的AV/EDR/XDR，C#代码在内存都是透明的，不过，它们对于.NET的监控更多地是在用户层，因此您需要考虑绕过AMSI，ETW、Ntdll hook，Kernel32 hook等用户层的hook，即使这看起来有些麻烦，此外您也可以尝试将C#转成Powershell脚本，通过.NET丰富的混淆方法，在应用层和内存中轻松地规避AMSI等引擎的hook，而对于没有接入amsi和对.NET没有自定义检测规则的EDR厂商，内存加载则可以轻松地绕过它们
 
 
 

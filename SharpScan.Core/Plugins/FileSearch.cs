@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace SharpScan.Plugins
+namespace SharpScan
 {
     internal class FileSearch
     {
@@ -55,38 +55,6 @@ namespace SharpScan.Plugins
                 }
             }
         }
-
-        public static string GetFilesize(string filePath)
-        {
-            FileInfo fileInfo = new FileInfo(filePath);
-            if (fileInfo.Exists)
-            {
-                long fileSize = fileInfo.Length;
-                DateTime lastModified = fileInfo.LastWriteTime;
-                return fileSize.ToString();
-            }
-            else
-            {
-                Console.WriteLine("File does not exist.");
-                return "0.kb";
-            }
-        }
-        public static string GetlastModified(string filePath)
-        {
-            FileInfo fileInfo = new FileInfo(filePath);
-            if (fileInfo.Exists)
-            {
-                long fileSize = fileInfo.Length;
-                DateTime lastModified = fileInfo.LastWriteTime;
-                return lastModified.ToString();
-            }
-            else
-            {
-                Console.WriteLine("File does not exist.");
-                return "NULL";
-            }
-        }
-       
        
     }
 }

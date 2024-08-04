@@ -1,0 +1,358 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <Choose>
+    <When Condition="$(SolutionName) == 'MySQLClient-4.0'">
+      <PropertyGroup>
+        <ProductVersion>9.0.30729</ProductVersion>
+        <SchemaVersion>2.0</SchemaVersion>
+        <Framework>4.0</Framework>
+        <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+        <DefineConstants>NET_40_OR_GREATER</DefineConstants>
+      </PropertyGroup>
+    </When>
+    <When Condition="$(SolutionName) == 'MySQL-EMTrace'">
+      <PropertyGroup>
+        <ProductVersion>9.0.30729</ProductVersion>
+        <SchemaVersion>2.0</SchemaVersion>
+        <Framework>4.0</Framework>
+        <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+        <DefineConstants>NET_40_OR_GREATER</DefineConstants>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <ProductVersion>9.0.30729</ProductVersion>
+        <SchemaVersion>2.0</SchemaVersion>
+        <Framework>4.5</Framework>
+        <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+        <DefineConstants>NET_40_OR_GREATER;NET_45_OR_GREATER;</DefineConstants>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  <PropertyGroup>
+    <ProjectGuid>{E9DF5ED1-4CBD-4226-B931-9A51610AC14D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MySql.Data.MySqlClient</RootNamespace>
+    <AssemblyName>MySql.Data</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <BaseOutputPath>$(TargetFrameworkVersion)\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\$(TargetFrameworkVersion)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\$(TargetFrameworkVersion)\</IntermediateOutputPath>
+    <OutputPath>bin\$(TargetFrameworkVersion)\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET_4_5;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <BaseOutputPath>$(TargetFrameworkVersion)\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\$(TargetFrameworkVersion)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\$(TargetFrameworkVersion)\</IntermediateOutputPath>
+    <OutputPath>bin\$(TargetFrameworkVersion)\Release\</OutputPath>
+    <DefineConstants>TRACE;NET_4_5;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>0</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Release\MySql.Data.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseNET40_Only|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <BaseOutputPath>NET40_Only\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\NET40_Only\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>obj\NET40_Only\</IntermediateOutputPath>
+    <OutputPath>bin\NET40_Only\Release\</OutputPath>
+    <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Authentication\AuthenticationManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Authentication\CachingSha2AuthenticationPlugin.cs" />
+    <Compile Include="Authentication\MySQLAuthenticationPlugin.cs" />
+    <Compile Include="Authentication\MySqlPemReader.cs" />
+    <Compile Include="Authentication\NativePasswordPlugins.cs" />
+    <Compile Include="Authentication\Sha256AuthenticationPlugin.cs" />
+    <Compile Include="Authentication\WindowsAuthenticationPlugin.cs" />
+    <Compile Include="BulkLoader.cs" />
+    <Compile Include="CharSetMap.cs" />
+    <Compile Include="command.cs" />
+    <Compile Include="CommandBuilder.cs" />
+    <Compile Include="common\Cache.cs" />
+    <Compile Include="common\ContextString.cs" />
+    <Compile Include="common\LowResolutionStopwatch.cs" />
+    <Compile Include="common\MyNetworkStream.cs" />
+    <Compile Include="common\MySqlTokenizer.cs" />
+    <Compile Include="common\NamedPipeStream.cs" />
+    <Compile Include="common\NativeMethods.cs" />
+    <Compile Include="common\Platform.cs" />
+    <Compile Include="common\QueryNormalizer.cs" />
+    <Compile Include="common\SharedMemoryStream.cs" />
+    <Compile Include="common\StreamCreator.cs" />
+    <Compile Include="common\StringUtility.cs" />
+    <Compile Include="common\Version.cs" />
+    <Compile Include="CompressedStream.cs" />
+    <Compile Include="Connection.cs" />
+    <Compile Include="Crypt.cs" />
+    <Compile Include="dataadapter.cs" />
+    <Compile Include="datareader.cs" />
+    <Compile Include="Driver.cs" />
+    <Compile Include="Exception.cs" />
+    <Compile Include="extensions\NonRT\MySqlCommand.cs" />
+    <Compile Include="extensions\NonRT\MySqlConnection.cs" />
+    <Compile Include="extensions\NonRT\MySqlConnectionStringBuilder.cs" />
+    <Compile Include="extensions\NonRT\MySqlDataReader.cs" />
+    <Compile Include="extensions\NonRT\MySqlDateTime.cs" />
+    <Compile Include="extensions\NonRT\MySqlParameter.cs" />
+    <Compile Include="extensions\NonRT\MySqlParameterCollection.cs" />
+    <Compile Include="extensions\NonRT\MySqlTrace.cs" />
+    <Compile Include="extensions\NonRT\MySqlTransaction.cs" />
+    <Compile Include="Field.cs" />
+    <Compile Include="Installer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Interceptors\CommandInterceptor.cs" />
+    <Compile Include="Interceptors\Interceptor.cs" />
+    <Compile Include="Interceptors\ExceptionInterceptor.cs" />
+    <Compile Include="ISSchemaProvider.cs" />
+    <Compile Include="Memcached\BinaryClient.cs" />
+    <Compile Include="Memcached\MemcachedException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Memcached\TextClient.cs" />
+    <Compile Include="Memcached\Client.cs" />
+    <Compile Include="MySqlClientFactory.cs" />
+    <Compile Include="MySqlClientPermission.cs" />
+    <Compile Include="MySqlConfiguration.cs" />
+    <Compile Include="MySqlConnectionStringBuilder.cs" />
+    <Compile Include="MysqlDefs.cs" />
+    <Compile Include="MySqlError.cs" />
+    <Compile Include="MySqlHelper.cs" />
+    <Compile Include="MySqlPacket.cs" />
+    <Compile Include="MySqlClientPermissionAttribute.cs" />
+    <Compile Include="MySqlPool.cs" />
+    <Compile Include="MySqlPoolManager.cs" />
+    <Compile Include="MySqlPromotableTransaction.cs" />
+    <Compile Include="MySqlScript.cs" />
+    <Compile Include="MySqlSecurityPermission.cs" />
+    <Compile Include="MySqlStream.cs" />
+    <Compile Include="NativeDriver.cs" />
+    <Compile Include="parameter.cs" />
+    <Compile Include="parameter_collection.cs" />
+    <Compile Include="PerformanceMonitor.cs" />
+    <Compile Include="PreparableStatement.cs" />
+    <Compile Include="ProcedureCache.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\VersionInfo.cs" />
+    <Compile Include="Replication\ReplicationConfiguration.cs" />
+    <Compile Include="Replication\ReplicationManager.cs" />
+    <Compile Include="Replication\ReplicationRoundRobinServerGroup.cs" />
+    <Compile Include="Replication\ReplicationServer.cs" />
+    <Compile Include="Replication\ReplicationServerGroup.cs" />
+    <Compile Include="ResultSet.cs" />
+    <Compile Include="Schema.cs" />
+    <Compile Include="SchemaProvider.cs" />
+    <Compile Include="Statement.cs" />
+    <Compile Include="StoredProcedure.cs" />
+    <Compile Include="System.Threading.Tasks35\StreamExtensions.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections.Concurrent.Partitioners\EnumerablePartitioner.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections.Concurrent.Partitioners\ListPartitioner.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections.Concurrent.Partitioners\UserRangePartitioner.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections.Concurrent\BlockingCollection.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections.Concurrent\ConcurrentBag.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections.Concurrent\ConcurrentDictionary.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections.Concurrent\ConcurrentOrderedList.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections.Concurrent\ConcurrentQueue.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections.Concurrent\ConcurrentStack.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections.Concurrent\IProducerConsumerCollection.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections.Concurrent\OrderablePartitioner.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections.Concurrent\Partitioner.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections.Concurrent\SplitOrderedList.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections.Generic\CollectionDebuggerView.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections.Generic\DefaultEqualityComparer.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections.Generic\GenericEqualityComparer.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections\IStructuralComparable.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Collections\IStructuralEquatable.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Diagnostics\CodeAnalysis.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Runtime.CompilerServices\AsyncStateMachineAttribute.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Runtime.CompilerServices\AsyncTaskMethodBuilder.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Runtime.CompilerServices\AsyncTaskMethodBuilder_T.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Runtime.CompilerServices\AsyncVoidMethodBuilder.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Runtime.CompilerServices\ConfiguredTaskAwaitable.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Runtime.CompilerServices\ConfiguredTaskAwaitable_T.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Runtime.CompilerServices\IAsyncStateMachine.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Runtime.CompilerServices\ICriticalNotifyCompletion.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Runtime.CompilerServices\INotifyCompletion.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Runtime.CompilerServices\StateMachineAttribute.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Runtime.CompilerServices\TaskAwaiter.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Runtime.CompilerServices\TaskAwaiter_T.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Runtime.CompilerServices\YieldAwaitable.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Runtime.ExceptionServices\ExceptionDispatchInfo.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Runtime.Remoting.Messaging\AsyncResult.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\CyclicDeque.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\IConcurrentDeque.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\PopResult.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\SynchronizationContextScheduler.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\Task.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskActionInvoker.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskCanceledException.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskCompletionQueue.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskCompletionSource.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskConstants.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskConstants_T.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskContinuation.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskContinuationOptions.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskCreationOptions.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskDebuggerView.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskExceptionSlot.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskExtensions.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskExtensionsImpl.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskFactory.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskFactory_T.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskScheduler.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskSchedulerException.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TaskStatus.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\Task_T.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\TpScheduler.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading.Tasks\UnobservedTaskExceptionEventArgs.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading\AtomicBoolean.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading\CancellationToken.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading\CancellationTokenRegistration.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading\CancellationTokenSource.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading\CountdownEvent.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading\ManualResetEventSlim.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading\SemaphoreSlim.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading\SpinLock.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading\SpinWait.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading\ThreadingHelper.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading\ThreadingHelper.SpinWait.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading\Volatile.cs" />
+    <Compile Include="System.Threading.Tasks35\System.Threading\Watch.cs" />
+    <Compile Include="System.Threading.Tasks35\System\AggregateException.cs" />
+    <Compile Include="System.Threading.Tasks35\System\Funcs.cs" />
+    <Compile Include="System.Threading.Tasks35\System\Lazy.cs" />
+    <Compile Include="System.Threading.Tasks35\System\LazyThreadSafetyMode.cs" />
+    <Compile Include="System.Threading.Tasks35\System\LocalDataStoreSlot.cs" />
+    <Compile Include="System.Threading.Tasks35\System\OperationCanceledException.cs" />
+    <Compile Include="System.Threading.Tasks35\System\Tuple.cs" />
+    <Compile Include="System.Threading.Tasks35\System\Tuples.cs" />
+    <Compile Include="SystemPerformanceMonitor.cs" />
+    <Compile Include="TableCache.cs" />
+    <Compile Include="TimedStream.cs" />
+    <Compile Include="TracingDriver.cs" />
+    <Compile Include="transaction.cs" />
+    <Compile Include="Types\MetaData.cs" />
+    <Compile Include="Types\MySqlBinary.cs" />
+    <Compile Include="Types\MySqlBit.cs" />
+    <Compile Include="Types\MySqlByte.cs" />
+    <Compile Include="Types\MySqlConversionException.cs" />
+    <Compile Include="Types\MySqlDateTime.cs" />
+    <Compile Include="Types\MySqlDecimal.cs" />
+    <Compile Include="Types\MySqlDouble.cs" />
+    <Compile Include="Types\MySqlGeometry.cs" />
+    <Compile Include="Types\MySqlGuid.cs" />
+    <Compile Include="Types\MySqlInt16.cs" />
+    <Compile Include="Types\MySqlInt32.cs" />
+    <Compile Include="Types\MySqlInt64.cs" />
+    <Compile Include="Types\MySqlSingle.cs" />
+    <Compile Include="Types\MySqlString.cs" />
+    <Compile Include="Types\MySqlTime.cs" />
+    <Compile Include="Types\MySqlUByte.cs" />
+    <Compile Include="Types\MySqlUInt16.cs" />
+    <Compile Include="Types\MySqlUInt32.cs" />
+    <Compile Include="Types\MySqlUInt64.cs" />
+    <Compile Include="Types\MySqlValue.cs" />
+    <Compile Include="zlib\Adler32.cs" />
+    <Compile Include="zlib\Deflate.cs" />
+    <Compile Include="zlib\InfBlocks.cs" />
+    <Compile Include="zlib\InfCodes.cs" />
+    <Compile Include="zlib\Inflate.cs" />
+    <Compile Include="zlib\InfTree.cs" />
+    <Compile Include="zlib\StaticTree.cs" />
+    <Compile Include="zlib\SupportClass.cs" />
+    <Compile Include="zlib\Tree.cs" />
+    <Compile Include="zlib\ZInputStream.cs" />
+    <Compile Include="zlib\Zlib.cs" />
+    <Compile Include="zlib\ZOutputStream.cs" />
+    <Compile Include="zlib\ZStream.cs" />
+    <Compile Include="zlib\ZStreamException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\ReservedWords.txt" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\keywords.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\CHANGES">
+      <Link>CHANGES</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

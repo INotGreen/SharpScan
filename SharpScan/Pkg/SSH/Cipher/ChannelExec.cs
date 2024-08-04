@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Tamir.SharpSsh.Sharp.lang;
+using Thread = Tamir.SharpSsh.Sharp.lang.Thread;
 
 namespace Tamir.SharpSsh.jsch
 {

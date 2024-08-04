@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using static SharpScan.Program;
 
 namespace SharpScan
 {
@@ -14,7 +15,7 @@ namespace SharpScan
         static int TIME_OUT = 1500;
         private static ConcurrentDictionary<string, string> dnsCache = new ConcurrentDictionary<string, string>();
 
-        public  string GetOsVersion(string ip)
+        public  string GetOsVersion(OnlinePC onlinePC)
         {
             using (Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
@@ -22,7 +23,7 @@ namespace SharpScan
                 {
                     sock.ReceiveTimeout = TIME_OUT;
                     sock.SendTimeout = TIME_OUT;
-                    sock.Connect(ip, 135);
+                    sock.Connect(onlinePC.IP, 135);
 
                     byte[] buffer_v2 = new byte[] {
                         0x05, 0x00, 0x0b, 0x03, 0x10, 0x00, 0x00, 0x00, 0x78, 0x00, 0x28, 0x00, 0x03, 0x00, 0x00, 0x00,
@@ -44,7 +45,7 @@ namespace SharpScan
                     int minorVersion = osVersionBytes[1];
                     int buildNumber = BitConverter.ToInt16(osVersionBytes, 2);
                     string osVersion = $"Windows Version {majorVersion}.{minorVersion} Build {buildNumber}";
-
+                    onlinePC.buildNumber = buildNumber;
                     string detailedOsVersion = GetDetailedOsVersion(majorVersion, minorVersion, buildNumber);
 
                     return detailedOsVersion;

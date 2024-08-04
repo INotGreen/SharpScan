@@ -31,7 +31,7 @@ namespace SharpScan
                     bool success = result.AsyncWaitHandle.WaitOne(timeout, false);
                     if (!success)
                     {
-                        client.Close();
+                        //client.Close();
                         return false;
                     }
                     client.EndConnect(result);
