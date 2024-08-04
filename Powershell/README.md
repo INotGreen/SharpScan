@@ -1,6 +1,6 @@
 
 
-
+用这段powershell代码将C#程序转成Powershell脚本
 
 ```powershell
 $temp = @'
@@ -108,4 +108,3 @@ $stub1 = $temp.Replace("ReplaceBase64", $base64String) >Invoke-SharpScan.ps1
 
 
 
-用这段powershell代码将C#程序转成Powershell脚本
