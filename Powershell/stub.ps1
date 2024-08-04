@@ -1,8 +1,3 @@
-
-
-
-
-```powershell
 $temp = @'
 function Invoke-SharpScan {
     [CmdletBinding()]
@@ -96,7 +91,6 @@ function Convert-ExeToCompressedBase64 {
     $base64String = [Convert]::ToBase64String($compressedBytes)
     return $base64String
 }
-
 $base64String = ""
 $exePath = "SharpScan.exe"
 $compressedBase64String = Convert-ExeToCompressedBase64 -exePath $exePath
@@ -104,8 +98,7 @@ $base64String = $compressedBase64String
 
 $stub1 = $temp.Replace("ReplaceBase64", $base64String) >Invoke-SharpScan.ps1
 
-```
 
 
 
-用这段powershell代码将C#程序转成Powershell脚本
+
