@@ -1,0 +1,5 @@
+#!/bin/bash
+#
+# Start Cobalt Strike Client
+#
+java -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -jar cobaltstrike-client.jar $*

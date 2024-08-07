@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpScan.Plugins;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -158,21 +159,41 @@ namespace SharpScan
                             switch (mode.ToLower())
                             {
                                 case "ssh":
-                                     SshBrute.Run(ip);
-                                    break;
+                                    {
+                                        SshBrute.Run(ip);
+                                        break;
+                                    }
+                                   
                                 case "rdp":
-                                    Rdp.Run(ip);
-                                    // while (true) { }
-                                    break;
+                                    {
+                                        Rdp.Run(ip);
+                                        break;
+                                    }
+                                   
                                 case "ms17010":
-                                    await Task.Run(() => new ms17_010scanner().Run(ip));
-                                    break;
+                                    {
+                                        await Task.Run(() => new ms17_010scanner().Run(ip));
+                                        break;
+                                    }
+                                   
                                 case "smb":
-                                    await Task.Run(() => SMBEnum.SMBLogin(ip));
-                                    break;
+                                    {
+                                        await Task.Run(() => SMBEnum.SMBLogin(ip));
+                                        break;
+                                    }
+
                                 case "ftp":
-                                    await Ftp.Run(ip);
-                                    break;
+                                    {
+                                        await Ftp.Run(ip);
+                                        break;
+                                    }
+
+                                case "wmiexec":
+                                    {
+                                        await Task.Run(() => WmiExec.Run(ip));
+                                        break;
+                                    }
+
                             }
                         }
                         finally

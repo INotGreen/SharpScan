@@ -45,6 +45,7 @@ namespace Socks5.Core.SocksServer
             OutboundIpAddress = IPAddress.Any;
             _server = new TcpServer(ip, port);
             _server.OnClientConnected += _server_onClientConnected;
+
         }
 
         public int Timeout { get; set; }

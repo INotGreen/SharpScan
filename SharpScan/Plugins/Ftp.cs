@@ -125,7 +125,6 @@ namespace SharpScan
                 request.KeepAlive = false;
                 // 设置登录凭据
                 request.Credentials = new NetworkCredential(userName, passWord);
-
                 // 使用Task.Factory.FromAsync模拟异步操作
                 var task = Task.Factory.FromAsync<WebResponse>(request.BeginGetResponse, request.EndGetResponse, null);
                 response = (FtpWebResponse)await task;

@@ -6,10 +6,10 @@ using System.Text;
 
 namespace SharpScan
 {
-    internal class Domain
+    internal class GetDomainInfo
     {
 
-        public Domain()
+        public GetDomainInfo()
         {
             try
             {

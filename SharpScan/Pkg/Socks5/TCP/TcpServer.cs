@@ -30,12 +30,14 @@ namespace Socks5.Core.TCP
         private readonly ManualResetEvent _task = new ManualResetEvent(false);
         private bool _accept;
 
-        //public event EventHandler<DataEventArgs> onDataReceived = delegate { };
-        //public event EventHandler<DataEventArgs> onDataSent = delegate { };
+        public event EventHandler<DataEventArgs> onDataReceived = delegate { };
+        public event EventHandler<DataEventArgs> onDataSent = delegate { };
 
         public TcpServer(IPAddress ip, int port)
         {
             _p = new TcpListener(ip, port);
+            _p.Server.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            
         }
 
         public int PacketSize { get; set; }

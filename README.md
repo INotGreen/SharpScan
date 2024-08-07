@@ -51,14 +51,15 @@
 - 端口扫描(Tcp)
 - 支持NetBios(默认137端口)、SMB(默认445端口)和WMI(默认135端口)服务快速探测
 - 主机信息探测、目标网卡探测
-- 高危漏洞扫描：ms17010、CVE-2020-0796(SMBGhost)、ZeroLogon（CVE-2020-1472）
+- 高危漏洞扫描：Eternal Blue(ms17010)、SMBGhost(CVE-2020-0796)、ZeroLogon（CVE-2020-1472）
 - Webtitle探测，指纹识别常见CMS、OA框架等
 - 各类服务弱口令爆破、账号密码枚举(SSH、SMB、RDP、FTP)，SSH命令执行
 - 探测当前主机.NET版本、操作系统版本信息、杀毒软件/内网设备（AV/EDR/XDR）查询等
 - 导出本地RDP登录日志(Rdp端口、Mstsc缓存、Cmdkey缓存、登录成功、失败日志)
 - 判断是否在域内、定位域控IP、信息收集域控的FQDN、域管理员组、域企业管理员组、LDAP查询等
 - 全盘文件搜索，关键字匹配，与Everything的功能相似，适合全盘检索密码本（静默检索、不消耗内存）
-- 携带一个高性能的Socks5代理服务器，支持账号密码验证
+- 携带一个高性能的Socks5代理服务器，支持账号密码验证、支持Tcp端口复用
+- 通过wmi进行内网横向移动，支持文件上传、命令执行（依赖137端口、文件大小不超过512kb）
 - 导出扫描结果
 
 
@@ -107,11 +108,11 @@ Example:
 扫描C段/B段，默认使用所有模块
 
 ```powershell
-SharpScan.exe -h 192.168.1.1/24  (扫描C段)
-SharpScan.exe -h 192.168.1.1/16  (扫描B段)
-SharpScan.exe -h 192.168.1.107,192.168.1.3,192.168.1.4(扫描指定IP)
-SharpScan.exe -h C:\Windows\IP.txt(扫描指定IP.txt,格式和账号密码本的格式一样)
-SharpScan.exe -h 192.168.1.107 -p 100-1024
+SharpScan.exe -h 192.168.1.1/24                                 (扫描C段)
+SharpScan.exe -h 192.168.1.1/16                                  (扫描B段)
+SharpScan.exe -h 192.168.1.107,192.168.1.3,192.168.1.4           (扫描指定IP,用逗号分隔)
+SharpScan.exe -h C:\\Windows\\IP.txt                 (扫描指定IP.txt,格式和账号密码本的格式一样)
+SharpScan.exe -h 192.168.1.107 -p 100-1024                     (对单个IP进行端口扫描)
 ```
 
 
@@ -125,20 +126,23 @@ SharpScan.exe -h 192.168.1.107 -p 100-1024
 ### 4.2其它功能
 
 ```powershell
-SharpScan.exe -h 192.168.244.1/24 -nopoc                            (只做网段主机探测和端口扫描)
-SharpScan.exe -s 192.168.244.169 -p 80-1024 -d 0 -m 600             (Tcp端口扫描:80-1024，0延时，最大并发600)
-SharpScan.exe -t 192.168.244.141 -U -p 100-10000                    (udp端口扫描:100-10000，10ms延时，最大并发600)
-SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a              (C段ssh服务账号密码爆破,账号root，密码a)
-SharpScan.exe -h 192.168.244.1/24 -m smb -u administrator -pw a     (C段smb服务账号密码爆破,账号administrator，密码a)
-SharpScan.exe -h 192.168.244.1/24 -m rdp -u administrator -pw a     (C段rdp服务账号密码爆破,账号administrator，密码a)
-SharpScan.exe -h 192.168.244.1/24 -m smb -uf user.txt -pwf pass.txt (用账号密码本爆破C段的smb服务)
-SharpScan.exe -h 192.168.244.1/24 -m rdp -uf user.txt -pwf pass.txt (用账号密码本爆破C段的rdp服务)
-SharpScan.exe -h 192.168.244.1/24 -m ssh -uf user.txt -pwf pass.txt (用账号密码本爆破C段的ssh服务()
-SharpScan.exe -h 192.168.244.1/24 -m ms17010                        (C段批量扫描是否存在ms17010)
-SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a -c "uname-a" (ssh命令执行C段枚举）
-SharpScan.exe -s "pass.txt"                                         (全盘静默检索pass.txt)
-SharpScan.exe -socks5 8000 -u test -pw 1234                         (Socks5:8000.用户名:test，密码:1234)
-SharpScan.exe -h 192.168.244.1/24 -o output.txt                     (将扫描结果导出到output.txt)
+SharpScan.exe -h 192.168.244.1/24 -nopoc                             (只做网段主机探测和端口扫描)
+SharpScan.exe -s 192.168.244.169 -p 80-1024 -d 0 -m 600              (Tcp端口扫描:80-1024，0延时，最大并发600)
+SharpScan.exe -t 192.168.244.141 -U -p 100-10000                     (udp端口扫描:100-10000，10ms延时，最大并发600)
+SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a                (C段ssh服务账号密码爆破,账号root，密码a)
+SharpScan.exe -h 192.168.244.1/24 -m smb -u administrator -pw a       (C段smb服务账号密码爆破,账号administrator，密码a)
+SharpScan.exe -h 192.168.244.1/24 -m rdp -u administrator -pw a      (C段rdp服务账号密码爆破,账号administrator，密码a)
+SharpScan.exe -h 192.168.244.1/24 -m smb -uf user.txt -pwf pass.txt   (用账号密码本爆破C段的smb服务)
+SharpScan.exe -h 192.168.244.1/24 -m rdp -uf user.txt -pwf pass.txt   (用账号密码本爆破C段的rdp服务)
+SharpScan.exe -h 192.168.244.1/24 -m ssh -uf user.txt -pwf pass.txt   (用账号密码本爆破C段的ssh服务()
+SharpScan.exe -h 192.168.244.1/24 -m ms17010                           (C段批量扫描是否存在ms17010)
+SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a -c "uname-a"   (ssh命令执行C段枚举）
+SharpScan.exe -h 192.168.244.1.3 -m wmiexec -f cmd -c "ls C:\\Windows"  (调用WMI远程执行命令，通过注册表传递数据)
+SharpScan.exe -h 192.168.244.1.3 -m wmiexec -func upload -l C:\a.exe -r C:\\Windows\a.exe    (上传文件到远程主机，-l是本地文件路径，-r是上传到远程主机的文件路径)
+SharpScan.exe -h 192.168.244.1.3 -m wmiexec -func uploadexec -l C:\a.exe -r C:\\Windows\a.exe (上传文件到远程主机并且执行文件)
+SharpScan.exe -s "pass.txt"                                           (全盘静默检索pass.txt)
+SharpScan.exe -socks5 8000 -u test -pw 1234                         (Socks5:8000，用户名:test，密码:1234)
+SharpScan.exe -h 192.168.244.1/24 -o output.txt                        (将扫描结果导出到output.txt)
 ```
 
 

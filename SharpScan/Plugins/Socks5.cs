@@ -12,11 +12,11 @@ namespace SharpScan
         {
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(passWord))
             {
-                var socks5Server = new Socks5Server(IPAddress.Any, Port);
+                var socks5Server = new Socks5Server(IPAddress.Parse("0.0.0.0"), Port);
                 socks5Server.Start();
                 PluginLoader.ChangePluginStatus(true, typeof(Auth));
                 Console.WriteLine($"[+] Start socks5 port:{Port} , User:{Program.userName}  Password:{Program.passWord}");
-                while (true) { }
+                while (true) {  }
                 //while (true)
                 //{
                 //    Console.Write("Total Clients: \t{0}\nTotal Recvd: \t{1:0.00##}MB\nTotal Sent: \t{2:0.00##}MB\n", socks5Server.Stats.TotalClients, ((socks5Server.Stats.NetworkReceived / 1024f) / 1024f), ((socks5Server.Stats.NetworkSent / 1024f) / 1024f));

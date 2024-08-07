@@ -82,7 +82,7 @@ namespace SharpScan
             {
                 Console. WriteLine($"\n[+] This host is in a domain! Domain name: {properties.DomainName}",ConsoleColor.Red );
                 DoIt();
-                new Domain();
+                new GetDomainInfo();
                 Console.WriteLine("\n");
                // ZeroLogon.ZeroLogonCheck();
             }

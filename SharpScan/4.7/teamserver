@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+# Start Cobalt Strike Team Server
+#
+cd /mnt/d/Global/apps/cobaltstrike/4.7
+./TeamServerImage -Dcobaltstrike.server_port=50050 -Dcobaltstrike.server_bindto=0.0.0.0 -Djavax.net.ssl.keyStore=./cobaltstrike.store -Djavax.net.ssl.keyStorePassword=123456 teamserver $*
