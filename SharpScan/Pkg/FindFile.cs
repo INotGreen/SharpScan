@@ -62,9 +62,7 @@ namespace SharpScan
                 return "NULL";
             }
         }
-        /// <summary>
-        /// Converts the provided Win32 FileTime struct into a .NET DateTime struct.
-        /// </summary>
+
 
 
 

@@ -35,9 +35,9 @@ class SimpleTcpHttpServer
             using (var writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true })
             {
                 var requestLine = reader.ReadLine();
+                Console.WriteLine($"Received request: {requestLine}");
                 if (requestLine != null)
                 {
-                    Console.WriteLine($"Received request: {requestLine}");
                     var tokens = requestLine.Split(' ');
                     if (tokens.Length >= 2 && tokens[0] == "GET")
                     {
@@ -74,7 +74,7 @@ class SimpleTcpHttpServer
         }
         finally
         {
-            client.Close();
+            //client.Close();
         }
     }
 

@@ -22,8 +22,6 @@ namespace SharpScan
         /// <param name="args"></param>
         public ZeroLogon(string[] args)
         {
-            //recap();
-
             string Remote_Host = args[0];
 
             while (!Remote_Host.Contains("."))

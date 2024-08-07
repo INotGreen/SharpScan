@@ -127,25 +127,4 @@ class SimpleTcpHttpServer
             Console.WriteLine($"Error processing request: {ex.Message}");
         }
     }
-
-    //static void Main(string[] args)
-    //{
-    //    if (args.Length < 2)
-    //    {
-    //        Console.WriteLine("Usage: SimpleTcpHttpServer <ipAddress> <port> <baseFolder>");
-    //        return;
-    //    }
-
-    //    var port = int.Parse(args[1]);
-    //    var baseFolder = args[2];
-
-    //    if (!Directory.Exists(baseFolder))
-    //    {
-    //        Console.WriteLine($"Error: Directory '{baseFolder}' does not exist.");
-    //        return;
-    //    }
-
-    //    var server = new SimpleTcpHttpServer(args[0], port, baseFolder);
-    //    server.Run();
-    //}
 }

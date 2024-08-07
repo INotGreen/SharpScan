@@ -17,10 +17,13 @@ namespace SharpScan.Plugins
             string command = Program.command;
             string localFile = Program.localFile;
             string remoteFile = Program.remoteFile;
-
+            int Port = 137;
+            if (!Helper.TestPort(host, Port))
+            {
+                return;
+            }
             if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(funcName))
             {
-                //Console.WriteLine("\n\t\tInvalid arguments. Usage examples:\n\t\tSharpWMI.exe --host=192.168.2.3 --funcName=cmd --command=whoami\n\t\tSharpWMI.exe --host=192.168.2.3 --funcName=upload --localFile=beacon.exe --remoteFile=c:\\beacon.exe");
                 return;
             }
 
