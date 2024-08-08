@@ -105,6 +105,8 @@ Options:
 Example:
   SharpScan.exe -help
   SharpScan.exe -h 192.168.1.1/24
+  SharpScan.exe -h 192.168.1.1,192.168.1.3,192.168.1.4
+  SharpScan.exe -h C:\\ip.txt
   SharpScan.exe -h 192.168.1.107 -p 100-1024
 ```
 

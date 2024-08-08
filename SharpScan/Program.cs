@@ -83,6 +83,8 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             Console.WriteLine("\nExample:");
             Console.WriteLine("  SharpScan.exe -help");
             Console.WriteLine("  SharpScan.exe -h 192.168.1.1/24");
+            Console.WriteLine("  SharpScan.exe -h C:\\ip.txt");
+            Console.WriteLine("  SharpScan.exe -h 192.168.1.1,192.168.1.3,192.168.1.4");
             Console.WriteLine("  SharpScan.exe -h 192.168.1.107 -p 100-1024");
         }
 
