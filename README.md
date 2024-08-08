@@ -48,18 +48,31 @@
 ## 2. 主要功能
 
 - 存活探测(Icmp、Arp)
+
 - 端口扫描(Tcp)
+
+  主机信息探测、目标网卡探测
+
 - 支持NetBios(默认137端口)、SMB(默认445端口)和WMI(默认135端口)服务快速探测
-- 主机信息探测、目标网卡探测
+
 - 高危漏洞扫描：Eternal Blue(ms17010)、SMBGhost(CVE-2020-0796)、ZeroLogon（CVE-2020-1472）
+
 - Webtitle探测，指纹识别常见CMS、OA框架等
+
 - 各类服务弱口令爆破、账号密码枚举(SSH、SMB、RDP、FTP)，SSH命令执行
+
 - 探测当前主机.NET版本、操作系统版本信息、杀毒软件/内网设备（AV/EDR/XDR）查询等
+
 - 导出本地RDP登录日志(Rdp端口、Mstsc缓存、Cmdkey缓存、登录成功、失败日志)
+
 - 判断是否在域内、定位域控IP、信息收集域控的FQDN、域管理员组、域企业管理员组、LDAP查询等
+
 - 全盘文件搜索，关键字匹配，与Everything的功能相似，适合全盘检索密码本（静默检索、不消耗内存）
-- 携带一个高性能的Socks5代理服务器，支持账号密码验证、支持Tcp端口复用
+
+- 携带一个Socks5代理服务器，支持账号密码验证、支持Tcp端口复用
+
 - 通过wmi进行内网横向移动，支持文件上传、命令执行（依赖137端口、文件大小不超过512kb）
+
 - 导出扫描结果
 
 
@@ -304,8 +317,10 @@ iex(iwr -UseBasicParsing https://raw.githubusercontent.com/INotGreen/SharpScan/m
 ## 5.正在完成(TODO)
 
 - 数据库密码爆破(mysql、mssql、redis、psql、oracle等)
+
 - redis写公钥或写计划任务
-- weblogic、st2、shiro的POC扫描检测
+
+  
 
 
 

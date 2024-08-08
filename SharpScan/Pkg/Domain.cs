@@ -8,7 +8,6 @@ namespace SharpScan
 {
     internal class GetDomainInfo
     {
-
         public GetDomainInfo()
         {
             try

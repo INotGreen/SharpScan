@@ -165,13 +165,14 @@ namespace SharpScan
                             {
                                 case "ssh":
                                     {
-                                        SshBrute.Run(ip);
+                                        await Task.Run(() => SshBrute.Run(ip));
                                         break;
                                     }
                                    
                                 case "rdp":
                                     {
-                                        Rdp.Run(ip);
+                                        await Task.Run(() => Rdp.Run(ip));
+                                        
                                         break;
                                     }
                                    
