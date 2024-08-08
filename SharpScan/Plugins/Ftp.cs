@@ -148,7 +148,7 @@ namespace SharpScan
                 
             }
 
-            return false; // 连接失败
+            return false; 
         }
 
         private static IEnumerable<string> GeneratePasswords(string user)

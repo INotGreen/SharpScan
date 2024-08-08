@@ -87,12 +87,17 @@ Options:
       --pw, --password=VALUE Password for authentication
       --uf, --ufile=VALUE    Username file for authentication
       --pwf, --pwdfile=VALUE Password file for authentication
-  -m, --mode=VALUE           Scanning poc mode(e.g. ssh/smb/rdp/ms17010)
+  -m, --mode=VALUE           mode(e.g. ssh/smb/rdp/ftp/wmiexec)
+  -f, --func=VALUE           The function name(cmd/upload/uploadexec)
   -c, --command=VALUE        Command Execution
-  -d, --delay=VALUE          Scan delay(ms),Defalt:1000
+  -d, --delay=VALUE          Scan delay(ms),Defalt:10ms
   -t, --thread=VALUE         Maximum num of concurrent scans,Defalt:600
   -s, --search=VALUE         Search all files
+  -l, --localfile=VALUE      The local file to upload
+  -r, --remotefile=VALUE     The remote file path
       --socks5=VALUE         Open socks5 port
+      --http=VALUE           Open SimpleHTTPServer port
+      --folder=VALUE         SimpleHTTPServer Folder
       --nopoc                Not using proof of concept(POC)
   -o, --output=VALUE         Output file to save console output
       --help, --show         Show this usage and help

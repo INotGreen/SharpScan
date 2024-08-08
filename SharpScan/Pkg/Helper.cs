@@ -20,7 +20,7 @@ namespace SharpScan
 
         }
 
-       public static bool TestPort(string remoteHost, int remotePort)
+        public static bool TestPort(string remoteHost, int remotePort)
         {
             int timeout = 3000; // 3 seconds
             try
@@ -42,6 +42,15 @@ namespace SharpScan
             {
                 return false;
             }
+        }
+
+        public static void ColorfulConsole(string Mes, ConsoleColor color)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write($"[+] ");  // use Write instead of WriteLine
+            Console.ForegroundColor = color;
+            Console.WriteLine($" {Mes}");  // use WriteLine here to add a newline after the message
+            Console.ResetColor();
         }
     }
 }
