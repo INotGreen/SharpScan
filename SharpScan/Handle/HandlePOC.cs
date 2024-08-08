@@ -50,7 +50,7 @@ namespace SharpScan
         {
             await ProcessSpecificBrotePackets(ipPortList, "22"); // SSH
             await ProcessSpecificBrotePackets(ipPortList, "445"); // SMB
-            //await ProcessSpecificBrotePackets(ipPortList, "3389"); // RDP
+            await ProcessSpecificBrotePackets(ipPortList, "1433"); // RDP
             await ProcessSpecificBrotePackets(ipPortList, "21"); // FTP
         }
 
@@ -140,6 +140,11 @@ namespace SharpScan
                         await Task.Run(() => Rdp.Run(ip)); // 使用 Task.Run 包装同步方法
                         break;
                     }
+                case "1433":
+                    {
+                        await Task.Run(() => MsSqlBroute.Run(ip));
+                        break;
+                    }
             }
         }
 
@@ -191,6 +196,11 @@ namespace SharpScan
                                 case "wmiexec":
                                     {
                                         await Task.Run(() => WmiExec.Run(ip));
+                                        break;
+                                    }
+                                case "mssql":
+                                    {
+                                        await Task.Run(() => MsSqlBroute.Run(ip));
                                         break;
                                     }
 

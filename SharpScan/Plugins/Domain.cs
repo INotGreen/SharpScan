@@ -96,12 +96,12 @@ namespace SharpScan
         {
             DirectoryEntry dirEntry = new DirectoryEntry("LDAP://rootDSE");
             string dnsHostname = dirEntry.Properties["dnsHostname"].Value.ToString();
-            Console.WriteLine("[+] Domain Controller FQDN: " + dnsHostname);
+            Helper.ColorfulConsole($"Domain Controller FQDN:{dnsHostname}", ConsoleColor.Red);
             IPAddress[] ipAddresses = Dns.GetHostAddresses(dnsHostname);
-            Console.WriteLine("\n[+] Domain Controller IP: ");
+            
             foreach (IPAddress i in ipAddresses)
             {
-                Console.WriteLine(i);
+                Helper.ColorfulConsole($"Domain Controller IP: {i}",ConsoleColor.Red);
             }
         }
 
@@ -146,7 +146,5 @@ namespace SharpScan
                 Console.WriteLine("\tLocal: " + info.LocalEndPoint.Address.ToString() + ":" + info.LocalEndPoint.Port.ToString() + " - Remote: " + info.RemoteEndPoint.Address.ToString() + ":" + info.RemoteEndPoint.Port.ToString());
             }
         }
-
-
     }
 }

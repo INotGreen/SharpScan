@@ -6,7 +6,6 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 
-
 namespace SharpScan
 {
     public class GetIP

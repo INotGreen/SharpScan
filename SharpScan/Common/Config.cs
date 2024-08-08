@@ -27,10 +27,10 @@ namespace SharpScan
             "111111", "123", "1", "admin@123", "Admin@123", "admin123!@#", "{user}", "{user}1", "{user}111",
             "{user}123", "{user}@123", "{user}_123", "{user}#123", "{user}@111", "{user}@2019", "{user}@123#4",
             "P@ssw0rd!", "P@ssw0rd", "Passw0rd", "qwe123", "12345678", "test", "test123", "123qwe", "123qwe!@#",
-            "123456789", "123321", "666666", "a123456.", "123456~a", "123456!a", "000000", "1234567890", "8888888",
+            "123456789", "123321", "666666", "a123456.", "123456~a", "123456!a", "000000", "1234567890", "8888888","abc123$%",
             "!QAZ2wsx", "1qaz2wsx", "abc123", "abc123456", "1qaz@WSX", "a11111", "a12345", "Aa1234", "Aa1234.",
-            "Aa12345", "a123456", "a123123", "Aa123123", "Aa123456", "Aa12345.", "sysadmin", "system", "1qaz!QAZ",
-            "2wsx@WSX", "qwe123!@#", "Aa123456!", "A123456s!", "sa123456", "1q2w3e", "Charge123", "Aa123456789","a","kali",
+            "Aa12345", "a123456", "a123123", "Aa123123", "Aa123456", "Aa12345.", "sysadmin", "system", "1qaz!QAZ","Admin12345",
+            "2wsx@WSX", "qwe123!@#", "Aa123456!", "A123456s!", "sa123456", "1q2w3e", "Charge123", "Aa123456789","a","admin!@#45","abc123$%"
         };
 
         //public static Dictionary<string, int> PortList = new Dictionary<string, int>
@@ -45,7 +45,7 @@ namespace SharpScan
         public static Dictionary<string, int> PortList = new Dictionary<string, int>
         {
             { "ftp", 21 }, { "ssh", 22 }, { "telnet", 23 }, { "smtp", 25 },
-            { "dns", 53 }, { "http", 80 }, { "pop3", 110 }, { "ntp", 123 },
+            { "dns", 53 }, { "http", 80 }, { "pop3", 110 }, { "ntp", 123 },{ "netbios", 137 },
             { "imap", 143 }, { "snmp", 161 }, { "ldap", 389 }, { "https", 443 },
             { "smb", 445 }, { "mssql", 1433 }, { "oracle", 1521 }, { "mysql", 3306 },
             { "rdp", 3389 }, { "psql", 5432 }, { "redis", 6379 }, { "fcgi", 9000 },

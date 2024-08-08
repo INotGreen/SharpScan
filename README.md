@@ -115,7 +115,7 @@ Example:
 扫描C段/B段，默认使用所有模块
 
 ```powershell
-SharpScan.exe -h 192.168.1.1/24                                 (扫描C段)
+SharpScan.exe -h 192.168.1.1/24                                  (扫描C段)
 SharpScan.exe -h 192.168.1.1/16                                  (扫描B段)
 SharpScan.exe -h 192.168.1.107,192.168.1.3,192.168.1.4           (扫描指定IP,用逗号分隔)
 SharpScan.exe -h C:\\Windows\\IP.txt                 (扫描指定IP.txt,格式和账号密码本的格式一样)

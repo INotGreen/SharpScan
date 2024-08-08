@@ -156,7 +156,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             }
             stopwatch.Stop();
             Console.ResetColor();
-            Console.WriteLine($"\n[+] Scanning completed in {(stopwatch.ElapsedMilliseconds / 1000.0).ToString("F2")} seconds\n");
+            Console.WriteLine($"\n[+] completed in {(stopwatch.ElapsedMilliseconds / 1000.0).ToString("F2")} seconds\n");
         }
 
 

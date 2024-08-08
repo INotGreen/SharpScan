@@ -30,17 +30,22 @@ namespace SharpScan
 
         public static List<string> IPlist;
         public static string portRange { get; set; }
-        public static string socks5 { get; set; }
+        public static string socks5Port { get; set; }
+        public static string httpServerPort { get; set; }
+        public static string Folder { get; set; }
         public static string command { get; set; }
         public static string maxConcurrency = "600";
         public static string delay = "10";
         public static string userName { get; set; }
         public static string userNameFile { get; set; }
         public static string passWord { get; set; }
+        public static string localFile { get; set; }
+        public static string remoteFile { get; set; }
+        public static string funcName { get; set; }
         public static string passWordFile { get; set; }
         public static List<string> userList { get; set; }
         public static List<string> passwordList { get; set; }
-        public static string outputFile = "";
+        public static string outputFile { get; set; }
 
 
         public class OnlinePC
@@ -78,6 +83,8 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             Console.WriteLine("\nExample:");
             Console.WriteLine("  SharpScan.exe -help");
             Console.WriteLine("  SharpScan.exe -h 192.168.1.1/24");
+            Console.WriteLine("  SharpScan.exe -h C:\\ip.txt");
+            Console.WriteLine("  SharpScan.exe -h 192.168.1.1,192.168.1.3,192.168.1.4");
             Console.WriteLine("  SharpScan.exe -h 192.168.1.107 -p 100-1024");
         }
 
@@ -97,15 +104,21 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 { "pw|password=", "Password for authentication", pwd => passWord = pwd },
                 { "uf|ufile=", "Username file for authentication", uf => userNameFile = uf },
                 { "pwf|pwdfile=", "Password file for authentication", pwdf => passWordFile = pwdf },
-                { "m|mode=", "Scanning poc mode(e.g. ssh/smb/rdp/ftp)", m => Program.mode = m },
+                { "m|mode=",  "mode(e.g. ssh/smb/rdp/ftp/wmiexec/dcom/mysql/mssql/redis/)", m => Program.mode = m },
+                { "f|func=", "The function name(cmd/upload/uploadexec)", v => funcName = v },
                 { "c|command=", "Command Execution", c => command = c },
-                { "d|delay=", "Scan delay(ms),Defalt:1000", p => delay = p },
+                { "d|delay=", "Scan delay(ms),Defalt:10ms", p => delay = p },
                 { "t|thread=", "Maximum num of concurrent scans,Defalt:600", t => maxConcurrency = t },
                 { "s|search=", "Search all files", s => search = s },
-                { "socks5=", "Open socks5 port", socks5 => Program.socks5 = socks5 },
+                { "l|localfile=", "The local file to upload", l => localFile = l },
+                { "r|remotefile=", "The remote file path", r => remoteFile = r },
+                { "socks5=", "Open socks5 port", socks5 => Program.socks5Port = socks5 },
+                { "http=", "Open SimpleHTTPServer port", http => Program.httpServerPort = http },
+                { "folder=", "SimpleHTTPServer Folder", folder => Program.Folder = folder },
                 { "nopoc", "Not using proof of concept(POC)", nopoc => Program.nopoc =nopoc!= null },
                 { "o|output=", "Output file to save console output", o => Program.outputFile = o },
                 { "help|show", "Show this usage and help", h => showHelp = h != null },
+
             };
 
             try
@@ -159,7 +172,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             }
 
             Console.WriteLine($"Delay:{delay}   MaxConcurrency:{maxConcurrency}");
-            
+           
 
 
             if (!string.IsNullOrEmpty(hTarget))
@@ -177,11 +190,18 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             }
 
 
-            if (!string.IsNullOrEmpty(socks5))
+            if (!string.IsNullOrEmpty(socks5Port))
             {
-                new Socks5().Run(Convert.ToInt32(socks5), Program.userName, Program.passWord);
+                new Socks5().Run(Convert.ToInt32(socks5Port), Program.userName, Program.passWord);
                 return;
             }
+
+            //if (!string.IsNullOrEmpty(Program.httpServerPort.ToString()))
+            //{
+            //    var server = new SimpleTcpHttpServer("0.0.0.0", Program.httpServerPort, Folder);
+            //    return;
+            //}
+
 
             if (!string.IsNullOrEmpty(userNameFile) && System.IO.File.Exists(userNameFile))
             {
@@ -238,7 +258,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
             if (!nopoc)
             {
-              
+               
                 await new HandlePOC().HandleDefault();
             }
 

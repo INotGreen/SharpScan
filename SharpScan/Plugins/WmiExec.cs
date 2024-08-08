@@ -17,11 +17,11 @@ namespace SharpScan.Plugins
             string command = Program.command;
             string localFile = Program.localFile;
             string remoteFile = Program.remoteFile;
-            int Port = 137;
-            if (!Helper.TestPort(host, Port))
-            {
-                return;
-            }
+           // int Port = 137;
+            //if (!Helper.TestPort(host, Port))
+            //{
+            //    return;
+            //}
             if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(funcName))
             {
                 return;

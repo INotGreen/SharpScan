@@ -84,22 +84,21 @@ namespace SharpScan
                         bool success = await TestFtpConnection(IP, userName, passWord, token);
                         if (success)
                         {
-                            cts.Cancel(); // 取消所有其他任务
+                            cts.Cancel(); 
                         }
                     }
                 }
                 catch (OperationCanceledException)
                 {
-                    // 捕获任务取消异常
+                   
                 }
                 catch (Exception ex)
                 {
-                    // 处理异常，但不输出错误信息以减少日志干扰
+                    
                 }
                 finally
                 {
                     Semaphore.Release();
-                    // 手动进行垃圾回收
                     GC.Collect();
                 }
             }, token);
