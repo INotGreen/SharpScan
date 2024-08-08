@@ -53,6 +53,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>SharpScan.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Costura, Version=1.6.2.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>packages\Costura.Fody.1.6.2\lib\portable-net+sl+win+wpa+wp\Costura.dll</HintPath>
@@ -78,7 +81,7 @@
     <Compile Include="Common\Config.cs" />
     <Compile Include="Pkg\Domain.cs" />
     <Compile Include="Pkg\EDRCheck.cs" />
-    <Compile Include="Pkg\FindFile.cs" />
+    <Compile Include="Pkg\SearchFile.cs" />
     <Compile Include="Pkg\Helper.cs" />
     <Compile Include="Pkg\HookConhost.cs" />
     <Compile Include="Pkg\Netapi32.cs" />

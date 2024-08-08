@@ -48,9 +48,9 @@ namespace SharpScan
 
         private async Task ProcessBrotePackets(List<string> ipPortList)
         {
+            await ProcessSpecificBrotePackets(ipPortList, "1433"); // MSSQL
             await ProcessSpecificBrotePackets(ipPortList, "22"); // SSH
             await ProcessSpecificBrotePackets(ipPortList, "445"); // SMB
-            await ProcessSpecificBrotePackets(ipPortList, "1433"); // RDP
             await ProcessSpecificBrotePackets(ipPortList, "21"); // FTP
         }
 

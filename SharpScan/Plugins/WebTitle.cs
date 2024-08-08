@@ -4,7 +4,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
-using System.Security.Policy;
 
 namespace SharpScan
 {
@@ -22,14 +21,18 @@ namespace SharpScan
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         Console.WriteLine($"[+] (WebTitle) {url} HTTP Status Code: {(int)response.StatusCode} ({response.StatusCode})");
-                        using (var reader = new System.IO.StreamReader(response.GetResponseStream(), Encoding.UTF8))
+
+                        // 获取响应流编码
+                        Encoding encoding = GetEncodingFromResponse(response);
+
+                        using (var reader = new System.IO.StreamReader(response.GetResponseStream(), encoding))
                         {
                             string responseBody = reader.ReadToEnd();
                             string title = ExtractTitle(responseBody);
 
                             if (title != null)
                             {
-                                Console.WriteLine($"[+] (WebTitle) URL: {url}   Title: is: {title}");
+                                Console.WriteLine($"[+] (WebTitle) URL: {url} Title: {title}");
                             }
                             else
                             {
@@ -53,11 +56,26 @@ namespace SharpScan
             }
         }
 
+        private static Encoding GetEncodingFromResponse(HttpWebResponse response)
+        {
+            string charset = response.CharacterSet;
+            if (!string.IsNullOrEmpty(charset))
+            {
+                try
+                {
+                    return Encoding.GetEncoding(charset);
+                }
+                catch (ArgumentException)
+                {
+                    Console.WriteLine($"[!] (WebTitle) Unknown encoding: {charset}. Defaulting to UTF-8.");
+                }
+            }
+            return Encoding.UTF8;
+        }
 
         public static string BuildUrl(string ip, string port)
         {
-            int portNumber;
-            if (int.TryParse(port, out portNumber))
+            if (int.TryParse(port, out int portNumber))
             {
                 if (portNumber == 443)
                 {

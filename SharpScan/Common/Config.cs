@@ -45,12 +45,12 @@ namespace SharpScan
         public static Dictionary<string, int> PortList = new Dictionary<string, int>
         {
             { "ftp", 21 }, { "ssh", 22 }, { "telnet", 23 }, { "smtp", 25 },
-            { "dns", 53 }, { "http", 80 }, { "pop3", 110 }, { "ntp", 123 },{ "netbios", 137 },
+            { "dns", 53 }, { "http", 80 }, { "pop3", 110 }, { "ntp", 123 },{ "nbns", 137 },
             { "imap", 143 }, { "snmp", 161 }, { "ldap", 389 }, { "https", 443 },
             { "smb", 445 }, { "mssql", 1433 }, { "oracle", 1521 }, { "mysql", 3306 },
             { "rdp", 3389 }, { "psql", 5432 }, { "redis", 6379 }, { "fcgi", 9000 },
             { "mem", 11211 }, { "mgo", 27017 }, { "vnc", 5900 }, { "sip", 5060 },
-            { "mqtt", 1883 }, { "nfs", 2049 }, { "msrpc", 135 }, { "netbios", 139 },
+            { "mqtt", 1883 }, { "nfs", 2049 }, { "msrpc", 135 }, { "nbss", 139 },{ "nbds", 138 },
             { "rpcbind", 111 }, { "snmptrap", 162 }, { "syslog", 514 }, { "tftp", 69 },
             { "kerberos", 88 }, { "smtps", 465 }, { "imaps", 993 }, { "pop3s", 995 },
             { "socks", 1080 }, { "ldaps", 636 }, { "ftps", 990 }, { "nntp", 119 },
