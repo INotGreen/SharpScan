@@ -104,8 +104,8 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 { "pw|password=", "Password for authentication", pwd => passWord = pwd },
                 { "uf|ufile=", "Username file for authentication", uf => userNameFile = uf },
                 { "pwf|pwdfile=", "Password file for authentication", pwdf => passWordFile = pwdf },
-                { "m|mode=",  "mode(e.g. ssh/smb/rdp/ftp/wmiexec/dcom/mysql/mssql/redis/)", m => Program.mode = m },
-                { "f|func=", "The function name(cmd/upload/uploadexec)", v => funcName = v },
+                { "m|mode=",  "Mode(e.g. ssh/smb/rdp/ftp/wmiexec/dcom/mysql/mssql/redis/)", m => Program.mode = m },
+                { "f|func=", "wmiexc function(cmd/psh/upload/uploadexec)", v => funcName = v },
                 { "c|command=", "Command Execution", c => command = c },
                 { "d|delay=", "Scan delay(ms),Defalt:10ms", p => delay = p },
                 { "t|thread=", "Maximum num of concurrent scans,Defalt:600", t => maxConcurrency = t },
@@ -195,12 +195,6 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 new Socks5().Run(Convert.ToInt32(socks5Port), Program.userName, Program.passWord);
                 return;
             }
-
-            //if (!string.IsNullOrEmpty(Program.httpServerPort.ToString()))
-            //{
-            //    var server = new SimpleTcpHttpServer("0.0.0.0", Program.httpServerPort, Folder);
-            //    return;
-            //}
 
 
             if (!string.IsNullOrEmpty(userNameFile) && System.IO.File.Exists(userNameFile))
