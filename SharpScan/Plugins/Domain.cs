@@ -130,7 +130,7 @@ namespace SharpScan
             return false;
         }
 
-        private static string GetDomainNameFromDN(string distinguishedName)
+        public static string GetDomainNameFromDN(string distinguishedName)
         {
             string[] parts = distinguishedName.Split(',');
             string domainName = string.Empty;

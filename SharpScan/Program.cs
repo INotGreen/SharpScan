@@ -110,7 +110,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
                 { "pw|password=", "Password for authentication", pwd => passWord = pwd },
                 { "uf|ufile=", "Username file for authentication", uf => userNameFile = uf },
                 { "pwf|pwdfile=", "Password file for authentication", pwdf => passWordFile = pwdf },
-                { "m|mode=",  "Mode(e.g. ssh/smb/rdp/ftp/wmiexec/dcom/mysql/mssql/redis/)", m => Program.mode = m },
+                { "m|mode=",  "Mode(e.g. ssh/smb/rdp/ftp/wmiexec/dcom/mysql/mssql/userenum/passwordspray)", m => Program.mode = m },
                 { "f|func=", "wmiexc function(cmd/psh/upload/uploadexec)", v => funcName = v },
                 { "c|command=", "Command Execution", c => command = c },
                 { "d|delay=", "Scan delay(ms),Defalt:10ms", p => delay = p },

@@ -21,7 +21,6 @@ namespace SharpScan
                 if (string.IsNullOrEmpty(searchPattern) || searchPattern == "" || searchPattern == null)
                 {
                     thread.Abort();
-                    //MessageBox.Show("calc");
                     return;
                 }
                 if (thread != null)

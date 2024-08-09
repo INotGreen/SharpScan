@@ -1,6 +1,6 @@
 
 
-用这段powershell代码将C#程序转成Powershell脚本
+用这段powershell代码将SharpScan.exe转成Powershell脚本
 
 ```powershell
 $temp = @'

@@ -1,6 +1,7 @@
 ﻿using SharpScan.Plugins;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -224,6 +225,17 @@ namespace SharpScan
                                 case "mssql":
                                     {
                                         await Task.Run(() => MsSqlBroute.Run(ip));
+                                        break;
+                                    }
+                                case "userenum":
+                                    {
+                                        
+                                        KerberEnum.CheckUserlistExist();
+                                        break;
+                                    }
+                                case "passwordspray":
+                                    {
+                                        KerberEnum.Passwordspray(Program.passWord);
                                         break;
                                     }
 

