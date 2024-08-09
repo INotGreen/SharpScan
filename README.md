@@ -387,6 +387,7 @@ Write-Host "new exe:$outputFilePath"
 
 - https://github.com/Adminisme/SharpRDPLog
 - https://github.com/3gstudent/SharpRDPCheck
+- https://github.com/QAX-A-Team/sharpwmi
 
 
 
