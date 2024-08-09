@@ -24,7 +24,7 @@ namespace SharpScan
                 return;
             }
 
-            Console.WriteLine($"[*] {IP}:{Port}{Helper.GetServiceByPort(Port)} is brute force cracking in progress");
+          //  Console.WriteLine($"[*] {IP}:{Port}{Helper.GetServiceByPort(Port)} is brute force cracking in progress");
 
             if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
             {

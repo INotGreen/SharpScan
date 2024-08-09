@@ -63,6 +63,7 @@ namespace SharpScan
 
         private async Task ProcessBrotePackets(List<string> ipPortList)
         {
+            await ProcessSpecificBrotePackets(ipPortList, "88");  //kerberos
             await ProcessSpecificBrotePackets(ipPortList, "1433"); // MSSQL
             await ProcessSpecificBrotePackets(ipPortList, "22"); // SSH
             await ProcessSpecificBrotePackets(ipPortList, "445"); // SMB
@@ -147,7 +148,7 @@ namespace SharpScan
                     }
                 case "445":
                     {
-                        await Task.Run(() => SMBEnum.SMBLogin(ip)); // 使用 Task.Run 包装同步方法
+                        await Task.Run(() => SMBEnum.Run(ip)); // 使用 Task.Run 包装同步方法
                         break;
                     }
                 case "3389":
@@ -158,6 +159,13 @@ namespace SharpScan
                 case "1433":
                     {
                         await Task.Run(() => MsSqlBroute.Run(ip));
+                        break;
+                    }
+                
+                case "88": //kerberos User and password Enum
+                    {
+                        Console.WriteLine("kerberos");
+                        KerberEnum.Run(Program.DomainName);
                         break;
                     }
             }
@@ -198,7 +206,7 @@ namespace SharpScan
 
                                 case "smb":
                                     {
-                                        await Task.Run(() => SMBEnum.SMBLogin(ip));
+                                        await Task.Run(() => SMBEnum.Run(ip));
                                         break;
                                     }
 
@@ -243,7 +251,7 @@ namespace SharpScan
                     {
                         if (Program.onlineHostList.Exists(onlinepc => onlinepc.IP == ip && onlinepc.buildNumber >= 18362))
                         {
-                            await Task.Run(() => new SmbGhost().Run(ip));
+                            await Task.Run(() =>  SmbGhost.Run(ip));
                         }
                         else
                         {
@@ -252,17 +260,17 @@ namespace SharpScan
 
                         break;
                     }
-                default:
-                    {
-                        // 获取 web 标签
-                        string[] webPorts = Configuration.WebPort.Split(',');
-                        if (webPorts.Contains(port))
-                        {
-                            string url = WebTitle.BuildUrl(ip, port);
-                            await Task.Run(() => WebTitle.Run(url));
-                        }
-                        break;
-                    }
+                //default:
+                //    {
+                //        // 获取 web 标签
+                //        string[] webPorts = Configuration.WebPort.Split(',');
+                //        if (webPorts.Contains(port))
+                //        {
+                //            string url = WebTitle.BuildUrl(ip, port);
+                //            await Task.Run(() => WebTitle.Run(url));
+                //        }
+                //        break;
+                //    }
             }
         }
     }

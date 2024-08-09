@@ -33,7 +33,7 @@ namespace SharpScan
                 return;
                 // return $"{ip},445,Port unreachable";
             }
-            Console.WriteLine($"[*] {host}:{port}{Helper.GetServiceByPort(port)} is brute force cracking in progress");
+       //     Console.WriteLine($"[*] {host}:{port}{Helper.GetServiceByPort(port)} is brute force cracking in progress");
             if (Program.userList != null && Program.passwordList != null)
             {
                 foreach (var user in Program.userList)

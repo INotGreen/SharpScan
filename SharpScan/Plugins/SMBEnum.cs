@@ -12,21 +12,8 @@ namespace SharpScan
 {
     public class SMBEnum
     {
-        public async Task Smblogin(List<string> IPlist)
-        {
-            if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
-            {
-                List<Task> IcmpTasks = new List<Task>();
-                foreach (var Ip in IPlist)
-                {
-                    //IcmpTasks.Add(Task.Run(() => Smblogin(Ip, Program.userName, Program.passWord)));
-                }
 
-                await Task.WhenAll(IcmpTasks);
-            }
-        }
-
-        public static void SMBLogin(string ip)
+        public static void Run(string ip)
         {
             int Port = 445;
 
@@ -35,7 +22,7 @@ namespace SharpScan
                 return;
             }
 
-            Console.WriteLine($"[*] {ip}:{Port}{Helper.GetServiceByPort(Port)} is brute force cracking in progress");
+           // Console.WriteLine($"[*] {ip}:{Port}{Helper.GetServiceByPort(Port)} is brute force cracking in progress");
 
             if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
             {
@@ -46,7 +33,7 @@ namespace SharpScan
                     Console.WriteLine(output);
                     return;
                 }
-                
+
             }
 
             if (Program.userList != null && Program.passwordList != null)
@@ -55,10 +42,11 @@ namespace SharpScan
                 {
                     foreach (var pass in Program.passwordList)
                     {
-                        string result = SMBLoginWorker(ip, user, pass);
+                        string Password = pass.Replace("{user}", user);
+                        string result = SMBLoginWorker(ip, user, Password);
                         if (result.StartsWith("True"))
                         {
-                            string output = $"[*] (SMB)IP:{ip}  User:{user}  Password:{pass}, Result:{result}";
+                            string output = $"[*] (SMB)IP:{ip}  User:{user}  Password:{Password}, Result:{result}";
                             if (!Program.Service.Exists(service => service == output))
                             {
                                 Program.Service.Add(output);
@@ -70,28 +58,23 @@ namespace SharpScan
             }
             else
             {
-                if (Configuration.UserDictionary.TryGetValue("smb", out List<string> smbUsers))
+
+                foreach (var user in Configuration.UserDictionary["smb"])
                 {
-                    foreach (var user in smbUsers)
+                    foreach (var pass in Configuration.Passwords)
                     {
-                        foreach (var pass in Configuration.Passwords)
+                        string Password = pass.Replace("{user}", user);
+                        string result = SMBLoginWorker(ip, user, Password);
+                        if (result.StartsWith("True"))
                         {
-                            string result = SMBLoginWorker(ip, user, pass);
-                            if (result.StartsWith("True"))
+                            string output = $"[*] (SMB)IP:{ip}  User:{user}  Password:{Password}, Result:{result}";
+                            if (!Program.Service.Exists(service => service == output))
                             {
-                                string output = $"[*] (SMB)IP:{ip}  User:{user}  Password:{pass}, Result:{result}";
-                                if (!Program.Service.Exists(service => service == output))
-                                {
-                                    Program.Service.Add(output);
-                                    Console.WriteLine(output);
-                                }
+                                Program.Service.Add(output);
+                                Console.WriteLine(output);
                             }
                         }
                     }
-                }
-                else
-                {
-                    Console.WriteLine("Username list for SMB service not found.");
                 }
             }
         }

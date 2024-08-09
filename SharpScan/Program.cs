@@ -156,7 +156,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
             await Init(args);
 
-            
+
             stopwatch.Stop();
             Console.ResetColor();
             Console.WriteLine($"\n[+] completed in {(stopwatch.ElapsedMilliseconds / 1000.0).ToString("F2")} seconds\n");
@@ -196,7 +196,7 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
             if (!string.IsNullOrEmpty(socks5Port))
             {
-                new Socks5().Run(Convert.ToInt32(socks5Port), Program.userName, Program.passWord);
+                Socks5.Run(Convert.ToInt32(socks5Port), Program.userName, Program.passWord);
                 return;
             }
 

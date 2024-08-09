@@ -110,11 +110,17 @@ namespace SharpScan
                 {
                     if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) // Check for IPv4
                     {
+                       
                         Helper.ColorfulConsole($"Domain Controller IP (IPv4): {ip}", ConsoleColor.Red);
-                        return true;
+
+                    }
+                    else
+                    {
+                        Helper.ColorfulConsole($"Domain Controller IP (IPv6): {ip}", ConsoleColor.Red);
                     }
                 }
-                
+                return true;
+
             }
             catch (Exception ex)
             {

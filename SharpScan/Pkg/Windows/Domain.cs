@@ -17,7 +17,7 @@ namespace SharpScan
                 GetAllEnt();
                 GetAllCollers();
                 GetAllAdministrators();
-                
+
             }
             catch (Exception e)
             {
@@ -59,7 +59,7 @@ namespace SharpScan
         {
             try
             {
-                
+
                 if (string.IsNullOrEmpty(domainName))
                 {
                     Console.WriteLine("[!] ERROR: Unable to determine the domain name.");
@@ -86,7 +86,9 @@ namespace SharpScan
                             if (result.Properties["samaccountname"].Count > 0)
                             {
                                 string username = result.Properties["samaccountname"][0].ToString();
-                                Configuration.UserDictionary["smb"].Add(username);
+                                if (!Configuration.UserDictionary["kerberos"].Exists(user => user == username)) ; Configuration.UserDictionary["kerberos"].Add(username);
+                                if (!Configuration.UserDictionary["smb"].Exists(user => user == username)) ; Configuration.UserDictionary["smb"].Add(username);
+
                                 string displayName = result.Properties["displayName"].Count > 0 ? result.Properties["displayName"][0].ToString() : "N/A";
                                 string email = result.Properties["mail"].Count > 0 ? result.Properties["mail"][0].ToString() : "N/A";
                                 string phone = result.Properties["telephoneNumber"].Count > 0 ? result.Properties["telephoneNumber"][0].ToString() : "N/A";
@@ -258,8 +260,5 @@ namespace SharpScan
                 Console.WriteLine("[!] ERROR: {0}", e.Message);
             }
         }
-
-
-
     }
 }

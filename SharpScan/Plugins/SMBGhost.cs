@@ -82,10 +82,18 @@ namespace SharpScan
             "\x00\x00" +
             "\x00\x00\x00\x00";
 
-        public  void Run(string IP)
+        public static  void Run(string IP)
         {
             try
             {
+                int Port = 445;
+
+                if (!Helper.TestPort(IP, Port))
+                {
+                    return;
+                }
+
+
                 SmbGhostScan(IP);
             }
             catch (Exception ex)
@@ -100,6 +108,9 @@ namespace SharpScan
             int timeout = 2000; // Timeout in milliseconds
             string address = $"{IP}:{port}";
             byte[] packet = Encoding.ASCII.GetBytes(pkt);
+
+
+
 
             using (TcpClient client = new TcpClient())
             {

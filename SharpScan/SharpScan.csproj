@@ -296,6 +296,7 @@
     <Compile Include="Pkg\SSH\System\util\Vector.cs" />
     <Compile Include="Plugins\FileSearch.cs" />
     <Compile Include="Plugins\Ftp.cs" />
+    <Compile Include="Plugins\KerberEnum.cs" />
     <Compile Include="Plugins\MsSql.cs" />
     <Compile Include="Plugins\MySql.cs" />
     <Compile Include="Plugins\HttpServer.cs" />
