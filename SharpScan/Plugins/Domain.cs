@@ -9,6 +9,7 @@ using System.DirectoryServices.AccountManagement;
 using Microsoft.VisualBasic.Devices;
 using System.DirectoryServices;
 using System.Management;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace SharpScan
 {
@@ -19,7 +20,6 @@ namespace SharpScan
             try
             {
                 SystemInfo();
-                NetworkConnections();
                 ReadRegistry();
                 Domain_p();
             }
@@ -81,8 +81,9 @@ namespace SharpScan
             if (properties.DomainName.Length > 0)
             {
                 Console. WriteLine($"\n[+] This host is in a domain! Domain name: {properties.DomainName}",ConsoleColor.Red );
-                DoIt();
-                new GetDomainInfo();
+                
+                if(DoIt()) new GetDomainInfo();
+
                 Console.WriteLine("\n");
                // ZeroLogon.ZeroLogonCheck();
             }
@@ -92,17 +93,53 @@ namespace SharpScan
             }
         }
 
-        public static void DoIt() // Locate Domain Controller IP
+        public static bool DoIt() // Locate Domain Controller IP and Domain Name
         {
-            DirectoryEntry dirEntry = new DirectoryEntry("LDAP://rootDSE");
-            string dnsHostname = dirEntry.Properties["dnsHostname"].Value.ToString();
-            Helper.ColorfulConsole($"Domain Controller FQDN:{dnsHostname}", ConsoleColor.Red);
-            IPAddress[] ipAddresses = Dns.GetHostAddresses(dnsHostname);
-            
-            foreach (IPAddress i in ipAddresses)
+            try
             {
-                Helper.ColorfulConsole($"Domain Controller IP: {i}",ConsoleColor.Red);
+                DirectoryEntry dirEntry = new DirectoryEntry("LDAP://rootDSE");
+                string dnsHostname = dirEntry.Properties["dnsHostname"].Value.ToString();
+                string defaultNamingContext = dirEntry.Properties["defaultNamingContext"].Value.ToString();
+                Program.DomainName = GetDomainNameFromDN(defaultNamingContext);
+
+                Helper.ColorfulConsole($"Domain Controller FQDN: {dnsHostname}", ConsoleColor.Red);
+                Helper.ColorfulConsole($"Domain Name: {Program.DomainName}", ConsoleColor.Red);
+
+                IPAddress[] ipAddresses = Dns.GetHostAddresses(dnsHostname);
+                foreach (IPAddress ip in ipAddresses)
+                {
+                    if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) // Check for IPv4
+                    {
+                        Helper.ColorfulConsole($"Domain Controller IP (IPv4): {ip}", ConsoleColor.Red);
+                        return true;
+                    }
+                }
+                
             }
+            catch (Exception ex)
+            {
+                Helper.ColorfulConsole($"An error occurred: {ex.Message}", ConsoleColor.Red);
+                return false;
+            }
+            return false;
+        }
+
+        private static string GetDomainNameFromDN(string distinguishedName)
+        {
+            string[] parts = distinguishedName.Split(',');
+            string domainName = string.Empty;
+            foreach (string part in parts)
+            {
+                if (part.StartsWith("DC=", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (domainName.Length > 0)
+                    {
+                        domainName += ".";
+                    }
+                    domainName += part.Substring(3);
+                }
+            }
+            return domainName;
         }
 
         public static void ReadRegistry()
@@ -129,22 +166,6 @@ namespace SharpScan
             }
         }
 
-        public static void NetworkConnections()
-        {
-            // NETWORK CONNECTIONS
-            Console.WriteLine("\n[+] Network Connection Status:");
-            IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
-            IPEndPoint[] endPoints = ipProperties.GetActiveTcpListeners();
-            TcpConnectionInformation[] tcpConnections = ipProperties.GetActiveTcpConnections();
-            foreach (TcpConnectionInformation info in tcpConnections)
-            {
-                String str = info.LocalEndPoint.Address.ToString();
-                if (str.StartsWith("127.0.0.1"))
-                {
-                    continue;
-                }
-                Console.WriteLine("\tLocal: " + info.LocalEndPoint.Address.ToString() + ":" + info.LocalEndPoint.Port.ToString() + " - Remote: " + info.RemoteEndPoint.Address.ToString() + ":" + info.RemoteEndPoint.Port.ToString());
-            }
-        }
+      
     }
 }

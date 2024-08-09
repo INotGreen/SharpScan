@@ -11,9 +11,24 @@ namespace SharpScan
     {
         public async Task HandleDefault()
         {
+            Console.WriteLine(new string('-', 95));
+            Console.WriteLine("Processing Service Packets");
+            Console.WriteLine(new string('-', 95));
             await ProcessPackets(Program.IpPortList, ServicePacket);
+
+            Console.WriteLine(new string('-', 95));
+            Console.WriteLine("Processing POC Packets");
+            Console.WriteLine(new string('-', 95));
             await ProcessPackets(Program.IpPortList, PocPacket);
+
+            Console.WriteLine(new string('-', 95));
+            Console.WriteLine("Processing Brote Packets");
+            Console.WriteLine(new string('-', 95));
             await ProcessBrotePackets(Program.IpPortList);
+
+            Console.WriteLine(new string('-', 95));
+            Console.WriteLine("HandleDefault Process Completed");
+            Console.WriteLine(new string('-', 95));
         }
 
         private async Task ProcessPackets(List<string> ipPortList, Func<string, Task> packetProcessor)
@@ -168,20 +183,19 @@ namespace SharpScan
                                         await Task.Run(() => SshBrute.Run(ip));
                                         break;
                                     }
-                                   
+
                                 case "rdp":
                                     {
                                         await Task.Run(() => Rdp.Run(ip));
-                                        
                                         break;
                                     }
-                                   
+
                                 case "ms17010":
                                     {
                                         await Task.Run(() => new ms17_010scanner().Run(ip));
                                         break;
                                     }
-                                   
+
                                 case "smb":
                                     {
                                         await Task.Run(() => SMBEnum.SMBLogin(ip));

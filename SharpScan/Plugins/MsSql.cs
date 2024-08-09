@@ -14,6 +14,9 @@ namespace SharpScan
             {
                 return;
             }
+
+            Console.WriteLine($"[*] {host}:{Port}{Helper.GetServiceByPort(Port)} is brute force cracking in progress");
+
             if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
             {
                 bool isConnected = MsSQL_Connect(host, Program.userName, Program.passWord);

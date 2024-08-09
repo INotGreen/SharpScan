@@ -35,7 +35,7 @@ namespace SharpScan
                 return;
             }
 
-            Console.WriteLine($"[*] {ip}:{Port}{Helper.GetServiceByPort(Port)} is open");
+            Console.WriteLine($"[*] {ip}:{Port}{Helper.GetServiceByPort(Port)} is brute force cracking in progress");
 
             if (!string.IsNullOrEmpty(Program.userName) && !string.IsNullOrEmpty(Program.passWord))
             {
@@ -44,8 +44,9 @@ namespace SharpScan
                 {
                     string output = $"[*] (SMB)IP:{ip}  User:{Program.userName}  Password:{Program.passWord}, Result:{result}";
                     Console.WriteLine(output);
+                    return;
                 }
-                return;
+                
             }
 
             if (Program.userList != null && Program.passwordList != null)
@@ -58,7 +59,11 @@ namespace SharpScan
                         if (result.StartsWith("True"))
                         {
                             string output = $"[*] (SMB)IP:{ip}  User:{user}  Password:{pass}, Result:{result}";
-                            Console.WriteLine(output);
+                            if (!Program.Service.Exists(service => service == output))
+                            {
+                                Program.Service.Add(output);
+                                Console.WriteLine(output);
+                            }
                         }
                     }
                 }
@@ -75,7 +80,11 @@ namespace SharpScan
                             if (result.StartsWith("True"))
                             {
                                 string output = $"[*] (SMB)IP:{ip}  User:{user}  Password:{pass}, Result:{result}";
-                                Console.WriteLine(output);
+                                if (!Program.Service.Exists(service => service == output))
+                                {
+                                    Program.Service.Add(output);
+                                    Console.WriteLine(output);
+                                }
                             }
                         }
                     }

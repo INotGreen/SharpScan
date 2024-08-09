@@ -97,7 +97,7 @@ namespace SharpScan
         private static void SmbGhostScan(string IP)
         {
             int port = 445;
-            int timeout = 5000; // Timeout in milliseconds
+            int timeout = 2000; // Timeout in milliseconds
             string address = $"{IP}:{port}";
             byte[] packet = Encoding.ASCII.GetBytes(pkt);
 

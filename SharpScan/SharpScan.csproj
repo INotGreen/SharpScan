@@ -79,12 +79,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Config.cs" />
-    <Compile Include="Pkg\Domain.cs" />
-    <Compile Include="Pkg\EDRCheck.cs" />
-    <Compile Include="Pkg\SearchFile.cs" />
+    <Compile Include="Pkg\Windows\Domain.cs" />
+    <Compile Include="Pkg\Windows\EDRCheck.cs" />
+    <Compile Include="Pkg\Windows\SearchFile.cs" />
     <Compile Include="Pkg\Helper.cs" />
     <Compile Include="Pkg\HookConhost.cs" />
-    <Compile Include="Pkg\Netapi32.cs" />
+    <Compile Include="Pkg\Windows\Netapi32.cs" />
     <Compile Include="Pkg\RdpFull\Cryptography\ABCDStruct.cs" />
     <Compile Include="Pkg\RdpFull\Cryptography\HMACT64.cs" />
     <Compile Include="Pkg\RdpFull\Cryptography\MD4.cs" />
@@ -104,7 +104,7 @@
     <Compile Include="Pkg\RdpFull\Protocol\Processing\ISO.cs" />
     <Compile Include="Pkg\RdpFull\Protocol\Processing\IsoLayer.cs" />
     <Compile Include="Pkg\RdpFull\Settings\Options.cs" />
-    <Compile Include="Pkg\RdpLogs.cs" />
+    <Compile Include="Pkg\Windows\RdpLogs.cs" />
     <Compile Include="Pkg\Services\Lib\NBNSResolver.cs" />
     <Compile Include="Pkg\Services\Lib\NTLMSSPBuffer.cs" />
     <Compile Include="Pkg\Services\Lib\NTLMSSPExtract.cs" />

@@ -16,8 +16,9 @@ namespace SharpScan
         public async Task ARPScanPC(List<string> IPlist, int Delay, int maxConcurrency)
         {
             Console.WriteLine("\r\nC_Segment: " + hTarget + ".");
-            Console.WriteLine("===================================================================");
-            Console.WriteLine($"{"IP",-28} {"HostName",-28} {"OsVersion",-40}");
+            Console.WriteLine(new string('-', 95));
+            Console.WriteLine($"{"IP",-20} {"HostName",-28} {"OsVersion",-40}");
+            Console.WriteLine(new string('-', 95));
 
             List<Task> ArpTasks = new List<Task>();
             using (SemaphoreSlim semaphore = new SemaphoreSlim(maxConcurrency))
@@ -41,9 +42,9 @@ namespace SharpScan
 
                 await Task.WhenAll(ArpTasks);
             }
-            Console.WriteLine("===================================================================");
+            Console.WriteLine(new string('-', 95));
             Console.WriteLine("[+] onlinePC: " + Program.onlinePC);
-            Console.WriteLine("===================================================================");
+            Console.WriteLine(new string('-', 95));
         }
 
         public static void ArpCheck(string ip)
@@ -54,12 +55,11 @@ namespace SharpScan
                 {
                     if (IsHostAlive(ip))
                     {
-                        Console.WriteLine(ip);
                         OnlinePC onlinePC = new OnlinePC();
                         onlinePC.IP = ip;
                         onlinePC.HostName = new GetOsInfos().GetHostName(ip);
                         onlinePC.OS = new GetOsInfos().GetOsVersion(onlinePC);
-                        string result = $"{ip + "(ARP)",-28} {onlinePC.HostName,-28} {onlinePC.OS,-40}";
+                        string result = $"{ip + "(ARP)",-20} {onlinePC.HostName,-28} {onlinePC.OS,-40}";
                         Program.onlineHostList.Add(onlinePC);
                         Console.WriteLine(result);
                         Program.onlinePC++;

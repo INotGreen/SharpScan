@@ -13,11 +13,16 @@ namespace SharpScan
 {
     public class Program
     {
+
+
+
+
         public static int onlinePC = 0;
         private static List<Task> scanTasks = new List<Task>();
         public static List<OnlinePC> onlineHostList = new List<OnlinePC>();
         public static List<string> IpPortList = new List<string>();
         public static int alivePort = 0;
+        public static string DomainName { get; set; }
         private static StreamWriter fileWriter;
         public static bool showHelp = false;
         public static bool icmpScan = true;
@@ -29,6 +34,7 @@ namespace SharpScan
         public static string search { get; set; }
 
         public static List<string> IPlist;
+        public static List<string> Service = new List<string>();
         public static string portRange { get; set; }
         public static string socks5Port { get; set; }
         public static string httpServerPort { get; set; }
@@ -150,16 +156,16 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
 
             await Init(args);
 
+            
+            stopwatch.Stop();
+            Console.ResetColor();
+            Console.WriteLine($"\n[+] completed in {(stopwatch.ElapsedMilliseconds / 1000.0).ToString("F2")} seconds\n");
+
             if (fileWriter != null)
             {
                 fileWriter.Close();
             }
-            stopwatch.Stop();
-            Console.ResetColor();
-            Console.WriteLine($"\n[+] completed in {(stopwatch.ElapsedMilliseconds / 1000.0).ToString("F2")} seconds\n");
         }
-
-
 
 
         static async Task Init(string[] args)
@@ -179,12 +185,10 @@ $$    $$/ $$ |  $$ |$$    $$ |$$ |      $$    $$/ $$    $$/ $$       |$$    $$ |
             {
                 if (System.IO.File.Exists(hTarget))
                 {
-                    // If hTarget is a file, read all lines as IPs
                     IPlist = new List<string>(System.IO.File.ReadAllLines(hTarget));
                 }
                 else
                 {
-                    // Otherwise, treat it as a single IP or network segment
                     IPlist = SharpScan.GetIP.IPList(hTarget);
                 }
             }

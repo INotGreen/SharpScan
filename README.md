@@ -34,7 +34,7 @@
 - 参考了Ladon，Fscan、Kscan等扫描器的原理
 - 为了兼容更古老的系统，所以采用.NET Framework3.5 和.NET Core6.0开发
 - 使用异步和高并发、扫描速度快并且可控、内存自动回收
-- 用Inline-assembly或者Execute-assembly进行内存加载，实现无文件落地扫描
+- 用Inline-assembly或者Execute-assembly进行内存加载，做到无文件落地扫描
 
 - 体积较小(目前800kb)、传输快、自动化扫描+内网信息收集一条龙
 

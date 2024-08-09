@@ -27,4 +27,9 @@
 		<PackageReference Include="System.Management" Version="6.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Pkg\Linux\" />
+	  <Folder Include="Pkg\Mac\" />
+	</ItemGroup>
+
 </Project>

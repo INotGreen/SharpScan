@@ -25,7 +25,7 @@ namespace SharpScan
                         return;
                     }
 
-                    Console.WriteLine($"[*] {IP}:{Port}{Helper.GetServiceByPort(Port)} is open");
+                    Console.WriteLine($"[*] {IP}:{Port}{Helper.GetServiceByPort(Port)} is brute force cracking in progress");
 
                     List<Task> tasks = new List<Task>();
 

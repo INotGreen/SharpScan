@@ -12,8 +12,7 @@ namespace SharpScan
 {
     internal class TcpPortscan
     {
-        
-        public async Task ScanPortDefault(int delay, Dictionary<string, int> PortList,int maxConcurrency)
+        public async Task ScanPortDefault(int delay, Dictionary<string, int> PortList, int maxConcurrency)
         {
             List<Task> portscanTasks = new List<Task>();
             Stopwatch stopwatch = new Stopwatch();
@@ -25,17 +24,16 @@ namespace SharpScan
 
             await Task.WhenAll(portscanTasks);
             Console.WriteLine($"\n[+] Port Scanning completed in {(stopwatch.ElapsedMilliseconds / 1000.0).ToString("F2")} seconds\n");
+
             // Start scan web port
             await ScanWebPorts(delay, maxConcurrency);
             stopwatch.Stop();
             Console.WriteLine($"\n[+] WebPort Scanning completed in {(stopwatch.ElapsedMilliseconds / 1000.0).ToString("F2")} seconds\n");
 
-            Console.WriteLine("===================================================================");
+            Console.WriteLine(new string('-', 95));
             Console.WriteLine($"[+] alive ports len is: {Program.alivePort}");
-            Console.WriteLine("===================================================================");
-
+            Console.WriteLine(new string('-', 95));
         }
-
 
         public static async Task ScanPorts(string ip, Dictionary<string, int> PortList, int delay, int maxConcurrency)
         {
@@ -66,7 +64,6 @@ namespace SharpScan
                                             Program.alivePort++;
                                             Program.IpPortList.Add($"{ip}:{port}");
                                             Console.WriteLine($"[*] {ip}:{port} ({portGroup.Key}) is open");
-
                                         }
                                     }
                                 }
@@ -90,8 +87,6 @@ namespace SharpScan
                 await Task.WhenAll(tasks);
             }
         }
-
-
 
         public async Task ScanPortRange(string IP, string PortRange, int delay, int MaxConcurrency)
         {
@@ -146,7 +141,6 @@ namespace SharpScan
             }
         }
 
-
         static int[] ParsePortRange(string portRange)
         {
             List<int> ports = new List<int>();
@@ -183,9 +177,6 @@ namespace SharpScan
 
             return ports.ToArray();
         }
-
-
-
 
         public static async Task ScanWebPorts(int delay, int maxConcurrency)
         {
@@ -244,8 +235,6 @@ namespace SharpScan
                 }
                 await Task.WhenAll(webScanTasks);
             }
-
-
         }
     }
 }
