@@ -45,7 +45,7 @@ namespace SharpScan.Plugins
                     {
                         if (AttemptLogin(Domain, user, pass))
                         {
-                            string output = $"[*](kerberos) User: {user}  Exist:True,  password: {pass}";
+                            string output = $"[*] (kerberos) User: {user}  Exist:True,  password: {pass}";
                             if (!Program.Service.Exists(service => service == output))
                             {
                                 Program.Service.Add(output);
@@ -61,7 +61,7 @@ namespace SharpScan.Plugins
                 {
                     if (AttemptLogin(Domain, user, password))
                     {
-                        string output = $"[*](kerberos) User: {user}  Exist:True,  password: {password}";
+                        string output = $"[*] (kerberos) User: {user}  Exist:True,  password: {password}";
                         if (!Program.Service.Exists(service => service == output))
                         {
                             Program.Service.Add(output);
@@ -84,7 +84,7 @@ namespace SharpScan.Plugins
                     {
                         if (AttemptLogin(Domain, Program.userName, password))
                         {
-                            string output = $"[*](kerberos) User: {Program.userName}  Exist:True,  password: {password}";
+                            string output = $"[*] (kerberos) User: {Program.userName}  Exist:True,  password: {password}";
                             if (!Program.Service.Exists(service => service == output))
                             {
                                 Program.Service.Add(output);
@@ -104,7 +104,7 @@ namespace SharpScan.Plugins
 
                         if (AttemptLogin(Domain, user, password))
                         {
-                            string output = $"[*](kerberos) User: {user}  Exist:True,  password: {password}";
+                            string output = $"[*] (kerberos) User: {user}  Exist:True,  password: {password}";
                             if (!Program.Service.Exists(service => service == output))
                             {
                                 Program.Service.Add(output);
@@ -125,7 +125,7 @@ namespace SharpScan.Plugins
                         {
                             if (AttemptLogin(Domain, userName, password))
                             {
-                                string output = $"[*](kerberos) User: {userName}  Exist:True,  password: {password}";
+                                string output = $"[*] (kerberos) User: {userName}  Exist:True,  password: {password}";
                                 if (!Program.Service.Exists(service => service == output))
                                 {
                                     Program.Service.Add(output);
