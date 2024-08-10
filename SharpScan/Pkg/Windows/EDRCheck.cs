@@ -8,7 +8,7 @@ namespace SharpScan
 {
     internal class EDRCheck
     {
-        protected static string Format(string args_1, string args_2) => String.Format("  [>] {0,-28}: {1}\r", args_1, args_2);
+        protected static string Format(string args_1, string args_2) => String.Format("  [>] {0,-28}: {1}", args_1, args_2);
         public EDRCheck()
         {
            

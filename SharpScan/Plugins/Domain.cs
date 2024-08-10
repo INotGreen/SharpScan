@@ -39,13 +39,6 @@ namespace SharpScan
             Console.WriteLine("[+] .NET Version: {0}", Environment.Version.ToString());
             Console.WriteLine("[+] Operating System: " + new ComputerInfo().OSFullName + (Is64Bit() ? " 64-bit" : " 32-bit")); // Operating System
             new EDRCheck();
-            List<string> users = GetLocalUsers();
-            Console.Write("[+] Existing Users: ");
-            foreach (var user in users)
-            {
-                Console.Write(user + " | ");
-            }
-            Console.WriteLine("\n");
             new RDPlog();
         }
 
@@ -80,7 +73,7 @@ namespace SharpScan
             IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
             if (properties.DomainName.Length > 0)
             {
-                Console. WriteLine($"\n[+] This host is in a domain! Domain name: {properties.DomainName}",ConsoleColor.Red );
+                //Console. WriteLine($"\n[+] This host is in a domain! Domain name: {properties.DomainName}",ConsoleColor.Red );
                 
                 if(DoIt()) new GetDomainInfo();
 

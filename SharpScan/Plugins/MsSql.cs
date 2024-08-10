@@ -22,7 +22,7 @@ namespace SharpScan
                 bool isConnected = MsSQL_Connect(host, Program.userName, Program.passWord);
                 if (isConnected)
                 {
-                    Helper.ColorfulConsole($"MSSQL login successful with user: {Program.userName} ,  password: {Program.passWord}", ConsoleColor.Green);
+                    Helper.ColorfulConsole($"[+] MSSQL login successful with user: {Program.userName} ,  password: {Program.passWord}", ConsoleColor.Green);
                     return;
                 }
             }
@@ -36,7 +36,7 @@ namespace SharpScan
                         bool isConnected = MsSQL_Connect(host, user, password);
                         if (isConnected)
                         {
-                            Helper.ColorfulConsole($"MSSQL login successful with user: {user} ,  password: {password}", ConsoleColor.Green);
+                            Helper.ColorfulConsole($"[+] MSSQL login successful with user: {user} ,  password: {password}", ConsoleColor.Green);
                             return;
                         }
                     }
@@ -52,7 +52,7 @@ namespace SharpScan
                         bool isConnected = MsSQL_Connect(host, user, formattedPassword);
                         if (isConnected)
                         {
-                            Helper.ColorfulConsole($"MSSQL login successful with user: {user} ,  password: {formattedPassword}", ConsoleColor.Green);
+                            Helper.ColorfulConsole($"[+] MSSQL login successful with user: {user} ,  password: {formattedPassword}", ConsoleColor.Green);
                             return;
                         }
                     }

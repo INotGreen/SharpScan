@@ -56,7 +56,7 @@ namespace SharpScan
                     }
                     else
                     {
-                        Console.WriteLine("Username list for FTP service not found.");
+                        Console.WriteLine("[-] Username list for FTP service not found.");
                     }
 
                     await Task.WhenAll(tasks); // 等待所有任务完成

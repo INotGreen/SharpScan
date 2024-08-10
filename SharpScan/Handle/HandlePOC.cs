@@ -165,7 +165,7 @@ namespace SharpScan
                 
                 case "88": //kerberos User and password Enum
                     {
-                        Console.WriteLine("kerberos");
+                        //Console.WriteLine("kerberos");
                         KerberEnum.Run(Program.DomainName);
                         break;
                     }
@@ -272,17 +272,17 @@ namespace SharpScan
 
                         break;
                     }
-                //default:
-                //    {
-                //        // 获取 web 标签
-                //        string[] webPorts = Configuration.WebPort.Split(',');
-                //        if (webPorts.Contains(port))
-                //        {
-                //            string url = WebTitle.BuildUrl(ip, port);
-                //            await Task.Run(() => WebTitle.Run(url));
-                //        }
-                //        break;
-                //    }
+                default:
+                    {
+                        // 获取 web 标签
+                        string[] webPorts = Configuration.WebPort.Split(',');
+                        if (webPorts.Contains(port))
+                        {
+                            string url = WebTitle.BuildUrl(ip, port);
+                            await Task.Run(() => WebTitle.Run(url));
+                        }
+                        break;
+                    }
             }
         }
     }
